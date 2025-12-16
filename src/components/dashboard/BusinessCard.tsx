@@ -2,6 +2,7 @@ import { Store, Package, Users, MoreVertical, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface BusinessCardProps {
+  id: string;
   name: string;
   description: string;
   productsCount: number;
@@ -20,6 +22,7 @@ interface BusinessCardProps {
 }
 
 export function BusinessCard({
+  id,
   name,
   description,
   productsCount,
@@ -35,7 +38,8 @@ export function BusinessCard({
   };
 
   return (
-    <div className="group relative bg-card rounded-xl border border-border overflow-hidden card-hover">
+    <Link to={`/business/${id}`} className="block group">
+      <div className="relative bg-card rounded-xl border border-border overflow-hidden card-hover">
       {/* Image / Header */}
       <div
         className={cn(
@@ -124,6 +128,7 @@ export function BusinessCard({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </Link>
   );
 }

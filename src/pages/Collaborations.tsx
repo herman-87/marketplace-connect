@@ -7,6 +7,7 @@ import { Search, Filter, Users, Shield, Package, ClipboardList } from "lucide-re
 
 const mockCollaborations = [
   {
+    id: "3",
     name: "ModeBoutique",
     description: "Collection de vêtements tendance et accessoires de mode pour tous les styles",
     productsCount: 89,
@@ -17,6 +18,7 @@ const mockCollaborations = [
     permissions: ["products", "orders"],
   },
   {
+    id: "4",
     name: "GourmetShop",
     description: "Épicerie fine et produits artisanaux de qualité provenant de producteurs locaux",
     productsCount: 45,
@@ -90,7 +92,7 @@ export default function Collaborations() {
         <div className="space-y-4">
           {mockCollaborations.map((collab) => (
             <div
-              key={collab.name}
+              key={collab.id}
               className="bg-card rounded-xl border border-border overflow-hidden"
             >
               <div className="flex flex-col lg:flex-row">

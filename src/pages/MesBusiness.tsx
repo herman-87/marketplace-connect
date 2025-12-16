@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 const mockBusinesses = [
   {
+    id: "1",
     name: "RestauFast",
     description: "Restaurant rapide et livraison de plats préparés frais. Cuisine maison de qualité livrée rapidement.",
     productsCount: 24,
@@ -16,6 +17,7 @@ const mockBusinesses = [
     isOwner: true,
   },
   {
+    id: "2",
     name: "TechStore",
     description: "Boutique d'accessoires tech et gadgets innovants. Les dernières tendances technologiques.",
     productsCount: 56,
@@ -123,7 +125,7 @@ export default function MesBusiness() {
           )}
         >
           {mockBusinesses.map((business) => (
-            <BusinessCard key={business.name} {...business} />
+            <BusinessCard key={business.id} {...business} />
           ))}
 
           {/* Add New Business Card */}
