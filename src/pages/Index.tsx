@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 const mockBusinesses = [
   {
+    id: "1",
     name: "RestauFast",
     description: "Restaurant rapide et livraison de plats préparés frais",
     productsCount: 24,
@@ -22,6 +23,7 @@ const mockBusinesses = [
     isOwner: true,
   },
   {
+    id: "2",
     name: "TechStore",
     description: "Boutique d'accessoires tech et gadgets innovants",
     productsCount: 56,
@@ -30,6 +32,7 @@ const mockBusinesses = [
     isOwner: true,
   },
   {
+    id: "3",
     name: "ModeBoutique",
     description: "Collection de vêtements tendance et accessoires",
     productsCount: 89,
@@ -99,7 +102,7 @@ export default function Index() {
                 {mockBusinesses
                   .filter((b) => b.isOwner)
                   .map((business) => (
-                    <BusinessCard key={business.name} {...business} />
+                    <BusinessCard key={business.id} {...business} />
                   ))}
               </div>
             </section>
@@ -121,7 +124,7 @@ export default function Index() {
                 {mockBusinesses
                   .filter((b) => !b.isOwner)
                   .map((business) => (
-                    <BusinessCard key={business.name} {...business} />
+                    <BusinessCard key={business.id} {...business} />
                   ))}
               </div>
             </section>
