@@ -11,7 +11,6 @@ interface StatsCardProps {
     isPositive: boolean;
   };
   className?: string;
-  gradient?: boolean;
 }
 
 export function StatsCard({
@@ -20,66 +19,36 @@ export function StatsCard({
   icon,
   trend,
   className,
-  gradient = false,
 }: StatsCardProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl p-6 transition-all duration-300 card-hover",
-        gradient
-          ? "gradient-primary text-primary-foreground"
-          : "bg-card border border-border",
+        "bg-card border border-border rounded-xl p-5 transition-all duration-200 hover:shadow-md",
         className
       )}
     >
       <div className="flex items-start justify-between">
-        <div className="space-y-2">
-          <p
-            className={cn(
-              "text-sm font-medium",
-              gradient ? "text-primary-foreground/80" : "text-muted-foreground"
-            )}
-          >
-            {title}
-          </p>
-          <p className="text-3xl font-bold">{value}</p>
+        <div className="space-y-1">
+          <p className="text-sm text-muted-foreground">{title}</p>
+          <p className="text-2xl font-semibold text-foreground">{value}</p>
           {trend && (
-            <div
-              className={cn(
-                "flex items-center gap-1 text-sm",
-                gradient
-                  ? "text-primary-foreground/90"
-                  : trend.isPositive
-                  ? "text-success"
-                  : "text-destructive"
-              )}
-            >
+            <div className="flex items-center gap-1.5 text-sm mt-2">
               {trend.isPositive ? (
-                <TrendingUp className="h-4 w-4" />
+                <TrendingUp className="h-3.5 w-3.5 text-success" />
               ) : (
-                <TrendingDown className="h-4 w-4" />
+                <TrendingDown className="h-3.5 w-3.5 text-destructive" />
               )}
-              <span>{trend.isPositive ? "+" : ""}{trend.value}%</span>
-              <span className={gradient ? "text-primary-foreground/70" : "text-muted-foreground"}>
-                vs mois dernier
+              <span className={trend.isPositive ? "text-success" : "text-destructive"}>
+                {trend.isPositive ? "+" : ""}{trend.value}%
               </span>
+              <span className="text-muted-foreground">vs mois dernier</span>
             </div>
           )}
         </div>
-        <div
-          className={cn(
-            "p-3 rounded-lg",
-            gradient ? "bg-white/20" : "bg-primary/10"
-          )}
-        >
+        <div className="p-2.5 rounded-lg bg-muted">
           {icon}
         </div>
       </div>
-
-      {/* Decorative element */}
-      {gradient && (
-        <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-white/10" />
-      )}
     </div>
   );
 }

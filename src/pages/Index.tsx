@@ -54,26 +54,25 @@ export default function Index() {
           <StatsCard
             title="Revenus du mois"
             value="2,847 €"
-            icon={<TrendingUp className="h-6 w-6 text-primary-foreground" />}
+            icon={<TrendingUp className="h-5 w-5 text-primary" />}
             trend={{ value: 12.5, isPositive: true }}
-            gradient
           />
           <StatsCard
             title="Mes Business"
             value="2"
-            icon={<Store className="h-6 w-6 text-primary" />}
+            icon={<Store className="h-5 w-5 text-primary" />}
             trend={{ value: 0, isPositive: true }}
           />
           <StatsCard
             title="Produits publiés"
             value="80"
-            icon={<Package className="h-6 w-6 text-primary" />}
+            icon={<Package className="h-5 w-5 text-primary" />}
             trend={{ value: 8, isPositive: true }}
           />
           <StatsCard
             title="Commandes"
             value="34"
-            icon={<ShoppingCart className="h-6 w-6 text-primary" />}
+            icon={<ShoppingCart className="h-5 w-5 text-primary" />}
             trend={{ value: 23, isPositive: true }}
           />
         </div>
