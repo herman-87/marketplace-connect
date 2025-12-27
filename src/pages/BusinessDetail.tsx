@@ -196,14 +196,14 @@ const mockEngagement = {
 export default function BusinessDetail() {
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="space-y-6">
         {/* Business Header */}
         <BusinessHeader business={mockBusiness} />
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Main Feed */}
-          <div className="lg:col-span-2 space-y-8">
+        {/* Main Content Grid - Full Width */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+          {/* Left Column - Main Feed (3/4) */}
+          <div className="xl:col-span-3 space-y-6">
             {/* Products Feed */}
             <ProductsFeed products={mockProducts} isOwner={mockBusiness.isOwner} />
 
@@ -211,7 +211,7 @@ export default function BusinessDetail() {
             <BusinessOrders orders={mockOrders} />
           </div>
 
-          {/* Right Column - Sidebar */}
+          {/* Right Column - Sidebar (1/4) */}
           <div className="space-y-6">
             {/* Collaborators */}
             <CollaboratorsList 
