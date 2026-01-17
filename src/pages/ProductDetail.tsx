@@ -1,0 +1,528 @@
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ArrowLeft,
+  Heart,
+  ShoppingCart,
+  Eye,
+  Share2,
+  Edit,
+  Trash2,
+  Send,
+  Archive,
+  Star,
+  Package,
+  Clock,
+  User,
+  MessageSquare,
+  TrendingUp,
+  Plus,
+  Minus,
+} from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+type ProductStatus = "draft" | "published" | "removed";
+type ProductCategory = "repas" | "articles";
+
+interface ProductData {
+  id: string;
+  name: string;
+  description: string;
+  longDescription: string;
+  price: number;
+  originalPrice?: number;
+  image?: string;
+  status: ProductStatus;
+  category: ProductCategory;
+  likes: number;
+  views: number;
+  sales: number;
+  stock: number;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+  createdBy: string;
+  businessId: string;
+  businessName: string;
+  tags: string[];
+  ingredients: string[];
+  allergens: string[];
+  nutritionInfo: {
+    calories: number;
+    proteins: number;
+    carbs: number;
+    fats: number;
+  };
+}
+
+// Mock product data
+const mockProduct: ProductData = {
+  id: "1",
+  name: "Burger Gourmet Signature",
+  description: "Un délicieux burger artisanal avec steak haché frais, fromage affiné, tomates bio, salade croquante et notre sauce secrète maison. Servi avec des frites croustillantes.",
+  longDescription: `Notre Burger Gourmet Signature est préparé avec les meilleurs ingrédients locaux. Le steak haché provient de bœuf élevé en plein air, le fromage est affiné pendant 6 mois minimum, et nos légumes sont issus de l'agriculture biologique.
+
+Chaque burger est préparé à la commande pour garantir une fraîcheur optimale. La viande est grillée à la perfection, juteuse à l'intérieur avec une légère croûte caramélisée.
+
+Notre sauce secrète, créée par notre chef, combine mayonnaise maison, moutarde à l'ancienne, cornichons finement hachés et un mélange d'épices exclusif.`,
+  price: 14.90,
+  originalPrice: 18.90,
+  image: undefined,
+  status: "published" as const,
+  category: "repas" as const,
+  likes: 245,
+  views: 1820,
+  sales: 89,
+  stock: 50,
+  rating: 4.7,
+  reviewCount: 34,
+  createdAt: "12 Jan 2025",
+  createdBy: "Chef Marc",
+  businessId: "1",
+  businessName: "Le Gourmet Express",
+  tags: ["Populaire", "Recommandé", "Bio"],
+  ingredients: ["Steak haché 180g", "Cheddar affiné", "Tomates bio", "Salade", "Oignons", "Sauce maison"],
+  allergens: ["Gluten", "Lactose", "Œufs"],
+  nutritionInfo: {
+    calories: 650,
+    proteins: 35,
+    carbs: 45,
+    fats: 38,
+  },
+};
+
+const mockReviews = [
+  { id: "1", author: "Marie L.", rating: 5, comment: "Meilleur burger de la ville! La viande est parfaitement cuite.", date: "Il y a 2 jours" },
+  { id: "2", author: "Pierre D.", rating: 4, comment: "Très bon, portions généreuses. Je recommande!", date: "Il y a 5 jours" },
+  { id: "3", author: "Sophie M.", rating: 5, comment: "La sauce est incroyable, j'en veux encore!", date: "Il y a 1 semaine" },
+];
+
+const mockSimilarProducts = [
+  { id: "2", name: "Chicken Burger", price: 12.90, image: undefined, category: "repas" as const },
+  { id: "3", name: "Veggie Burger", price: 13.50, image: undefined, category: "repas" as const },
+  { id: "4", name: "Double Cheese", price: 16.90, image: undefined, category: "repas" as const },
+];
+
+export default function ProductDetail() {
+  const { productId } = useParams();
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const product = mockProduct; // In real app, fetch by productId
+  const isOwner = true; // In real app, check if current user owns this product's business
+
+  const statusConfig = {
+    draft: { label: "Brouillon", variant: "secondary" as const, color: "text-muted-foreground" },
+    published: { label: "Publié", variant: "default" as const, color: "text-success" },
+    removed: { label: "Retiré", variant: "outline" as const, color: "text-destructive" },
+  };
+
+  const status = statusConfig[product.status];
+
+  const handleAddToCart = () => {
+    console.log(`Added ${quantity} ${product.name} to cart`);
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
+  return (
+    <AppLayout>
+      <div className="space-y-6">
+        {/* Back Button */}
+        <Button 
+          variant="ghost" 
+          className="gap-2 -ml-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Retour
+        </Button>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Image & Gallery */}
+          <div className="lg:col-span-1 space-y-4">
+            <Card className="border-0 shadow-card overflow-hidden">
+              <div className="relative aspect-square bg-gradient-to-br from-muted to-muted/50">
+                {product.image ? (
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-8xl">
+                    {product.category === "repas" ? "🍔" : "🛍️"}
+                  </div>
+                )}
+                
+                {/* Discount Badge */}
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground">
+                    -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+                  </Badge>
+                )}
+
+                {/* Like Button */}
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm"
+                  onClick={() => setIsLiked(!isLiked)}
+                >
+                  <Heart className={`h-5 w-5 ${isLiked ? "fill-rose-500 text-rose-500" : ""}`} />
+                </Button>
+              </div>
+            </Card>
+
+            {/* Stats Card */}
+            <Card className="border-0 shadow-card">
+              <CardContent className="p-4">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-rose-500">
+                      <Heart className="h-4 w-4" />
+                      <span className="font-bold">{product.likes}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Likes</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-muted-foreground">
+                      <Eye className="h-4 w-4" />
+                      <span className="font-bold">{product.views}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Vues</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-success">
+                      <ShoppingCart className="h-4 w-4" />
+                      <span className="font-bold">{product.sales}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Ventes</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Middle Column - Product Info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Header Card */}
+            <Card className="border-0 shadow-card">
+              <CardContent className="p-6">
+                {/* Status & Category */}
+                <div className="flex items-center gap-2 flex-wrap mb-4">
+                  <Badge variant={status.variant}>{status.label}</Badge>
+                  <Badge variant="outline">
+                    {product.category === "repas" ? "🍽️ Repas" : "🛍️ Article"}
+                  </Badge>
+                  {product.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">{tag}</Badge>
+                  ))}
+                </div>
+
+                {/* Title & Business */}
+                <h1 className="text-2xl lg:text-3xl font-bold">{product.name}</h1>
+                <p className="text-muted-foreground mt-2 flex items-center gap-2">
+                  <Package className="h-4 w-4" />
+                  {product.businessName}
+                </p>
+
+                {/* Rating */}
+                <div className="flex items-center gap-4 mt-4">
+                  <div className="flex items-center gap-1">
+                    <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
+                    <span className="font-bold">{product.rating}</span>
+                  </div>
+                  <span className="text-muted-foreground">
+                    ({product.reviewCount} avis)
+                  </span>
+                </div>
+
+                <Separator className="my-6" />
+
+                {/* Price & Actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-primary">{product.price.toFixed(2)}€</span>
+                      {product.originalPrice && product.originalPrice > product.price && (
+                        <span className="text-lg text-muted-foreground line-through">
+                          {product.originalPrice.toFixed(2)}€
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                      <Package className="h-3 w-3" />
+                      {product.stock} en stock
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    {/* Quantity Selector */}
+                    <div className="flex items-center gap-2 border rounded-lg p-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <span className="w-8 text-center font-medium">{quantity}</span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => setQuantity(quantity + 1)}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    <Button 
+                      className="gap-2 gradient-primary text-primary-foreground"
+                      onClick={handleAddToCart}
+                    >
+                      <ShoppingCart className="h-4 w-4" />
+                      Ajouter au panier
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Owner Actions */}
+                {isOwner && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Button variant="outline" className="gap-2">
+                        <Edit className="h-4 w-4" />
+                        Modifier
+                      </Button>
+                      {product.status === "draft" && (
+                        <Button variant="outline" className="gap-2">
+                          <Send className="h-4 w-4" />
+                          Publier
+                        </Button>
+                      )}
+                      {product.status !== "draft" && product.status === "published" && (
+                        <Button variant="outline" className="gap-2">
+                          <Archive className="h-4 w-4" />
+                          Retirer
+                        </Button>
+                      )}
+                      {product.status === "removed" && (
+                        <Button variant="outline" className="gap-2">
+                          <Send className="h-4 w-4" />
+                          Republier
+                        </Button>
+                      )}
+                      <Button variant="outline" className="gap-2" onClick={handleShare}>
+                        <Share2 className="h-4 w-4" />
+                        Partager
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" className="gap-2">
+                            <Trash2 className="h-4 w-4" />
+                            Supprimer
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Supprimer ce produit ?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Cette action est irréversible. Le produit sera définitivement supprimé.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annuler</AlertDialogCancel>
+                            <AlertDialogAction className="bg-destructive text-destructive-foreground">
+                              Supprimer
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Tabs for Details */}
+            <Card className="border-0 shadow-card">
+              <Tabs defaultValue="description" className="w-full">
+                <CardHeader className="pb-0">
+                  <TabsList className="w-full justify-start bg-transparent border-b rounded-none h-auto p-0">
+                    <TabsTrigger 
+                      value="description" 
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none"
+                    >
+                      Description
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="ingredients" 
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none"
+                    >
+                      Ingrédients
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="reviews" 
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none"
+                    >
+                      Avis ({product.reviewCount})
+                    </TabsTrigger>
+                  </TabsList>
+                </CardHeader>
+
+                <CardContent className="pt-6">
+                  <TabsContent value="description" className="mt-0 space-y-4">
+                    <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+                    <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                      {product.longDescription}
+                    </p>
+                  </TabsContent>
+
+                  <TabsContent value="ingredients" className="mt-0 space-y-6">
+                    {/* Ingredients */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Ingrédients</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {product.ingredients.map((ing) => (
+                          <Badge key={ing} variant="secondary">{ing}</Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Allergens */}
+                    <div>
+                      <h3 className="font-semibold mb-3 text-amber-600">Allergènes</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {product.allergens.map((all) => (
+                          <Badge key={all} variant="outline" className="border-amber-300 text-amber-700">
+                            {all}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Nutrition */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Valeurs nutritionnelles</h3>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="text-center p-3 rounded-lg bg-muted/50">
+                          <p className="text-2xl font-bold">{product.nutritionInfo.calories}</p>
+                          <p className="text-xs text-muted-foreground">Calories</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-muted/50">
+                          <p className="text-2xl font-bold">{product.nutritionInfo.proteins}g</p>
+                          <p className="text-xs text-muted-foreground">Protéines</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-muted/50">
+                          <p className="text-2xl font-bold">{product.nutritionInfo.carbs}g</p>
+                          <p className="text-xs text-muted-foreground">Glucides</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-muted/50">
+                          <p className="text-2xl font-bold">{product.nutritionInfo.fats}g</p>
+                          <p className="text-xs text-muted-foreground">Lipides</p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="reviews" className="mt-0 space-y-4">
+                    {mockReviews.map((review) => (
+                      <div key={review.id} className="p-4 rounded-lg bg-muted/30 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                              <User className="h-4 w-4 text-primary" />
+                            </div>
+                            <span className="font-medium">{review.author}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star 
+                                key={i} 
+                                className={`h-4 w-4 ${i < review.rating ? "fill-amber-400 text-amber-400" : "text-muted"}`} 
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground">{review.comment}</p>
+                        <p className="text-xs text-muted-foreground">{review.date}</p>
+                      </div>
+                    ))}
+                  </TabsContent>
+                </CardContent>
+              </Tabs>
+            </Card>
+          </div>
+        </div>
+
+        {/* Similar Products */}
+        <Card className="border-0 shadow-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              Produits similaires
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {mockSimilarProducts.map((item) => (
+                <Card 
+                  key={item.id} 
+                  className="border-0 shadow-sm hover:shadow-card transition-shadow cursor-pointer"
+                  onClick={() => navigate(`/product/${item.id}`)}
+                >
+                  <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-4xl">
+                    {item.category === "repas" ? "🍔" : "🛍️"}
+                  </div>
+                  <CardContent className="p-3">
+                    <h4 className="font-medium truncate">{item.name}</h4>
+                    <p className="text-primary font-bold">{item.price.toFixed(2)}€</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Meta Info */}
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <User className="h-4 w-4" />
+              Créé par {product.createdBy}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              {product.createdAt}
+            </span>
+          </div>
+          <span>ID: {productId}</span>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
