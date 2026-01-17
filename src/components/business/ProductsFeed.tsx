@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,7 @@ interface ProductsFeedProps {
 }
 
 function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean }) {
+  const navigate = useNavigate();
   const statusConfig = {
     draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
     published: { label: "Publié", variant: "default" as const, icon: Send },
@@ -52,7 +54,10 @@ function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean 
   const StatusIcon = status.icon;
 
   return (
-    <Card className="border-0 shadow-card overflow-hidden hover:shadow-elegant transition-shadow">
+    <Card 
+      className="border-0 shadow-card overflow-hidden hover:shadow-elegant transition-shadow cursor-pointer"
+      onClick={() => navigate(`/product/${product.id}`)}
+    >
       {/* Product Image */}
       <div className="relative h-48 bg-gradient-to-br from-muted to-muted/50">
         {product.image ? (
