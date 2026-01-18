@@ -314,7 +314,7 @@ export default function Commandes() {
           </TabsList>
 
           <TabsContent value="all" className="space-y-4">
-            <div className="flex flex-col gap-4 max-w-3xl">
+            <div className="flex flex-col gap-4 w-full">
               {mockOrders.map((order) => (
                 <OrderCard key={order.id} order={order} />
               ))}
@@ -322,7 +322,7 @@ export default function Commandes() {
           </TabsContent>
 
           <TabsContent value="pending" className="space-y-4">
-            <div className="flex flex-col gap-4 max-w-3xl">
+            <div className="flex flex-col gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "pending")
                 .map((order) => (
@@ -332,7 +332,7 @@ export default function Commandes() {
           </TabsContent>
 
           <TabsContent value="accepted" className="space-y-4">
-            <div className="flex flex-col gap-4 max-w-3xl">
+            <div className="flex flex-col gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "accepted")
                 .map((order) => (
@@ -342,7 +342,7 @@ export default function Commandes() {
           </TabsContent>
 
           <TabsContent value="delivered" className="space-y-4">
-            <div className="flex flex-col gap-4 max-w-3xl">
+            <div className="flex flex-col gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "delivered")
                 .map((order) => (
@@ -352,7 +352,7 @@ export default function Commandes() {
           </TabsContent>
 
           <TabsContent value="rejected" className="space-y-4">
-            <div className="flex flex-col gap-4 max-w-3xl">
+            <div className="flex flex-col gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "rejected")
                 .map((order) => (
