@@ -5,6 +5,8 @@ import { ProductsFeed } from "@/components/business/ProductsFeed";
 import { ClientsList } from "@/components/business/ClientsList";
 import { BusinessOrders } from "@/components/business/BusinessOrders";
 import { EngagementPanel } from "@/components/business/EngagementPanel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Package, ShoppingCart, Users, Heart } from "lucide-react";
 
 // Mock data
 const mockBusiness = {
@@ -200,32 +202,55 @@ export default function BusinessDetail() {
         {/* Business Header */}
         <BusinessHeader business={mockBusiness} />
 
-        {/* Main Content Grid - Full Width */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Left Column - Main Feed (3/4) */}
-          <div className="xl:col-span-3 space-y-6">
-            {/* Products Feed */}
+        {/* Main Content with Tabs */}
+        <Tabs defaultValue="products" className="w-full">
+          <TabsList className="w-full max-w-lg bg-muted/50 p-1">
+            <TabsTrigger value="products" className="flex-1 gap-2">
+              <Package className="h-4 w-4" />
+              Produits
+            </TabsTrigger>
+            <TabsTrigger value="orders" className="flex-1 gap-2">
+              <ShoppingCart className="h-4 w-4" />
+              Commandes
+            </TabsTrigger>
+            <TabsTrigger value="team" className="flex-1 gap-2">
+              <Users className="h-4 w-4" />
+              Équipe
+            </TabsTrigger>
+            <TabsTrigger value="engagement" className="flex-1 gap-2">
+              <Heart className="h-4 w-4" />
+              Engagement
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Products Tab */}
+          <TabsContent value="products" className="mt-6">
             <ProductsFeed products={mockProducts} isOwner={mockBusiness.isOwner} />
+          </TabsContent>
 
-            {/* Orders */}
+          {/* Orders Tab */}
+          <TabsContent value="orders" className="mt-6">
             <BusinessOrders orders={mockOrders} />
-          </div>
+          </TabsContent>
 
-          {/* Right Column - Sidebar (1/4) */}
-          <div className="space-y-6">
-            {/* Collaborators */}
-            <CollaboratorsList 
-              collaborators={mockCollaborators} 
-              isOwner={mockBusiness.isOwner} 
-            />
+          {/* Team Tab */}
+          <TabsContent value="team" className="mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <CollaboratorsList 
+                collaborators={mockCollaborators} 
+                isOwner={mockBusiness.isOwner} 
+              />
+              <ClientsList clients={mockClients} />
+            </div>
+          </TabsContent>
 
-            {/* Engagement */}
-            <EngagementPanel stats={mockEngagement} />
-
-            {/* Clients */}
-            <ClientsList clients={mockClients} />
-          </div>
-        </div>
+          {/* Engagement Tab */}
+          <TabsContent value="engagement" className="mt-6">
+            <div className="max-w-2xl">
+              <EngagementPanel stats={mockEngagement} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </AppLayout>
   );
