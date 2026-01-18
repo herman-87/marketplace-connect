@@ -12,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -129,7 +130,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Search */}
             <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -138,6 +139,9 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
                 className="w-64 pl-9 bg-muted/50 border-0 focus-visible:ring-1"
               />
             </div>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {/* Notifications Sheet */}
             <Sheet>
