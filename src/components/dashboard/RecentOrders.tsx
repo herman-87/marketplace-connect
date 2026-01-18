@@ -1,6 +1,7 @@
-import { Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { Clock, CheckCircle2, XCircle, Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface Order {
@@ -56,96 +57,95 @@ const statusConfig = {
   pending: {
     label: "En attente",
     icon: Clock,
-    className: "bg-warning/10 text-warning border-warning/20",
+    className: "bg-warning/10 text-warning border-warning/30",
   },
   accepted: {
     label: "Acceptée",
     icon: CheckCircle2,
-    className: "bg-success/10 text-success border-success/20",
+    className: "bg-success/10 text-success border-success/30",
   },
   rejected: {
     label: "Refusée",
     icon: XCircle,
-    className: "bg-destructive/10 text-destructive border-destructive/20",
+    className: "bg-destructive/10 text-destructive border-destructive/30",
   },
   delivered: {
     label: "Livrée",
-    icon: CheckCircle2,
-    className: "bg-info/10 text-info border-info/20",
+    icon: Truck,
+    className: "bg-primary/10 text-primary border-primary/30",
   },
 };
 
 export function RecentOrders() {
   return (
-    <div className="bg-card rounded-xl border border-border overflow-hidden">
-      <div className="p-4 border-b border-border flex items-center justify-between">
-        <div>
-          <h3 className="font-semibold text-foreground">Commandes récentes</h3>
-          <p className="text-sm text-muted-foreground">
-            Dernières commandes de vos business
-          </p>
-        </div>
+    <Card>
+      <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-lg">Commandes récentes</CardTitle>
         <Button variant="outline" size="sm">
           Voir tout
         </Button>
-      </div>
-
-      <div className="divide-y divide-border">
-        {mockOrders.map((order) => {
-          const StatusIcon = statusConfig[order.status].icon;
-          return (
-            <div
-              key={order.id}
-              className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors"
-            >
-              <div className="flex items-center gap-4">
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="divide-y divide-border">
+          {mockOrders.map((order) => {
+            const StatusIcon = statusConfig[order.status].icon;
+            return (
+              <div
+                key={order.id}
+                className="px-6 py-4 flex items-center gap-4 hover:bg-muted/30 transition-colors"
+              >
+                {/* Status Icon */}
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center",
+                    "w-10 h-10 rounded-full flex items-center justify-center shrink-0 border",
                     statusConfig[order.status].className
                   )}
                 >
                   <StatusIcon className="h-5 w-5" />
                 </div>
-                <div>
-                  <p className="font-medium text-foreground">
-                    {order.customerName}
-                  </p>
+
+                {/* Order Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-foreground truncate">
+                      {order.customerName}
+                    </p>
+                    <span className="text-muted-foreground">•</span>
+                    <span className="text-sm text-muted-foreground truncate">
+                      {order.businessName}
+                    </span>
+                  </div>
                   <p className="text-sm text-muted-foreground">
-                    {order.businessName} • {order.itemsCount} article
-                    {order.itemsCount > 1 ? "s" : ""}
+                    {order.itemsCount} article{order.itemsCount > 1 ? "s" : ""} • {order.createdAt}
                   </p>
                 </div>
-              </div>
 
-              <div className="text-right">
-                <p className="font-semibold text-foreground">
-                  {order.amount.toFixed(2)} €
-                </p>
-                <p className="text-xs text-muted-foreground">{order.createdAt}</p>
-              </div>
-
-              <Badge
-                variant="outline"
-                className={cn("ml-4", statusConfig[order.status].className)}
-              >
-                {statusConfig[order.status].label}
-              </Badge>
-
-              {order.status === "pending" && (
-                <div className="flex items-center gap-2 ml-4">
-                  <Button size="sm" variant="outline" className="h-8">
-                    Refuser
-                  </Button>
-                  <Button size="sm" className="h-8 gradient-primary border-0">
-                    Accepter
-                  </Button>
+                {/* Amount & Status */}
+                <div className="flex items-center gap-3 shrink-0">
+                  <p className="font-semibold text-foreground">
+                    {order.amount.toFixed(2)} €
+                  </p>
+                  <Badge variant="outline" className={cn("hidden sm:flex", statusConfig[order.status].className)}>
+                    {statusConfig[order.status].label}
+                  </Badge>
                 </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+
+                {/* Actions for pending */}
+                {order.status === "pending" && (
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Button size="sm" variant="outline" className="h-8">
+                      Refuser
+                    </Button>
+                    <Button size="sm" className="h-8">
+                      Accepter
+                    </Button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

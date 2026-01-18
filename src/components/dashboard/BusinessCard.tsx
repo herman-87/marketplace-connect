@@ -2,6 +2,7 @@ import { Store, Package, Users, MoreVertical, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import {
   DropdownMenu,
@@ -29,31 +30,26 @@ export function BusinessCard({
   collaboratorsCount,
   status,
   isOwner,
-  imageUrl,
 }: BusinessCardProps) {
   const statusConfig = {
-    active: { label: "Actif", className: "bg-success/10 text-success" },
-    draft: { label: "Brouillon", className: "bg-warning/10 text-warning" },
-    paused: { label: "En pause", className: "bg-muted text-muted-foreground" },
+    active: { label: "Actif", className: "bg-success/10 text-success border-success/30" },
+    draft: { label: "Brouillon", className: "bg-warning/10 text-warning border-warning/30" },
+    paused: { label: "En pause", className: "bg-muted text-muted-foreground border-border" },
   };
 
   return (
     <Link to={`/business/${id}`} className="block group">
-      <div className="bg-card rounded-xl border border-border overflow-hidden transition-all duration-200 hover:shadow-md hover:border-border/80">
-        {/* Minimal Header */}
-        <div className="h-24 bg-muted/50 relative flex items-center justify-center">
-          <Store className="w-8 h-8 text-muted-foreground/40" />
-          
-          {/* Badges */}
-          <div className="absolute top-3 left-3 flex gap-2">
-            <Badge variant="secondary" className="text-xs font-medium">
-              {isOwner ? "Propriétaire" : "Collaborateur"}
-            </Badge>
+      <Card className="overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30">
+        {/* Header with gradient */}
+        <div className="h-20 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 relative">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Store className="w-8 h-8 text-primary/30" />
           </div>
-
+          
+          {/* Status Badge */}
           <Badge
-            variant="secondary"
-            className={cn("absolute top-3 right-12 text-xs", statusConfig[status].className)}
+            variant="outline"
+            className={cn("absolute top-2 right-10 text-xs", statusConfig[status].className)}
           >
             {statusConfig[status].label}
           </Badge>
@@ -64,13 +60,13 @@ export function BusinessCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-2 right-2 h-8 w-8"
+                className="absolute top-1 right-1 h-8 w-8 hover:bg-background/50"
                 onClick={(e) => e.preventDefault()}
               >
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-popover">
+            <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Voir sur le marketplace
@@ -86,26 +82,35 @@ export function BusinessCard({
           </DropdownMenu>
         </div>
 
-        {/* Content */}
-        <div className="p-4">
-          <h3 className="font-semibold text-foreground">{name}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-2 mt-1 mb-4">
+        <CardContent className="p-4">
+          {/* Title & Role */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+              {name}
+            </h3>
+            <Badge variant="secondary" className="text-xs shrink-0">
+              {isOwner ? "Propriétaire" : "Collaborateur"}
+            </Badge>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
             {description}
           </p>
 
-          {/* Stats */}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          {/* Stats Row */}
+          <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border">
             <div className="flex items-center gap-1.5">
-              <Package className="h-4 w-4" />
-              <span>{productsCount} produits</span>
+              <Package className="h-4 w-4 text-primary/70" />
+              <span>{productsCount}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              <span>{collaboratorsCount} collab.</span>
+              <Users className="h-4 w-4 text-primary/70" />
+              <span>{collaboratorsCount}</span>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }
