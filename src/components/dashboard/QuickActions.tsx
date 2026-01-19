@@ -1,4 +1,5 @@
 import { Package, Users, Store, ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface QuickAction {
   title: string;
@@ -30,26 +31,26 @@ const quickActions: QuickAction[] = [
 
 export function QuickActions() {
   return (
-    <div className="bg-card rounded-lg border border-border p-4">
-      <h3 className="font-medium text-foreground mb-3">Actions rapides</h3>
-      
-      <div className="space-y-1">
-        {quickActions.map((action) => (
-          <button
-            key={action.title}
-            className="w-full flex items-center gap-3 p-3 rounded-md hover:bg-muted transition-colors"
-          >
-            <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center">
-              <action.icon className="w-4 h-4 text-foreground" />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-sm font-medium text-foreground">{action.title}</p>
-              <p className="text-xs text-muted-foreground">{action.description}</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground" />
-          </button>
-        ))}
-      </div>
-    </div>
+    <Card>
+      <CardContent className="p-4">
+        <div className="space-y-2">
+          {quickActions.map((action) => (
+            <button
+              key={action.title}
+              className="w-full flex items-center gap-3 p-3 rounded-md hover:bg-muted transition-colors text-left"
+            >
+              <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center shrink-0">
+                <action.icon className="w-4 h-4 text-foreground" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground">{action.title}</p>
+                <p className="text-xs text-muted-foreground">{action.description}</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            </button>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

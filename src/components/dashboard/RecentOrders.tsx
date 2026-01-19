@@ -79,12 +79,6 @@ const statusConfig = {
 export function RecentOrders() {
   return (
     <Card>
-      <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg">Commandes récentes</CardTitle>
-        <Button variant="outline" size="sm">
-          Voir tout
-        </Button>
-      </CardHeader>
       <CardContent className="p-0">
         <div className="divide-y divide-border">
           {mockOrders.map((order) => {
