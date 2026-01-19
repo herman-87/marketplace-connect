@@ -63,7 +63,7 @@ export default function Index() {
       title="Tableau de bord"
       subtitle="Bienvenue, Jean ! Voici un aperçu de votre activité."
     >
-      <div className="space-y-8 animate-fade-in">
+      <div className="space-y-8">
         {/* Stats Row */}
         <section>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

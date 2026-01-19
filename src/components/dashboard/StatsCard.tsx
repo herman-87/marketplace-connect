@@ -22,14 +22,14 @@ export function StatsCard({
   className,
 }: StatsCardProps) {
   return (
-    <Card className={cn("transition-all duration-200 hover:shadow-md", className)}>
+    <Card className={cn("", className)}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-sm text-muted-foreground truncate">{title}</p>
-            <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+            <p className="text-2xl font-semibold text-foreground mt-1">{value}</p>
           </div>
-          <div className="p-2.5 rounded-lg bg-primary/10 shrink-0">
+          <div className="p-2 rounded-md bg-muted shrink-0">
             {icon}
           </div>
         </div>
