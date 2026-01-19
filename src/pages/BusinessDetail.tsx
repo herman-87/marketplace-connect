@@ -204,7 +204,7 @@ export default function BusinessDetail() {
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="products" className="w-full">
-          <TabsList className="w-full max-w-lg bg-muted/50 p-1">
+          <TabsList className="w-full max-w-lg border border-border">
             <TabsTrigger value="products" className="flex-1 gap-2">
               <Package className="h-4 w-4" />
               Produits

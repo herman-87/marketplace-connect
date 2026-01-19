@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,25 +33,21 @@ function OrderCard({ order }: { order: Order }) {
       label: "En attente", 
       variant: "outline" as const, 
       icon: Clock,
-      color: "text-warning"
     },
     accepted: { 
       label: "Acceptée", 
       variant: "default" as const, 
       icon: Package,
-      color: "text-info"
     },
     rejected: { 
       label: "Refusée", 
       variant: "destructive" as const, 
       icon: AlertCircle,
-      color: "text-destructive"
     },
     delivered: { 
       label: "Livrée", 
       variant: "secondary" as const, 
       icon: Truck,
-      color: "text-success"
     },
   };
 
@@ -59,14 +55,14 @@ function OrderCard({ order }: { order: Order }) {
   const StatusIcon = status.icon;
 
   return (
-    <Card className="border-0 shadow-card">
+    <Card>
       <CardContent className="p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-10 w-10 border border-border">
               <AvatarImage src={order.customer.avatar} />
-              <AvatarFallback className="bg-primary/10 text-primary">
+              <AvatarFallback className="bg-muted text-foreground">
                 {order.customer.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -82,7 +78,7 @@ function OrderCard({ order }: { order: Order }) {
         </div>
 
         {/* Products */}
-        <div className="space-y-2 mb-4 py-3 border-y border-border/50">
+        <div className="space-y-2 mb-4 py-3 border-y border-border">
           {order.products.map((product, idx) => (
             <div key={idx} className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">
@@ -96,12 +92,12 @@ function OrderCard({ order }: { order: Order }) {
         {/* Total & Time */}
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm text-muted-foreground">{order.createdAt}</span>
-          <span className="font-bold text-lg">{order.total}€</span>
+          <span className="font-semibold text-lg">{order.total}€</span>
         </div>
 
         {/* Rejection Reason */}
         {order.status === "rejected" && order.rejectionReason && (
-          <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg mb-4">
+          <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md mb-4 border border-destructive/20">
             <p className="font-medium">Raison du refus :</p>
             <p>{order.rejectionReason}</p>
           </div>
@@ -110,7 +106,7 @@ function OrderCard({ order }: { order: Order }) {
         {/* Actions */}
         {order.status === "pending" && (
           <div className="flex gap-2">
-            <Button className="flex-1 gap-2 gradient-primary text-primary-foreground">
+            <Button className="flex-1 gap-2">
               <Check className="h-4 w-4" />
               Accepter
             </Button>
@@ -150,19 +146,17 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
 
   return (
     <div className="space-y-4">
-      <CardHeader className="px-0">
-        <CardTitle className="text-xl font-semibold flex items-center gap-2">
-          📋 Commandes
-          {counts.pending > 0 && (
-            <Badge className="gradient-primary text-primary-foreground animate-pulse">
-              {counts.pending} en attente
-            </Badge>
-          )}
-        </CardTitle>
-      </CardHeader>
+      <div className="flex items-center gap-3">
+        <h2 className="text-lg font-medium">Commandes</h2>
+        {counts.pending > 0 && (
+          <Badge variant="secondary">
+            {counts.pending} en attente
+          </Badge>
+        )}
+      </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-muted/50">
+        <TabsList className="border border-border">
           <TabsTrigger value="all" className="gap-2">
             Toutes <Badge variant="secondary" className="text-xs">{counts.all}</Badge>
           </TabsTrigger>

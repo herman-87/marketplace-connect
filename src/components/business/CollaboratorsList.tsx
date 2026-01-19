@@ -30,42 +30,42 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
   const sortedCollaborators = [...collaborators].sort((a, b) => b.activityScore - a.activityScore);
 
   return (
-    <Card className="border-0 shadow-card">
+    <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-4">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          👥 Équipe
-          <Badge variant="secondary" className="ml-2">{collaborators.length}</Badge>
+        <CardTitle className="text-lg font-medium flex items-center gap-2">
+          Équipe
+          <Badge variant="secondary">{collaborators.length}</Badge>
         </CardTitle>
         {isOwner && (
-          <Button size="sm" className="gap-2 gradient-primary text-primary-foreground">
+          <Button size="sm" className="gap-2">
             <UserPlus className="h-4 w-4" />
             Inviter
           </Button>
         )}
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2">
         {sortedCollaborators.map((collab, index) => (
           <div
             key={collab.id}
-            className="flex items-center gap-4 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-4 p-3 rounded-md border border-border hover:bg-muted/50 transition-colors"
           >
             {/* Rank */}
             <div className="w-8 text-center">
               {index === 0 ? (
-                <span className="text-xl">🥇</span>
+                <span className="text-lg">🥇</span>
               ) : index === 1 ? (
-                <span className="text-xl">🥈</span>
+                <span className="text-lg">🥈</span>
               ) : index === 2 ? (
-                <span className="text-xl">🥉</span>
+                <span className="text-lg">🥉</span>
               ) : (
                 <span className="text-sm text-muted-foreground font-medium">#{index + 1}</span>
               )}
             </div>
 
             {/* Avatar */}
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-10 w-10 border border-border">
               <AvatarImage src={collab.avatar} />
-              <AvatarFallback className="bg-primary/10 text-primary">
+              <AvatarFallback className="bg-muted text-foreground">
                 {collab.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -88,7 +88,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
             {/* Activity Score */}
             <div className="flex items-center gap-2">
               <div className="text-right">
-                <div className="flex items-center gap-1 text-sm font-medium text-success">
+                <div className="flex items-center gap-1 text-sm font-medium">
                   <TrendingUp className="h-3 w-3" />
                   {collab.activityScore}%
                 </div>

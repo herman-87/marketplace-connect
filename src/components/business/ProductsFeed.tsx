@@ -55,11 +55,11 @@ function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean 
 
   return (
     <Card 
-      className="border-0 shadow-card overflow-hidden hover:shadow-elegant transition-shadow cursor-pointer"
+      className="overflow-hidden cursor-pointer hover:bg-muted/30 transition-colors"
       onClick={() => navigate(`/product/${product.id}`)}
     >
       {/* Product Image */}
-      <div className="relative h-48 bg-gradient-to-br from-muted to-muted/50">
+      <div className="relative h-40 bg-muted border-b border-border">
         {product.image ? (
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         ) : (
@@ -81,7 +81,7 @@ function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean 
         <div className="absolute top-3 right-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="h-8 w-8 bg-background/80 backdrop-blur-sm">
+              <Button variant="secondary" size="icon" className="h-8 w-8">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -106,16 +106,16 @@ function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean 
         {/* Product Info */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className="font-semibold truncate">{product.name}</h3>
+            <h3 className="font-medium truncate">{product.name}</h3>
             <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{product.description}</p>
           </div>
-          <p className="font-bold text-lg text-primary whitespace-nowrap">{product.price}€</p>
+          <p className="font-semibold text-lg whitespace-nowrap">{product.price}€</p>
         </div>
 
         {/* Stats */}
-        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border/50">
+        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Heart className="h-4 w-4 text-rose-500" />
+            <Heart className="h-4 w-4" />
             <span>{product.likes}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
@@ -123,7 +123,7 @@ function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean 
             <span>{product.views}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <ShoppingCart className="h-4 w-4 text-success" />
+            <ShoppingCart className="h-4 w-4" />
             <span>{product.sales} ventes</span>
           </div>
         </div>
@@ -159,11 +159,11 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
-          📦 Produits
+        <h2 className="text-lg font-medium flex items-center gap-2">
+          Produits
           <Badge variant="secondary">{products.length}</Badge>
         </h2>
-        <Button className="gap-2 gradient-primary text-primary-foreground">
+        <Button className="gap-2">
           <Plus className="h-4 w-4" />
           Nouveau produit
         </Button>
@@ -171,14 +171,14 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
 
       {/* Top Performers Banner */}
       {sortedProducts.length > 0 && sortedProducts[0].sales > 0 && (
-        <Card className="border-0 bg-gradient-to-r from-success/10 to-success/5 p-4">
+        <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-success/20 flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-success" />
+            <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
+              <TrendingUp className="h-5 w-5 text-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium">Meilleure vente</p>
-              <p className="text-lg font-bold">{sortedProducts[0].name} — {sortedProducts[0].sales} ventes</p>
+              <p className="text-sm text-muted-foreground">Meilleure vente</p>
+              <p className="font-medium">{sortedProducts[0].name} — {sortedProducts[0].sales} ventes</p>
             </div>
           </div>
         </Card>
@@ -186,7 +186,7 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-muted/50">
+        <TabsList className="border border-border">
           <TabsTrigger value="all" className="gap-2">
             Tous <Badge variant="secondary" className="text-xs">{counts.all}</Badge>
           </TabsTrigger>

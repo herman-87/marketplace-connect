@@ -24,21 +24,21 @@ export function ClientsList({ clients }: ClientsListProps) {
   const topClients = sortedClients.slice(0, 5);
 
   return (
-    <Card className="border-0 shadow-card">
+    <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-4">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          💰 Clients fidèles
-          <Badge variant="secondary" className="ml-2">{clients.length}</Badge>
+        <CardTitle className="text-lg font-medium flex items-center gap-2">
+          Clients fidèles
+          <Badge variant="secondary">{clients.length}</Badge>
         </CardTitle>
         <Button variant="outline" size="sm">
           Voir tous
         </Button>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2">
         {topClients.map((client, index) => (
           <div
             key={client.id}
-            className="flex items-center gap-4 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-4 p-3 rounded-md border border-border hover:bg-muted/50 transition-colors"
           >
             {/* Rank */}
             <div className="w-6 text-center">
@@ -50,9 +50,9 @@ export function ClientsList({ clients }: ClientsListProps) {
             </div>
 
             {/* Avatar */}
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-10 w-10 border border-border">
               <AvatarImage src={client.avatar} />
-              <AvatarFallback className="bg-accent/10 text-accent">
+              <AvatarFallback className="bg-muted text-foreground">
                 {client.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -74,7 +74,7 @@ export function ClientsList({ clients }: ClientsListProps) {
                   {client.totalOrders} commandes
                 </span>
                 <span className="flex items-center gap-1">
-                  <Heart className="h-3 w-3 text-rose-500" />
+                  <Heart className="h-3 w-3" />
                   {client.favoriteProducts} favoris
                 </span>
               </div>
@@ -82,7 +82,7 @@ export function ClientsList({ clients }: ClientsListProps) {
 
             {/* Spending */}
             <div className="text-right">
-              <p className="font-bold text-primary">{client.totalSpent}€</p>
+              <p className="font-semibold">{client.totalSpent}€</p>
               <p className="text-xs text-muted-foreground">{client.lastOrderAt}</p>
             </div>
 
