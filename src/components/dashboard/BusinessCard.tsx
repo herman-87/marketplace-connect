@@ -39,12 +39,10 @@ export function BusinessCard({
 
   return (
     <Link to={`/business/${id}`} className="block group">
-      <Card className="overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30">
-        {/* Header with gradient */}
-        <div className="h-20 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 relative">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Store className="w-8 h-8 text-primary/30" />
-          </div>
+      <Card className="overflow-hidden hover:bg-muted/30 transition-colors">
+        {/* Header */}
+        <div className="h-16 bg-muted/50 relative flex items-center justify-center">
+          <Store className="w-6 h-6 text-muted-foreground" />
           
           {/* Status Badge */}
           <Badge

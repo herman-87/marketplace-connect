@@ -31,8 +31,8 @@ interface BusinessHeaderProps {
 export function BusinessHeader({ business }: BusinessHeaderProps) {
   return (
     <Card className="overflow-hidden">
-      {/* Cover Image */}
-      <div className="h-32 md:h-40 bg-gradient-to-r from-primary/20 via-accent/10 to-secondary/20 relative">
+      {/* Cover */}
+      <div className="h-24 md:h-32 bg-muted relative">
         {business.coverImage && (
           <img
             src={business.coverImage}
@@ -109,38 +109,38 @@ export function BusinessHeader({ business }: BusinessHeaderProps) {
         {/* Stats Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-border">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Package className="h-4 w-4 text-primary" />
+            <div className="p-2 rounded-md bg-muted">
+              <Package className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <p className="text-xl font-bold text-foreground">{business.stats.products}</p>
+              <p className="text-lg font-semibold text-foreground">{business.stats.products}</p>
               <p className="text-xs text-muted-foreground">Produits</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-success/10">
-              <TrendingUp className="h-4 w-4 text-success" />
+            <div className="p-2 rounded-md bg-muted">
+              <TrendingUp className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <p className="text-xl font-bold text-foreground">{business.stats.sales}</p>
+              <p className="text-lg font-semibold text-foreground">{business.stats.sales}</p>
               <p className="text-xs text-muted-foreground">Ventes</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-accent/10">
-              <Users className="h-4 w-4 text-accent-foreground" />
+            <div className="p-2 rounded-md bg-muted">
+              <Users className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <p className="text-xl font-bold text-foreground">{business.stats.followers}</p>
+              <p className="text-lg font-semibold text-foreground">{business.stats.followers}</p>
               <p className="text-xs text-muted-foreground">Abonnés</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-warning/10">
-              <Star className="h-4 w-4 text-warning" />
+            <div className="p-2 rounded-md bg-muted">
+              <Star className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <p className="text-xl font-bold text-foreground">{business.stats.rating}</p>
+              <p className="text-lg font-semibold text-foreground">{business.stats.rating}</p>
               <p className="text-xs text-muted-foreground">Note moyenne</p>
             </div>
           </div>

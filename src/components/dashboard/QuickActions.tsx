@@ -30,23 +30,23 @@ const quickActions: QuickAction[] = [
 
 export function QuickActions() {
   return (
-    <div className="bg-card rounded-xl border border-border p-4">
-      <h3 className="font-semibold text-foreground mb-4">Actions rapides</h3>
+    <div className="bg-card rounded-lg border border-border p-4">
+      <h3 className="font-medium text-foreground mb-3">Actions rapides</h3>
       
-      <div className="space-y-2">
+      <div className="space-y-1">
         {quickActions.map((action) => (
           <button
             key={action.title}
-            className="w-full group flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            className="w-full flex items-center gap-3 p-3 rounded-md hover:bg-muted transition-colors"
           >
-            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-              <action.icon className="w-4 h-4 text-primary" />
+            <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center">
+              <action.icon className="w-4 h-4 text-foreground" />
             </div>
             <div className="flex-1 text-left">
               <p className="text-sm font-medium text-foreground">{action.title}</p>
               <p className="text-xs text-muted-foreground">{action.description}</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+            <ArrowRight className="w-4 h-4 text-muted-foreground" />
           </button>
         ))}
       </div>

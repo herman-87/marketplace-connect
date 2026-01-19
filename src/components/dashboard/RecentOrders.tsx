@@ -92,7 +92,7 @@ export function RecentOrders() {
             return (
               <div
                 key={order.id}
-                className="px-6 py-4 flex items-center gap-4 hover:bg-muted/30 transition-colors"
+                className="px-6 py-4 flex items-center gap-4 hover:bg-muted transition-colors"
               >
                 {/* Status Icon */}
                 <div
