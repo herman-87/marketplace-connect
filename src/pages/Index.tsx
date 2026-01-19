@@ -9,11 +9,10 @@ import {
   ShoppingCart,
   TrendingUp,
   Plus,
-  Clock,
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 const mockBusinesses = [
@@ -62,9 +61,9 @@ export default function Index() {
       title="Tableau de bord"
       subtitle="Bienvenue, Jean ! Voici un aperçu de votre activité."
     >
-      <div className="space-y-8">
-        {/* Statistiques */}
-        <section>
+      <div className="space-y-0">
+        {/* Statistiques - Background normal */}
+        <section className="py-6">
           <h2 className="text-lg font-medium text-foreground mb-4">Aperçu</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatsCard
@@ -94,8 +93,8 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Mes Business */}
-        <section>
+        {/* Mes Business - Background alterné */}
+        <section className="py-6 -mx-4 px-4 lg:-mx-6 lg:px-6 bg-muted/30">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-medium text-foreground">Mes Business</h2>
             <Button size="sm" className="gap-2">
@@ -110,9 +109,9 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Mes Collaborations */}
+        {/* Mes Collaborations - Background normal */}
         {collaborations.length > 0 && (
-          <section>
+          <section className="py-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-medium text-foreground">Mes Collaborations</h2>
               <Link to="/collaborations">
@@ -130,8 +129,8 @@ export default function Index() {
           </section>
         )}
 
-        {/* Commandes récentes */}
-        <section>
+        {/* Commandes récentes - Background alterné */}
+        <section className="py-6 -mx-4 px-4 lg:-mx-6 lg:px-6 bg-muted/30">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-medium text-foreground">Commandes récentes</h2>
             <Link to="/commandes">
@@ -144,8 +143,8 @@ export default function Index() {
           <RecentOrders />
         </section>
 
-        {/* Activité récente + Actions rapides */}
-        <section>
+        {/* Activité récente + Actions rapides - Background normal */}
+        <section className="py-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Activité récente */}
             <div>
@@ -154,7 +153,7 @@ export default function Index() {
                 <CardContent className="p-4">
                   <div className="space-y-4">
                     {recentActivities.map((activity, index) => (
-                      <div key={index} className="flex items-start gap-3">
+                      <div key={index} className="flex items-start gap-3 pb-3 border-b border-border last:border-0 last:pb-0">
                         <div className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0" />
                         <div className="min-w-0 flex-1">
                           <p className="text-sm text-foreground">{activity.text}</p>
