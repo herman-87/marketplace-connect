@@ -45,16 +45,16 @@ export default function Collaborations() {
       <div className="space-y-6 animate-fade-in">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl gradient-collab flex items-center justify-center">
-              <Users className="w-6 h-6 text-white" />
+          <div className="bg-card rounded-xl border border-border/50 p-4 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Users className="w-6 h-6 text-primary" />
             </div>
             <div>
               <p className="text-2xl font-bold text-foreground">{mockCollaborations.length}</p>
               <p className="text-sm text-muted-foreground">Collaborations actives</p>
             </div>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-4">
+          <div className="bg-card rounded-xl border border-border/50 p-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Package className="w-6 h-6 text-primary" />
             </div>
@@ -63,9 +63,9 @@ export default function Collaborations() {
               <p className="text-sm text-muted-foreground">Produits gérés</p>
             </div>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-              <ClipboardList className="w-6 h-6 text-accent" />
+          <div className="bg-card rounded-xl border border-border/50 p-4 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <ClipboardList className="w-6 h-6 text-primary" />
             </div>
             <div>
               <p className="text-2xl font-bold text-foreground">12</p>
@@ -93,7 +93,7 @@ export default function Collaborations() {
           {mockCollaborations.map((collab) => (
             <div
               key={collab.id}
-              className="bg-card rounded-xl border border-border overflow-hidden"
+              className="bg-card rounded-xl border border-border/50 overflow-hidden"
             >
               <div className="flex flex-col lg:flex-row">
                 {/* Business Card Preview */}
@@ -102,7 +102,7 @@ export default function Collaborations() {
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 p-6 border-t lg:border-t-0 lg:border-l border-border">
+                <div className="flex-1 p-6 border-t lg:border-t-0 lg:border-l border-border/50">
                   <div className="space-y-4">
                     {/* Invited By */}
                     <div>

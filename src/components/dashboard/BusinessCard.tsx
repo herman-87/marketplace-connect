@@ -97,7 +97,7 @@ export function BusinessCard({
           </p>
 
           {/* Stats Row */}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border/50">
             <div className="flex items-center gap-1.5">
               <Package className="h-4 w-4 text-primary/70" />
               <span>{productsCount}</span>
