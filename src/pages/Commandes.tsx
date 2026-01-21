@@ -126,28 +126,28 @@ function OrderCard({ order }: { order: Order }) {
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="p-3 md:p-4 border-b border-border flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
           <div
             className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center",
+              "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0",
               statusConfig[order.status].className
             )}
           >
-            <StatusIcon className="h-5 w-5" />
+            <StatusIcon className="h-4 w-4 md:h-5 md:w-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <p className="font-semibold text-foreground">{order.id}</p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="font-semibold text-xs md:text-sm text-foreground">{order.id}</p>
               <Badge
                 variant="outline"
-                className={cn(statusConfig[order.status].className)}
+                className={cn("text-[10px] md:text-xs", statusConfig[order.status].className)}
               >
                 {statusConfig[order.status].label}
               </Badge>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 text-[10px] md:text-sm text-muted-foreground">
+              <Calendar className="w-2.5 h-2.5 md:w-3 md:h-3" />
               {formattedDate}
             </div>
           </div>
@@ -155,8 +155,8 @@ function OrderCard({ order }: { order: Order }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 shrink-0">
+              <MoreVertical className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -170,37 +170,37 @@ function OrderCard({ order }: { order: Order }) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-4">
+      <div className="p-3 md:p-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 md:mb-4 gap-2">
           <div>
-            <p className="font-medium text-foreground">{order.customerName}</p>
-            <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
+            <p className="font-medium text-sm md:text-base text-foreground">{order.customerName}</p>
+            <p className="text-xs md:text-sm text-muted-foreground truncate">{order.customerEmail}</p>
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Store className="w-4 h-4" />
+          <div className="flex items-center gap-1.5 text-xs md:text-sm text-muted-foreground">
+            <Store className="w-3.5 h-3.5 md:w-4 md:h-4" />
             <span>{order.businessName}</span>
             {!order.isOwner && (
-              <Badge variant="outline" className="ml-2 text-xs">
-                Collaborateur
+              <Badge variant="outline" className="ml-1 text-[10px] md:text-xs">
+                Collab
               </Badge>
             )}
           </div>
         </div>
 
         {/* Items */}
-        <div className="space-y-2 mb-4">
+        <div className="space-y-1.5 md:space-y-2 mb-3 md:mb-4">
           {order.items.map((item, index) => (
             <div
               key={index}
-              className="flex items-center justify-between text-sm"
+              className="flex items-center justify-between text-xs md:text-sm"
             >
-              <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-muted-foreground" />
-                <span>
+              <div className="flex items-center gap-1.5 md:gap-2 min-w-0">
+                <Package className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground shrink-0" />
+                <span className="truncate">
                   {item.quantity}x {item.name}
                 </span>
               </div>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground shrink-0 ml-2">
                 {(item.quantity * item.price).toFixed(2)} €
               </span>
             </div>
@@ -208,20 +208,20 @@ function OrderCard({ order }: { order: Order }) {
         </div>
 
         {/* Total & Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-border">
+        <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-border">
           <div>
-            <p className="text-sm text-muted-foreground">Total</p>
-            <p className="text-xl font-bold text-foreground">
+            <p className="text-[10px] md:text-sm text-muted-foreground">Total</p>
+            <p className="text-lg md:text-xl font-bold text-foreground">
               {order.total.toFixed(2)} €
             </p>
           </div>
 
           {order.status === "pending" && (
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="h-7 md:h-8 text-xs md:text-sm px-2 md:px-3">
                 Refuser
               </Button>
-              <Button size="sm" className="gradient-primary border-0">
+              <Button size="sm" className="gradient-primary border-0 h-7 md:h-8 text-xs md:text-sm px-2 md:px-3">
                 Accepter
               </Button>
             </div>
@@ -241,88 +241,89 @@ export default function Commandes() {
       title="Commandes"
       subtitle="Gérez les commandes de vos business"
     >
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-4 md:space-y-6 animate-fade-in">
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-warning" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
+              <Clock className="w-4 h-4 md:w-5 md:h-5 text-warning" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{pendingCount}</p>
-              <p className="text-sm text-muted-foreground">En attente</p>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-success" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{acceptedCount}</p>
-              <p className="text-sm text-muted-foreground">Acceptées</p>
+            <div className="min-w-0">
+              <p className="text-lg md:text-2xl font-bold text-foreground">{pendingCount}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground truncate">En attente</p>
             </div>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-info/10 flex items-center justify-center">
-              <Truck className="w-5 h-5 text-info" />
+          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-success/10 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-success" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">12</p>
-              <p className="text-sm text-muted-foreground">Livrées ce mois</p>
+            <div className="min-w-0">
+              <p className="text-lg md:text-2xl font-bold text-foreground">{acceptedCount}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Acceptées</p>
             </div>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">€</span>
+          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-info/10 flex items-center justify-center shrink-0">
+              <Truck className="w-4 h-4 md:w-5 md:h-5 text-info" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">847</p>
-              <p className="text-sm text-muted-foreground">Revenus du mois</p>
+            <div className="min-w-0">
+              <p className="text-lg md:text-2xl font-bold text-foreground">12</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Livrées</p>
+            </div>
+          </div>
+          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg gradient-primary flex items-center justify-center shrink-0">
+              <span className="text-primary-foreground font-bold text-sm md:text-base">€</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg md:text-2xl font-bold text-foreground">847</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Revenus</p>
             </div>
           </div>
         </div>
 
         {/* Search & Filter */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher une commande..."
+              placeholder="Rechercher..."
               className="pl-9"
             />
           </div>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="shrink-0">
             <Filter className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Tabs */}
         <Tabs defaultValue="all" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="all">Toutes</TabsTrigger>
-            <TabsTrigger value="pending" className="gap-1.5">
-              En attente
+          <TabsList className="h-auto flex-wrap gap-1 p-1">
+            <TabsTrigger value="all" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Toutes</TabsTrigger>
+            <TabsTrigger value="pending" className="gap-1 text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">
+              <span className="hidden sm:inline">En attente</span>
+              <span className="sm:hidden">Attente</span>
               {pendingCount > 0 && (
-                <Badge className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] gradient-primary border-0">
+                <Badge className="ml-0.5 h-4 w-4 md:h-5 md:w-5 p-0 flex items-center justify-center text-[9px] md:text-[10px] gradient-primary border-0">
                   {pendingCount}
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="accepted">Acceptées</TabsTrigger>
-            <TabsTrigger value="delivered">Livrées</TabsTrigger>
-            <TabsTrigger value="rejected">Refusées</TabsTrigger>
+            <TabsTrigger value="accepted" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Acceptées</TabsTrigger>
+            <TabsTrigger value="delivered" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Livrées</TabsTrigger>
+            <TabsTrigger value="rejected" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Refusées</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
-            <div className="flex flex-col gap-4 w-full">
+          <TabsContent value="all" className="space-y-3 md:space-y-4">
+            <div className="flex flex-col gap-3 md:gap-4 w-full">
               {mockOrders.map((order) => (
                 <OrderCard key={order.id} order={order} />
               ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="pending" className="space-y-4">
-            <div className="flex flex-col gap-4 w-full">
+          <TabsContent value="pending" className="space-y-3 md:space-y-4">
+            <div className="flex flex-col gap-3 md:gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "pending")
                 .map((order) => (
@@ -331,8 +332,8 @@ export default function Commandes() {
             </div>
           </TabsContent>
 
-          <TabsContent value="accepted" className="space-y-4">
-            <div className="flex flex-col gap-4 w-full">
+          <TabsContent value="accepted" className="space-y-3 md:space-y-4">
+            <div className="flex flex-col gap-3 md:gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "accepted")
                 .map((order) => (
@@ -341,8 +342,8 @@ export default function Commandes() {
             </div>
           </TabsContent>
 
-          <TabsContent value="delivered" className="space-y-4">
-            <div className="flex flex-col gap-4 w-full">
+          <TabsContent value="delivered" className="space-y-3 md:space-y-4">
+            <div className="flex flex-col gap-3 md:gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "delivered")
                 .map((order) => (
@@ -351,8 +352,8 @@ export default function Commandes() {
             </div>
           </TabsContent>
 
-          <TabsContent value="rejected" className="space-y-4">
-            <div className="flex flex-col gap-4 w-full">
+          <TabsContent value="rejected" className="space-y-3 md:space-y-4">
+            <div className="flex flex-col gap-3 md:gap-4 w-full">
               {mockOrders
                 .filter((o) => o.status === "rejected")
                 .map((order) => (

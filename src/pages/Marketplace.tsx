@@ -112,20 +112,20 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <div className="group bg-card rounded-xl border border-border overflow-hidden card-hover">
       {/* Image */}
-      <div className={cn("h-40 relative", config.color)}>
+      <div className={cn("h-32 sm:h-40 relative", config.color)}>
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         
         {/* Category Badge */}
         <Badge
-          className="absolute top-3 left-3 gap-1 bg-white/90 text-foreground border-0"
+          className="absolute top-2 left-2 sm:top-3 sm:left-3 gap-1 bg-white/90 text-foreground border-0 text-[10px] sm:text-xs"
         >
-          <CategoryIcon className="w-3 h-3" />
+          <CategoryIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
           {config.label}
         </Badge>
 
         {/* New Badge */}
         {product.isNew && (
-          <Badge className="absolute top-3 right-3 gradient-primary border-0">
+          <Badge className="absolute top-2 right-2 sm:top-3 sm:right-3 gradient-primary border-0 text-[10px] sm:text-xs">
             Nouveau
           </Badge>
         )}
@@ -134,37 +134,37 @@ function ProductCard({ product }: { product: Product }) {
         <Button
           size="icon"
           variant="ghost"
-          className="absolute bottom-3 right-3 h-8 w-8 bg-white/90 hover:bg-white text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 h-7 w-7 sm:h-8 sm:w-8 bg-white/90 hover:bg-white text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
         >
-          <Heart className="w-4 h-4" />
+          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </Button>
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <p className="text-xs text-muted-foreground mb-1">{product.businessName}</p>
-        <h3 className="font-semibold text-foreground truncate">{product.name}</h3>
-        <p className="text-sm text-muted-foreground line-clamp-2 mt-1 mb-3">
+      <div className="p-3 sm:p-4">
+        <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{product.businessName}</p>
+        <h3 className="font-semibold text-sm sm:text-base text-foreground truncate">{product.name}</h3>
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mt-0.5 sm:mt-1 mb-2 sm:mb-3">
           {product.description}
         </p>
 
         {/* Rating */}
-        <div className="flex items-center gap-1 mb-3">
-          <Star className="w-4 h-4 fill-warning text-warning" />
-          <span className="text-sm font-medium">{product.rating}</span>
-          <span className="text-sm text-muted-foreground">
-            ({product.reviewsCount} avis)
+        <div className="flex items-center gap-1 mb-2 sm:mb-3">
+          <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-warning text-warning" />
+          <span className="text-xs sm:text-sm font-medium">{product.rating}</span>
+          <span className="text-[10px] sm:text-sm text-muted-foreground">
+            ({product.reviewsCount})
           </span>
         </div>
 
         {/* Price & Action */}
-        <div className="flex items-center justify-between">
-          <p className="text-lg font-bold text-foreground">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-base sm:text-lg font-bold text-foreground">
             {product.price.toFixed(2)} €
           </p>
-          <Button size="sm" className="gradient-primary border-0 gap-1.5">
-            <ShoppingCart className="w-4 h-4" />
-            Ajouter
+          <Button size="sm" className="gradient-primary border-0 gap-1 h-7 sm:h-8 text-[10px] sm:text-xs px-2 sm:px-3">
+            <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Ajouter</span>
           </Button>
         </div>
       </div>
@@ -184,29 +184,29 @@ export default function Marketplace() {
       title="Marketplace"
       subtitle="Découvrez tous les produits disponibles"
     >
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-4 md:space-y-6 animate-fade-in">
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Rechercher un produit..."
-                className="pl-9 w-full sm:w-80"
+                placeholder="Rechercher..."
+                className="pl-9 w-full sm:w-72"
               />
             </div>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="shrink-0">
               <Filter className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-2 p-1 bg-muted rounded-lg">
+          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg overflow-x-auto">
             <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "rounded-md",
+                "rounded-md text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3 shrink-0",
                 activeCategory === "all" && "bg-card shadow-sm"
               )}
               onClick={() => setActiveCategory("all")}
@@ -217,38 +217,38 @@ export default function Marketplace() {
               variant="ghost"
               size="sm"
               className={cn(
-                "rounded-md gap-1.5",
+                "rounded-md gap-1 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3 shrink-0",
                 activeCategory === "repas" && "bg-card shadow-sm"
               )}
               onClick={() => setActiveCategory("repas")}
             >
-              <UtensilsCrossed className="w-4 h-4" />
+              <UtensilsCrossed className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Repas
             </Button>
             <Button
               variant="ghost"
               size="sm"
               className={cn(
-                "rounded-md gap-1.5",
+                "rounded-md gap-1 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3 shrink-0",
                 activeCategory === "articles" && "bg-card shadow-sm"
               )}
               onClick={() => setActiveCategory("articles")}
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Articles
             </Button>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="flex items-center gap-3 text-xs sm:text-sm text-muted-foreground">
           <span>{filteredProducts.length} produits trouvés</span>
           <span>•</span>
           <span>4 boutiques</span>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
