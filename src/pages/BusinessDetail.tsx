@@ -198,44 +198,47 @@ const mockEngagement = {
 export default function BusinessDetail() {
   return (
     <AppLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         {/* Business Header */}
         <BusinessHeader business={mockBusiness} />
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="products" className="w-full">
-          <TabsList className="w-full max-w-lg border border-border">
-            <TabsTrigger value="products" className="flex-1 gap-2">
-              <Package className="h-4 w-4" />
-              Produits
+          <TabsList className="w-full max-w-full sm:max-w-lg border border-border h-auto flex-wrap p-1 gap-1">
+            <TabsTrigger value="products" className="flex-1 gap-1.5 text-xs sm:text-sm px-2 sm:px-3 h-8">
+              <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Produits</span>
+              <span className="sm:hidden">Prod.</span>
             </TabsTrigger>
-            <TabsTrigger value="orders" className="flex-1 gap-2">
-              <ShoppingCart className="h-4 w-4" />
-              Commandes
+            <TabsTrigger value="orders" className="flex-1 gap-1.5 text-xs sm:text-sm px-2 sm:px-3 h-8">
+              <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Commandes</span>
+              <span className="sm:hidden">Cmd.</span>
             </TabsTrigger>
-            <TabsTrigger value="team" className="flex-1 gap-2">
-              <Users className="h-4 w-4" />
-              Équipe
+            <TabsTrigger value="team" className="flex-1 gap-1.5 text-xs sm:text-sm px-2 sm:px-3 h-8">
+              <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span>Équipe</span>
             </TabsTrigger>
-            <TabsTrigger value="engagement" className="flex-1 gap-2">
-              <Heart className="h-4 w-4" />
-              Engagement
+            <TabsTrigger value="engagement" className="flex-1 gap-1.5 text-xs sm:text-sm px-2 sm:px-3 h-8">
+              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Engagement</span>
+              <span className="sm:hidden">Eng.</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Products Tab */}
-          <TabsContent value="products" className="mt-6">
+          <TabsContent value="products" className="mt-4 md:mt-6">
             <ProductsFeed products={mockProducts} isOwner={mockBusiness.isOwner} />
           </TabsContent>
 
           {/* Orders Tab */}
-          <TabsContent value="orders" className="mt-6">
+          <TabsContent value="orders" className="mt-4 md:mt-6">
             <BusinessOrders orders={mockOrders} />
           </TabsContent>
 
           {/* Team Tab */}
-          <TabsContent value="team" className="mt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="team" className="mt-4 md:mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
               <CollaboratorsList 
                 collaborators={mockCollaborators} 
                 isOwner={mockBusiness.isOwner} 
@@ -245,7 +248,7 @@ export default function BusinessDetail() {
           </TabsContent>
 
           {/* Engagement Tab */}
-          <TabsContent value="engagement" className="mt-6">
+          <TabsContent value="engagement" className="mt-4 md:mt-6">
             <div className="max-w-2xl">
               <EngagementPanel stats={mockEngagement} />
             </div>

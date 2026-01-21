@@ -9,8 +9,6 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Bell,
-  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -104,7 +102,7 @@ export function AppSidebar() {
   return (
     <aside
       className={cn(
-        "h-screen bg-sidebar sticky top-0 flex flex-col border-r border-sidebar-border transition-all duration-300",
+        "h-screen bg-sidebar sticky top-0 flex-col border-r border-sidebar-border transition-all duration-300 hidden lg:flex",
         collapsed ? "w-[72px]" : "w-64"
       )}
     >
