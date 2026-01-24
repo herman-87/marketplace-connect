@@ -2,13 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { UserPlus, Crown, TrendingUp, MoreHorizontal } from "lucide-react";
+import { Crown, TrendingUp, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AddEmployeeDialog } from "./AddEmployeeDialog";
 
 interface Collaborator {
   id: string;
@@ -37,10 +38,12 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
           <Badge variant="secondary">{collaborators.length}</Badge>
         </CardTitle>
         {isOwner && (
-          <Button size="sm" className="gap-2">
-            <UserPlus className="h-4 w-4" />
-            Inviter
-          </Button>
+          <AddEmployeeDialog 
+            onAddEmployee={(userId, roles) => {
+              console.log("Adding employee:", userId, "with roles:", roles);
+              // TODO: Implement actual API call to add employee
+            }}
+          />
         )}
       </CardHeader>
       <CardContent className="space-y-2">
