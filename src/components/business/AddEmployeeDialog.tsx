@@ -57,37 +57,23 @@ const ROLE_OPTIONS: RoleOption[] = [
   },
 ];
 
-// Mock function to simulate user search - replace with actual API call
+// Mock function to simulate user search - accepts any username for testing
 const searchUserByUsername = async (username: string): Promise<UserProfile | null> => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 800));
+  await new Promise(resolve => setTimeout(resolve, 500));
   
-  // Mock data - in production, this would be an API call
-  const mockUsers: Record<string, UserProfile> = {
-    "john_doe": {
-      id: "1",
-      username: "john_doe",
-      name: "John Doe",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
-      email: "john@example.com"
-    },
-    "jane_smith": {
-      id: "2",
-      username: "jane_smith",
-      name: "Jane Smith",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
-      email: "jane@example.com"
-    },
-    "alex_martin": {
-      id: "3",
-      username: "alex_martin",
-      name: "Alex Martin",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
-      email: "alex@example.com"
-    }
+  // For testing: create a user profile from any username entered
+  const sanitizedUsername = username.trim().toLowerCase().replace(/\s+/g, '_');
+  
+  return {
+    id: `user_${Date.now()}`,
+    username: sanitizedUsername,
+    name: username.trim().split('_').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' '),
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${sanitizedUsername}`,
+    email: `${sanitizedUsername}@example.com`
   };
-  
-  return mockUsers[username.toLowerCase()] || null;
 };
 
 interface AddEmployeeDialogProps {
