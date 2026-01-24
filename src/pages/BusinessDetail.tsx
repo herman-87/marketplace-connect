@@ -237,14 +237,12 @@ export default function BusinessDetail() {
           </TabsContent>
 
           {/* Team Tab */}
-          <TabsContent value="team" className="mt-4 md:mt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-              <CollaboratorsList 
-                collaborators={mockCollaborators} 
-                isOwner={mockBusiness.isOwner} 
-              />
-              <ClientsList clients={mockClients} />
-            </div>
+          <TabsContent value="team" className="mt-4 md:mt-6 space-y-6">
+            <CollaboratorsList 
+              collaborators={mockCollaborators} 
+              isOwner={mockBusiness.isOwner} 
+            />
+            <ClientsList clients={mockClients} />
           </TabsContent>
 
           {/* Engagement Tab */}

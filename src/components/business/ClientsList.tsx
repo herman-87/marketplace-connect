@@ -34,64 +34,73 @@ export function ClientsList({ clients }: ClientsListProps) {
           Voir tous
         </Button>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {topClients.map((client, index) => (
-          <div
-            key={client.id}
-            className="flex items-center gap-4 p-3 rounded-md border border-border hover:bg-muted/50 transition-colors"
-          >
-            {/* Rank */}
-            <div className="w-6 text-center">
-              {index === 0 ? (
-                <span className="text-lg">👑</span>
-              ) : (
-                <span className="text-sm text-muted-foreground font-medium">#{index + 1}</span>
-              )}
-            </div>
+      <CardContent>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {topClients.map((client, index) => (
+            <Card key={client.id} className="relative hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                {/* Rank Badge */}
+                <div className="absolute top-2 left-2">
+                  {index === 0 ? (
+                    <span className="text-lg">👑</span>
+                  ) : (
+                    <Badge variant="outline" className="text-xs">#{index + 1}</Badge>
+                  )}
+                </div>
 
-            {/* Avatar */}
-            <Avatar className="h-10 w-10 border border-border">
-              <AvatarImage src={client.avatar} />
-              <AvatarFallback className="bg-muted text-foreground">
-                {client.name.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+                {/* Action */}
+                <div className="absolute top-2 right-2">
+                  <Button variant="ghost" size="icon" className="h-7 w-7">
+                    <MessageCircle className="h-4 w-4" />
+                  </Button>
+                </div>
 
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-medium truncate">{client.name}</p>
-                {client.rating && (
-                  <div className="flex items-center gap-0.5 text-amber-500">
-                    <Star className="h-3 w-3 fill-current" />
-                    <span className="text-xs">{client.rating}</span>
+                {/* Avatar & Name */}
+                <div className="flex flex-col items-center text-center pt-4">
+                  <Avatar className="h-14 w-14 border-2 border-border">
+                    <AvatarImage src={client.avatar} />
+                    <AvatarFallback className="bg-muted text-foreground">
+                      {client.name.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="mt-3">
+                    <p className="font-medium truncate max-w-[120px]">{client.name}</p>
+                    {client.rating && (
+                      <div className="flex items-center justify-center gap-0.5 text-amber-500 mt-0.5">
+                        <Star className="h-3 w-3 fill-current" />
+                        <span className="text-xs">{client.rating}</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <ShoppingBag className="h-3 w-3" />
-                  {client.totalOrders} commandes
-                </span>
-                <span className="flex items-center gap-1">
-                  <Heart className="h-3 w-3" />
-                  {client.favoriteProducts} favoris
-                </span>
-              </div>
-            </div>
+                </div>
 
-            {/* Spending */}
-            <div className="text-right">
-              <p className="font-semibold">{client.totalSpent}€</p>
-              <p className="text-xs text-muted-foreground">{client.lastOrderAt}</p>
-            </div>
+                {/* Stats */}
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <ShoppingBag className="h-3.5 w-3.5" />
+                      Commandes
+                    </span>
+                    <span className="font-medium">{client.totalOrders}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <Heart className="h-3.5 w-3.5" />
+                      Favoris
+                    </span>
+                    <span className="font-medium">{client.favoriteProducts}</span>
+                  </div>
+                </div>
 
-            {/* Action */}
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <MessageCircle className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
+                {/* Spending */}
+                <div className="mt-3 pt-3 border-t border-border text-center">
+                  <p className="text-lg font-semibold text-primary">{client.totalSpent}€</p>
+                  <p className="text-xs text-muted-foreground">{client.lastOrderAt}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
         {clients.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
