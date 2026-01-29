@@ -1,9 +1,19 @@
 import { AppLayout } from "@/components/layout/AppLayout";
-import { BusinessCard } from "@/components/dashboard/BusinessCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, Users, Shield, Package, ClipboardList } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  Search, 
+  Filter, 
+  Users, 
+  Package, 
+  ClipboardList, 
+  Store,
+  ArrowRight,
+  UserPlus
+} from "lucide-react";
 
 const mockCollaborations = [
   {
@@ -14,7 +24,10 @@ const mockCollaborations = [
     collaboratorsCount: 5,
     status: "active" as const,
     isOwner: false,
-    invitedBy: "Sophie Martin",
+    invitedBy: {
+      name: "Sophie Martin",
+      avatar: "",
+    },
     permissions: ["products", "orders"],
   },
   {
@@ -25,7 +38,10 @@ const mockCollaborations = [
     collaboratorsCount: 2,
     status: "active" as const,
     isOwner: false,
-    invitedBy: "Pierre Durand",
+    invitedBy: {
+      name: "Pierre Durand",
+      avatar: "",
+    },
     permissions: ["products", "orders", "marketplace"],
   },
 ];
@@ -33,7 +49,7 @@ const mockCollaborations = [
 const permissionLabels: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
   products: { label: "Produits", icon: Package },
   orders: { label: "Commandes", icon: ClipboardList },
-  marketplace: { label: "Marketplace", icon: Shield },
+  marketplace: { label: "Marketplace", icon: Store },
 };
 
 export default function Collaborations() {
@@ -88,66 +104,106 @@ export default function Collaborations() {
           </Button>
         </div>
 
-        {/* Collaborations List */}
-        <div className="space-y-3 md:space-y-4">
+        {/* Collaborations Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {mockCollaborations.map((collab) => (
-            <div
+            <Card 
               key={collab.id}
-              className="bg-card rounded-xl border border-border/50 overflow-hidden"
+              className="group overflow-hidden hover:shadow-md transition-all duration-200 border-border/50"
             >
-              <div className="flex flex-col lg:flex-row">
-                {/* Business Card Preview */}
-                <div className="lg:w-72 xl:w-80 shrink-0">
-                  <BusinessCard {...collab} />
-                </div>
-
-                {/* Details */}
-                <div className="flex-1 p-4 md:p-6 border-t lg:border-t-0 lg:border-l border-border/50">
-                  <div className="space-y-3 md:space-y-4">
-                    {/* Invited By */}
-                    <div>
-                      <p className="text-xs md:text-sm text-muted-foreground mb-0.5 md:mb-1">Invité par</p>
-                      <p className="font-medium text-sm md:text-base text-foreground">{collab.invitedBy}</p>
-                    </div>
-
-                    {/* Permissions */}
-                    <div>
-                      <p className="text-xs md:text-sm text-muted-foreground mb-1.5 md:mb-2">Vos permissions</p>
-                      <div className="flex flex-wrap gap-1.5 md:gap-2">
-                        {collab.permissions.map((perm) => {
-                          const config = permissionLabels[perm];
-                          const Icon = config.icon;
-                          return (
-                            <Badge
-                              key={perm}
-                              variant="secondary"
-                              className="gap-1 text-[10px] md:text-xs py-0.5 md:py-1"
-                            >
-                              <Icon className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                              {config.label}
-                            </Badge>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      <Button variant="outline" size="sm" className="h-7 md:h-8 text-xs md:text-sm">
-                        Voir les produits
-                      </Button>
-                      <Button variant="outline" size="sm" className="h-7 md:h-8 text-xs md:text-sm">
-                        Voir les commandes
-                      </Button>
+              <CardContent className="p-0">
+                {/* Header with gradient */}
+                <div className="relative h-20 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
+                  <div className="absolute -bottom-6 left-4">
+                    <div className="w-14 h-14 rounded-xl bg-card border-2 border-background shadow-md flex items-center justify-center">
+                      <Store className="w-7 h-7 text-primary" />
                     </div>
                   </div>
+                  <Badge 
+                    variant="secondary" 
+                    className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm"
+                  >
+                    Collaborateur
+                  </Badge>
                 </div>
-              </div>
-            </div>
+
+                {/* Content */}
+                <div className="pt-10 px-4 pb-4 space-y-4">
+                  {/* Business Info */}
+                  <div>
+                    <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                      {collab.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                      {collab.description}
+                    </p>
+                  </div>
+
+                  {/* Stats Row */}
+                  <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Package className="w-4 h-4" />
+                      <span className="font-medium text-foreground">{collab.productsCount}</span>
+                      <span className="hidden sm:inline">produits</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Users className="w-4 h-4" />
+                      <span className="font-medium text-foreground">{collab.collaboratorsCount}</span>
+                      <span className="hidden sm:inline">membres</span>
+                    </div>
+                  </div>
+
+                  {/* Invited By */}
+                  <div className="flex items-center gap-2 p-2.5 rounded-lg bg-muted/50">
+                    <UserPlus className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span className="text-xs text-muted-foreground">Invité par</span>
+                    <Avatar className="w-5 h-5">
+                      <AvatarImage src={collab.invitedBy.avatar} />
+                      <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
+                        {collab.invitedBy.name.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium text-foreground truncate">
+                      {collab.invitedBy.name}
+                    </span>
+                  </div>
+
+                  {/* Permissions */}
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-2">Vos permissions</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {collab.permissions.map((perm) => {
+                        const config = permissionLabels[perm];
+                        const Icon = config.icon;
+                        return (
+                          <Badge
+                            key={perm}
+                            variant="outline"
+                            className="gap-1 text-xs py-1 px-2 bg-background"
+                          >
+                            <Icon className="w-3 h-3" />
+                            {config.label}
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Action */}
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-between group/btn hover:bg-primary/10 hover:text-primary"
+                  >
+                    <span>Accéder au business</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        {/* Empty State (if no collaborations) */}
+        {/* Empty State */}
         {mockCollaborations.length === 0 && (
           <div className="text-center py-12">
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
