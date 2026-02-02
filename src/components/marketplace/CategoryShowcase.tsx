@@ -11,70 +11,14 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { 
-    id: "repas", 
-    name: "Repas", 
-    icon: UtensilsCrossed, 
-    count: 342,
-    gradient: "from-orange-500/20 to-red-500/20",
-    iconColor: "text-orange-500"
-  },
-  { 
-    id: "mode", 
-    name: "Mode", 
-    icon: Shirt, 
-    count: 156,
-    gradient: "from-pink-500/20 to-purple-500/20",
-    iconColor: "text-pink-500"
-  },
-  { 
-    id: "tech", 
-    name: "High-Tech", 
-    icon: Smartphone, 
-    count: 89,
-    gradient: "from-blue-500/20 to-cyan-500/20",
-    iconColor: "text-blue-500"
-  },
-  { 
-    id: "maison", 
-    name: "Maison", 
-    icon: Home, 
-    count: 124,
-    gradient: "from-emerald-500/20 to-green-500/20",
-    iconColor: "text-emerald-500"
-  },
-  { 
-    id: "beaute", 
-    name: "Beauté", 
-    icon: Sparkles, 
-    count: 67,
-    gradient: "from-violet-500/20 to-purple-500/20",
-    iconColor: "text-violet-500"
-  },
-  { 
-    id: "auto", 
-    name: "Auto", 
-    icon: Car, 
-    count: 45,
-    gradient: "from-slate-500/20 to-gray-500/20",
-    iconColor: "text-slate-500"
-  },
-  { 
-    id: "sport", 
-    name: "Sport", 
-    icon: Dumbbell, 
-    count: 78,
-    gradient: "from-amber-500/20 to-yellow-500/20",
-    iconColor: "text-amber-500"
-  },
-  { 
-    id: "autres", 
-    name: "Autres", 
-    icon: ShoppingBag, 
-    count: 234,
-    gradient: "from-primary/20 to-accent/20",
-    iconColor: "text-primary"
-  },
+  { id: "repas", name: "Repas", icon: UtensilsCrossed, count: 342 },
+  { id: "mode", name: "Mode", icon: Shirt, count: 156 },
+  { id: "tech", name: "High-Tech", icon: Smartphone, count: 89 },
+  { id: "maison", name: "Maison", icon: Home, count: 124 },
+  { id: "beaute", name: "Beauté", icon: Sparkles, count: 67 },
+  { id: "auto", name: "Auto", icon: Car, count: 45 },
+  { id: "sport", name: "Sport", icon: Dumbbell, count: 78 },
+  { id: "autres", name: "Autres", icon: ShoppingBag, count: 234 },
 ];
 
 export function CategoryShowcase() {
@@ -97,16 +41,15 @@ export function CategoryShowcase() {
               key={category.id}
               className={cn(
                 "group flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl",
-                "bg-gradient-to-br border border-border",
-                "hover:shadow-md hover:scale-105 transition-all duration-200",
-                category.gradient
+                "bg-card border border-border",
+                "hover:border-primary/30 hover:bg-muted/50 transition-all duration-200"
               )}
             >
               <div className={cn(
-                "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-card flex items-center justify-center",
-                "group-hover:scale-110 transition-transform"
+                "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center",
+                "group-hover:bg-primary/20 transition-colors"
               )}>
-                <Icon className={cn("w-5 h-5 sm:w-6 sm:h-6", category.iconColor)} />
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
               <span className="text-xs sm:text-sm font-medium text-foreground text-center">
                 {category.name}
