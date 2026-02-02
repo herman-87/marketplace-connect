@@ -13,7 +13,6 @@ const flashDeals = [
     discount: 32,
     businessName: "RestauFast",
     rating: 4.8,
-    imageGradient: "from-orange-400 to-red-500",
     endsIn: "2h 34m",
     stock: 12,
   },
@@ -25,7 +24,6 @@ const flashDeals = [
     discount: 38,
     businessName: "TechStore",
     rating: 4.6,
-    imageGradient: "from-blue-400 to-indigo-500",
     endsIn: "5h 12m",
     stock: 5,
   },
@@ -37,7 +35,6 @@ const flashDeals = [
     discount: 32,
     businessName: "PizzaRoma",
     rating: 4.9,
-    imageGradient: "from-yellow-400 to-orange-500",
     endsIn: "1h 45m",
     stock: 8,
   },
@@ -49,7 +46,6 @@ const flashDeals = [
     discount: 33,
     businessName: "ModeBoutique",
     rating: 4.7,
-    imageGradient: "from-purple-400 to-pink-500",
     endsIn: "3h 20m",
     stock: 3,
   },
@@ -60,8 +56,8 @@ export function FlashDeals() {
     <section>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-destructive/10">
-            <Flame className="w-5 h-5 text-destructive" />
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Flame className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -82,22 +78,19 @@ export function FlashDeals() {
         {flashDeals.map((deal) => (
           <Card 
             key={deal.id} 
-            className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-destructive/20"
+            className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
           >
             {/* Image Area */}
-            <div className={cn(
-              "relative h-28 sm:h-36 bg-gradient-to-br",
-              deal.imageGradient
-            )}>
+            <div className="relative h-28 sm:h-36 bg-muted">
               {/* Discount Badge */}
-              <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground border-0 gap-1">
+              <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground border-0 gap-1">
                 <Percent className="w-3 h-3" />
                 -{deal.discount}%
               </Badge>
 
               {/* Timer */}
               <div className="absolute bottom-2 left-2 right-2">
-                <div className="flex items-center gap-1 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md">
+                <div className="flex items-center gap-1 bg-foreground/80 backdrop-blur-sm text-background text-xs px-2 py-1 rounded-md">
                   <Clock className="w-3 h-3" />
                   <span>Fin dans {deal.endsIn}</span>
                 </div>
@@ -105,7 +98,7 @@ export function FlashDeals() {
 
               {/* Stock Warning */}
               {deal.stock <= 5 && (
-                <Badge className="absolute top-2 right-2 bg-warning text-warning-foreground border-0 text-[10px]">
+                <Badge className="absolute top-2 right-2 bg-muted text-muted-foreground border-0 text-[10px]">
                   Plus que {deal.stock}
                 </Badge>
               )}
@@ -121,13 +114,13 @@ export function FlashDeals() {
 
               {/* Rating */}
               <div className="flex items-center gap-1 mt-1">
-                <Star className="w-3 h-3 fill-warning text-warning" />
+                <Star className="w-3 h-3 fill-primary text-primary" />
                 <span className="text-xs font-medium">{deal.rating}</span>
               </div>
 
               {/* Price */}
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-lg sm:text-xl font-bold text-destructive">
+                <span className="text-lg sm:text-xl font-bold text-primary">
                   {deal.discountPrice.toFixed(2)} €
                 </span>
                 <span className="text-xs sm:text-sm text-muted-foreground line-through">
@@ -138,7 +131,7 @@ export function FlashDeals() {
               {/* Add Button */}
               <Button 
                 size="sm" 
-                className="w-full mt-3 bg-destructive hover:bg-destructive/90 gap-1 text-xs"
+                className="w-full mt-3 gap-1 text-xs"
               >
                 <ShoppingCart className="w-3 h-3" />
                 Ajouter

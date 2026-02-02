@@ -23,7 +23,6 @@ const trendingProducts = [
     rating: 4.9,
     reviewsCount: 234,
     sales: 156,
-    imageGradient: "from-yellow-400 to-orange-500",
   },
   {
     id: "2",
@@ -35,7 +34,6 @@ const trendingProducts = [
     rating: 4.7,
     reviewsCount: 89,
     sales: 78,
-    imageGradient: "from-slate-400 to-zinc-600",
   },
   {
     id: "3",
@@ -47,7 +45,6 @@ const trendingProducts = [
     rating: 4.8,
     reviewsCount: 312,
     sales: 203,
-    imageGradient: "from-red-400 to-orange-500",
   },
   {
     id: "4",
@@ -59,7 +56,6 @@ const trendingProducts = [
     rating: 4.6,
     reviewsCount: 67,
     sales: 45,
-    imageGradient: "from-gray-500 to-slate-700",
   },
   {
     id: "5",
@@ -71,7 +67,6 @@ const trendingProducts = [
     rating: 4.9,
     reviewsCount: 189,
     sales: 134,
-    imageGradient: "from-amber-400 to-orange-600",
   },
   {
     id: "6",
@@ -83,7 +78,6 @@ const trendingProducts = [
     rating: 4.5,
     reviewsCount: 56,
     sales: 34,
-    imageGradient: "from-blue-400 to-indigo-600",
   },
 ];
 
@@ -91,12 +85,10 @@ const categoryConfig = {
   repas: {
     label: "Repas",
     icon: UtensilsCrossed,
-    color: "bg-category-repas",
   },
   articles: {
     label: "Articles",
     icon: ShoppingBag,
-    color: "bg-category-articles",
   },
 };
 
@@ -105,8 +97,8 @@ export function TrendingProducts() {
     <section>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-success/10">
-            <TrendingUp className="w-5 h-5 text-success" />
+          <div className="p-2 rounded-lg bg-primary/10">
+            <TrendingUp className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -131,13 +123,10 @@ export function TrendingProducts() {
           return (
             <Card 
               key={product.id} 
-              className="group overflow-hidden hover:shadow-lg transition-all duration-300"
+              className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
             >
               {/* Image Area */}
-              <div className={cn(
-                "relative h-24 sm:h-32 bg-gradient-to-br",
-                product.imageGradient
-              )}>
+              <div className="relative h-24 sm:h-32 bg-muted">
                 {/* Rank Badge */}
                 <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                   {index + 1}
@@ -145,7 +134,8 @@ export function TrendingProducts() {
 
                 {/* Category Badge */}
                 <Badge
-                  className="absolute bottom-2 left-2 gap-0.5 bg-white/90 text-foreground border-0 text-[10px] px-1.5"
+                  variant="secondary"
+                  className="absolute bottom-2 left-2 gap-0.5 text-[10px] px-1.5"
                 >
                   <CategoryIcon className="w-2.5 h-2.5" />
                   {config.label}
@@ -155,9 +145,9 @@ export function TrendingProducts() {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="absolute top-2 right-2 h-6 w-6 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 h-6 w-6 bg-card/80 hover:bg-card opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  <Heart className="w-3 h-3 text-foreground" />
+                  <Heart className="w-3 h-3 text-muted-foreground" />
                 </Button>
               </div>
 
@@ -172,7 +162,7 @@ export function TrendingProducts() {
                 {/* Rating & Sales */}
                 <div className="flex items-center gap-1.5 mt-1">
                   <div className="flex items-center gap-0.5">
-                    <Star className="w-3 h-3 fill-warning text-warning" />
+                    <Star className="w-3 h-3 fill-primary text-primary" />
                     <span className="text-[10px] font-medium">{product.rating}</span>
                   </div>
                   <span className="text-[10px] text-muted-foreground">
@@ -187,7 +177,7 @@ export function TrendingProducts() {
                   </span>
                   <Button 
                     size="icon" 
-                    className="h-7 w-7 gradient-primary border-0"
+                    className="h-7 w-7"
                   >
                     <ShoppingCart className="w-3 h-3" />
                   </Button>

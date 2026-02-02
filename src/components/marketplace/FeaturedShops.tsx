@@ -16,7 +16,6 @@ const featuredShops = [
     location: "Paris 11ème",
     productsCount: 24,
     isVerified: true,
-    gradient: "from-orange-500 to-red-500",
     followers: 1250,
   },
   {
@@ -29,7 +28,6 @@ const featuredShops = [
     location: "Paris 8ème",
     productsCount: 156,
     isVerified: true,
-    gradient: "from-blue-500 to-indigo-500",
     followers: 890,
   },
   {
@@ -42,7 +40,6 @@ const featuredShops = [
     location: "Paris 3ème",
     productsCount: 89,
     isVerified: false,
-    gradient: "from-pink-500 to-purple-500",
     followers: 2100,
   },
   {
@@ -55,7 +52,6 @@ const featuredShops = [
     location: "Paris 6ème",
     productsCount: 67,
     isVerified: true,
-    gradient: "from-emerald-500 to-teal-500",
     followers: 567,
   },
 ];
@@ -87,18 +83,15 @@ export function FeaturedShops() {
         {featuredShops.map((shop) => (
           <Card 
             key={shop.id} 
-            className="group overflow-hidden hover:shadow-lg transition-all duration-300"
+            className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
           >
-            {/* Header with gradient */}
-            <div className={cn(
-              "relative h-20 bg-gradient-to-br",
-              shop.gradient
-            )}>
+            {/* Header */}
+            <div className="relative h-20 bg-muted">
               {/* Follow Button */}
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute top-2 right-2 h-8 w-8 bg-white/20 hover:bg-white/40 text-white"
+                className="absolute top-2 right-2 h-8 w-8 bg-card/80 hover:bg-card text-muted-foreground hover:text-primary"
               >
                 <Heart className="w-4 h-4" />
               </Button>
@@ -106,7 +99,7 @@ export function FeaturedShops() {
               {/* Avatar */}
               <div className="absolute -bottom-6 left-4">
                 <Avatar className="h-14 w-14 border-4 border-card">
-                  <AvatarFallback className="bg-card text-foreground font-bold">
+                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
                     {shop.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -135,7 +128,7 @@ export function FeaturedShops() {
               {/* Stats */}
               <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-warning text-warning" />
+                  <Star className="w-3 h-3 fill-primary text-primary" />
                   <span className="font-medium text-foreground">{shop.rating}</span>
                   <span>({shop.reviewsCount})</span>
                 </div>
@@ -151,7 +144,7 @@ export function FeaturedShops() {
                   <span className="font-semibold text-foreground">{shop.productsCount}</span>
                   <span className="text-muted-foreground"> produits</span>
                 </div>
-                <Button size="sm" variant="ghost" className="text-xs h-7 gap-1 text-primary">
+                <Button size="sm" variant="ghost" className="text-xs h-7 gap-1 text-primary hover:text-primary">
                   Visiter
                   <ArrowRight className="w-3 h-3" />
                 </Button>

@@ -18,9 +18,6 @@ const deals = [
     description: "Sur votre première commande",
     code: "BIENVENUE",
     icon: Truck,
-    gradient: "from-emerald-500/20 to-teal-500/20",
-    iconBg: "bg-emerald-500/10",
-    iconColor: "text-emerald-500",
     validUntil: "31 Jan",
   },
   {
@@ -29,9 +26,6 @@ const deals = [
     description: "Toute la catégorie Mode",
     code: "MODE15",
     icon: Tag,
-    gradient: "from-pink-500/20 to-purple-500/20",
-    iconBg: "bg-pink-500/10",
-    iconColor: "text-pink-500",
     validUntil: "15 Fév",
   },
   {
@@ -40,9 +34,6 @@ const deals = [
     description: "Pour 2 menus achetés",
     code: "MENU3FOR2",
     icon: Gift,
-    gradient: "from-orange-500/20 to-red-500/20",
-    iconBg: "bg-orange-500/10",
-    iconColor: "text-orange-500",
     validUntil: "28 Jan",
   },
   {
@@ -51,9 +42,6 @@ const deals = [
     description: "Sur les achats High-Tech",
     code: "TECHBACK",
     icon: CreditCard,
-    gradient: "from-blue-500/20 to-indigo-500/20",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-500",
     validUntil: "10 Fév",
   },
 ];
@@ -63,8 +51,8 @@ export function GoodDeals() {
     <section>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-warning/10">
-            <Sparkles className="w-5 h-5 text-warning" />
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Sparkles className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -87,17 +75,11 @@ export function GoodDeals() {
           return (
             <Card 
               key={deal.id} 
-              className={cn(
-                "group p-4 bg-gradient-to-br border-0 hover:shadow-lg transition-all duration-300 cursor-pointer",
-                deal.gradient
-              )}
+              className="group p-4 bg-card border border-border hover:border-primary/30 transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-start gap-3">
-                <div className={cn(
-                  "p-2.5 rounded-xl",
-                  deal.iconBg
-                )}>
-                  <Icon className={cn("w-5 h-5", deal.iconColor)} />
+                <div className="p-2.5 rounded-xl bg-primary/10">
+                  <Icon className="w-5 h-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-foreground">
@@ -109,14 +91,14 @@ export function GoodDeals() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
+              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
                 <div>
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
                     Code promo
                   </p>
                   <Badge 
                     variant="outline" 
-                    className="mt-1 font-mono text-xs bg-card border-dashed"
+                    className="mt-1 font-mono text-xs bg-muted border-dashed"
                   >
                     {deal.code}
                   </Badge>
