@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import Index from "./pages/Index";
 import MesBusiness from "./pages/MesBusiness";
 import BusinessDetail from "./pages/BusinessDetail";
+import BusinessSettings from "./pages/BusinessSettings";
 import Collaborations from "./pages/Collaborations";
 import Marketplace from "./pages/Marketplace";
 import Commandes from "./pages/Commandes";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/mes-business" element={<MesBusiness />} />
             <Route path="/business/:id" element={<BusinessDetail />} />
+            <Route path="/business/:id/settings" element={<BusinessSettings />} />
             <Route path="/collaborations" element={<Collaborations />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/commandes" element={<Commandes />} />

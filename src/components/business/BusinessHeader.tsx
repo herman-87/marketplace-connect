@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,6 +30,9 @@ interface BusinessHeaderProps {
 }
 
 export function BusinessHeader({ business }: BusinessHeaderProps) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   return (
     <Card className="overflow-hidden">
       {/* Cover */}
@@ -79,7 +83,12 @@ export function BusinessHeader({ business }: BusinessHeaderProps) {
                     <UserPlus className="h-4 w-4" />
                     <span className="hidden sm:inline">Inviter</span>
                   </Button>
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-2"
+                    onClick={() => navigate(`/business/${id}/settings`)}
+                  >
                     <Settings className="h-4 w-4" />
                     <span className="hidden sm:inline">Paramètres</span>
                   </Button>
