@@ -1,15 +1,37 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings, Share2, UserPlus, MoreHorizontal, Star, Package, TrendingUp, Users } from "lucide-react";
+import { 
+  Settings, 
+  Share2, 
+  UserPlus, 
+  MoreHorizontal, 
+  Star, 
+  Package, 
+  TrendingUp, 
+  Users, 
+  MapPin, 
+  Mail, 
+  Phone,
+  ChevronDown,
+  ChevronUp,
+  UtensilsCrossed,
+  ShoppingBag
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface BusinessHeaderProps {
   business: {
@@ -20,6 +42,9 @@ interface BusinessHeaderProps {
     coverImage?: string;
     avatar?: string;
     isOwner: boolean;
+    address?: string;
+    email?: string;
+    phone?: string;
     stats: {
       products: number;
       sales: number;
@@ -29,9 +54,27 @@ interface BusinessHeaderProps {
   };
 }
 
+const categoryConfig = {
+  repas: {
+    label: "Restauration",
+    icon: UtensilsCrossed,
+  },
+  articles: {
+    label: "Commerce",
+    icon: ShoppingBag,
+  },
+};
+
 export function BusinessHeader({ business }: BusinessHeaderProps) {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+
+  const config = categoryConfig[business.category];
+  const CategoryIcon = config.icon;
+
+  // Check if description is long enough to need collapsible
+  const isLongDescription = business.description.length > 150;
 
   return (
     <Card className="overflow-hidden">
@@ -61,8 +104,9 @@ export function BusinessHeader({ business }: BusinessHeaderProps) {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl font-bold text-foreground">{business.name}</h1>
-                <Badge variant={business.category === "repas" ? "default" : "secondary"}>
-                  {business.category === "repas" ? "🍽️ Repas" : "🛍️ Articles"}
+                <Badge variant="secondary" className="gap-1">
+                  <CategoryIcon className="h-3 w-3" />
+                  {config.label}
                 </Badge>
                 {business.isOwner && (
                   <Badge variant="outline" className="border-primary text-primary">
@@ -70,9 +114,66 @@ export function BusinessHeader({ business }: BusinessHeaderProps) {
                   </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground mt-1 max-w-xl line-clamp-2">
-                {business.description}
-              </p>
+
+              {/* Description collapsible */}
+              {isLongDescription ? (
+                <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
+                  <div className="mt-1 max-w-xl">
+                    <p className={`text-muted-foreground ${!isDescriptionOpen ? 'line-clamp-2' : ''}`}>
+                      {business.description}
+                    </p>
+                    <CollapsibleTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-auto p-0 mt-1 text-primary hover:text-primary/80 hover:bg-transparent"
+                      >
+                        {isDescriptionOpen ? (
+                          <>
+                            Voir moins
+                            <ChevronUp className="ml-1 h-4 w-4" />
+                          </>
+                        ) : (
+                          <>
+                            Voir plus
+                            <ChevronDown className="ml-1 h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
+                </Collapsible>
+              ) : (
+                <p className="text-muted-foreground mt-1 max-w-xl">
+                  {business.description}
+                </p>
+              )}
+
+              {/* Contact Info */}
+              <div className="flex flex-wrap items-center gap-3 mt-3">
+                {business.address && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5" />
+                    <span>{business.address}</span>
+                  </div>
+                )}
+                {business.email && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Mail className="h-3.5 w-3.5" />
+                    <a href={`mailto:${business.email}`} className="hover:text-primary transition-colors">
+                      {business.email}
+                    </a>
+                  </div>
+                )}
+                {business.phone && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Phone className="h-3.5 w-3.5" />
+                    <a href={`tel:${business.phone}`} className="hover:text-primary transition-colors">
+                      {business.phone}
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Actions */}

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Store, Star, MapPin, ArrowRight, Verified, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +17,8 @@ const featuredShops = [
     productsCount: 24,
     isVerified: true,
     followers: 1250,
+    coverImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=200&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop",
   },
   {
     id: "2",
@@ -29,6 +31,8 @@ const featuredShops = [
     productsCount: 156,
     isVerified: true,
     followers: 890,
+    coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop",
   },
   {
     id: "3",
@@ -41,6 +45,8 @@ const featuredShops = [
     productsCount: 89,
     isVerified: false,
     followers: 2100,
+    coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=100&h=100&fit=crop",
   },
   {
     id: "4",
@@ -53,6 +59,8 @@ const featuredShops = [
     productsCount: 67,
     isVerified: true,
     followers: 567,
+    coverImage: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=200&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=100&h=100&fit=crop",
   },
 ];
 
@@ -85,8 +93,13 @@ export function FeaturedShops() {
             key={shop.id} 
             className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
           >
-            {/* Header */}
-            <div className="relative h-20 bg-muted">
+            {/* Header with Cover Image */}
+            <div className="relative h-20 bg-muted overflow-hidden">
+              <img 
+                src={shop.coverImage} 
+                alt={shop.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
               {/* Follow Button */}
               <Button
                 size="icon"
@@ -99,6 +112,7 @@ export function FeaturedShops() {
               {/* Avatar */}
               <div className="absolute -bottom-6 left-4">
                 <Avatar className="h-14 w-14 border-4 border-card">
+                  <AvatarImage src={shop.avatar} alt={shop.name} />
                   <AvatarFallback className="bg-primary/10 text-primary font-bold">
                     {shop.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>

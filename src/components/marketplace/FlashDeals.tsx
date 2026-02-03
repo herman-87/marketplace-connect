@@ -15,6 +15,7 @@ const flashDeals = [
     rating: 4.8,
     endsIn: "2h 34m",
     stock: 12,
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=200&fit=crop",
   },
   {
     id: "2",
@@ -26,6 +27,7 @@ const flashDeals = [
     rating: 4.6,
     endsIn: "5h 12m",
     stock: 5,
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
   },
   {
     id: "3",
@@ -37,6 +39,7 @@ const flashDeals = [
     rating: 4.9,
     endsIn: "1h 45m",
     stock: 8,
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=200&fit=crop",
   },
   {
     id: "4",
@@ -48,6 +51,7 @@ const flashDeals = [
     rating: 4.7,
     endsIn: "3h 20m",
     stock: 3,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
   },
 ];
 
@@ -81,7 +85,12 @@ export function FlashDeals() {
             className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
           >
             {/* Image Area */}
-            <div className="relative h-28 sm:h-36 bg-muted">
+            <div className="relative h-28 sm:h-36 bg-muted overflow-hidden">
+              <img 
+                src={deal.image} 
+                alt={deal.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
               {/* Discount Badge */}
               <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground border-0 gap-1">
                 <Percent className="w-3 h-3" />
