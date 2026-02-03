@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Sparkles, Zap, Gift } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, Sparkles, Zap, Gift, ShoppingBag, Truck } from "lucide-react";
 
 export function HeroBanner() {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-card border border-border">
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-muted rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=400&fit=crop" 
+          alt="Marketplace"
+          className="w-full h-full object-cover opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-card via-card/95 to-card/80" />
       </div>
 
       <div className="relative z-10 p-6 sm:p-8 lg:p-12">
@@ -46,7 +49,7 @@ export function HeroBanner() {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <StatCard 
-              icon={Zap} 
+              icon={ShoppingBag} 
               value="500+" 
               label="Boutiques" 
             />
@@ -56,12 +59,12 @@ export function HeroBanner() {
               label="Produits" 
             />
             <StatCard 
-              icon={Sparkles} 
+              icon={Zap} 
               value="50%" 
               label="Promos" 
             />
             <StatCard 
-              icon={ArrowRight} 
+              icon={Truck} 
               value="24h" 
               label="Livraison" 
             />
@@ -82,7 +85,7 @@ function StatCard({
   label: string; 
 }) {
   return (
-    <div className="bg-muted/50 backdrop-blur-sm border border-border rounded-xl p-4 text-center hover:bg-muted transition-colors">
+    <div className="bg-card/80 backdrop-blur-sm border border-border rounded-xl p-4 text-center hover:bg-card transition-colors">
       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-2">
         <Icon className="w-5 h-5 text-primary" />
       </div>
