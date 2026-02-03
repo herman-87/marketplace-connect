@@ -23,6 +23,7 @@ const trendingProducts = [
     rating: 4.9,
     reviewsCount: 234,
     sales: 156,
+    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&h=200&fit=crop",
   },
   {
     id: "2",
@@ -34,6 +35,7 @@ const trendingProducts = [
     rating: 4.7,
     reviewsCount: 89,
     sales: 78,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
   },
   {
     id: "3",
@@ -45,6 +47,7 @@ const trendingProducts = [
     rating: 4.8,
     reviewsCount: 312,
     sales: 203,
+    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
   },
   {
     id: "4",
@@ -56,6 +59,7 @@ const trendingProducts = [
     rating: 4.6,
     reviewsCount: 67,
     sales: 45,
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
   },
   {
     id: "5",
@@ -67,6 +71,7 @@ const trendingProducts = [
     rating: 4.9,
     reviewsCount: 189,
     sales: 134,
+    image: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=300&h=200&fit=crop",
   },
   {
     id: "6",
@@ -78,6 +83,7 @@ const trendingProducts = [
     rating: 4.5,
     reviewsCount: 56,
     sales: 34,
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=200&fit=crop",
   },
 ];
 
@@ -126,7 +132,12 @@ export function TrendingProducts() {
               className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
             >
               {/* Image Area */}
-              <div className="relative h-24 sm:h-32 bg-muted">
+              <div className="relative h-24 sm:h-32 bg-muted overflow-hidden">
+                <img 
+                  src={product.image} 
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
                 {/* Rank Badge */}
                 <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                   {index + 1}

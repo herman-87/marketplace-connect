@@ -12,9 +12,12 @@ import { Package, ShoppingCart, Users, Heart } from "lucide-react";
 const mockBusiness = {
   id: "1",
   name: "Saveurs d'Afrique",
-  description: "Restaurant spécialisé dans la cuisine africaine authentique. Plats préparés avec des ingrédients frais et des recettes traditionnelles transmises de génération en génération.",
+  description: "Restaurant spécialisé dans la cuisine africaine authentique. Plats préparés avec des ingrédients frais et des recettes traditionnelles transmises de génération en génération. Notre chef propose une carte variée de plats sénégalais, ivoiriens et maliens, préparés avec amour et savoir-faire. Venez découvrir les saveurs uniques de l'Afrique de l'Ouest dans une ambiance chaleureuse et conviviale.",
   category: "repas" as const,
   isOwner: true,
+  address: "123 Rue de l'Innovation, 75011 Paris",
+  email: "contact@saveursdafrique.com",
+  phone: "+33 1 23 45 67 89",
   stats: {
     products: 24,
     sales: 156,
