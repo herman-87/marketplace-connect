@@ -14,7 +14,11 @@ import { ShoppingCart, Plus, Minus, Trash2, Store, CreditCard } from "lucide-rea
 import { useCart } from "@/contexts/CartContext";
 import { cn } from "@/lib/utils";
 
-export function CartSheet() {
+interface CartSheetProps {
+  trigger?: React.ReactNode;
+}
+
+export function CartSheet({ trigger }: CartSheetProps) {
   const { 
     subCarts, 
     totalItems, 
@@ -24,19 +28,23 @@ export function CartSheet() {
     clearSubCart 
   } = useCart();
 
+  const defaultTrigger = (
+    <Button variant="outline" size="icon" className="relative">
+      <ShoppingCart className="w-5 h-5" />
+      {totalItems > 0 && (
+        <Badge 
+          className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
+        >
+          {totalItems}
+        </Badge>
+      )}
+    </Button>
+  );
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
-          <ShoppingCart className="w-5 h-5" />
-          {totalItems > 0 && (
-            <Badge 
-              className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
-            >
-              {totalItems}
-            </Badge>
-          )}
-        </Button>
+        {trigger || defaultTrigger}
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-lg flex flex-col">
         <SheetHeader>
