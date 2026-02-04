@@ -11,14 +11,17 @@ import {
   ArrowRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
+import { useFavorites } from "@/contexts/FavoritesContext";
 
 const trendingProducts = [
   {
-    id: "1",
+    id: "trend-1",
     name: "Poulet Yassa",
     description: "Poulet mariné aux oignons et citron",
     price: 15.90,
     category: "repas",
+    businessId: "saveurs-afrique",
     businessName: "Saveurs d'Afrique",
     rating: 4.9,
     reviewsCount: 234,
@@ -26,11 +29,12 @@ const trendingProducts = [
     image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&h=200&fit=crop",
   },
   {
-    id: "2",
+    id: "trend-2",
     name: "Montre Connectée Pro",
     description: "Suivi santé, GPS, 7 jours d'autonomie",
     price: 149.99,
     category: "articles",
+    businessId: "techstore",
     businessName: "TechStore",
     rating: 4.7,
     reviewsCount: 89,
@@ -38,11 +42,12 @@ const trendingProducts = [
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
   },
   {
-    id: "3",
+    id: "trend-3",
     name: "Thieboudienne Royal",
     description: "Riz au poisson, légumes frais",
     price: 18.50,
     category: "repas",
+    businessId: "teranga",
     businessName: "Teranga Cuisine",
     rating: 4.8,
     reviewsCount: 312,
@@ -50,11 +55,12 @@ const trendingProducts = [
     image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
   },
   {
-    id: "4",
+    id: "trend-4",
     name: "Sac à dos Urban",
     description: "Imperméable, compartiment laptop",
     price: 59.99,
     category: "articles",
+    businessId: "modeboutique",
     businessName: "ModeBoutique",
     rating: 4.6,
     reviewsCount: 67,
@@ -62,11 +68,12 @@ const trendingProducts = [
     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
   },
   {
-    id: "5",
+    id: "trend-5",
     name: "Mafé Traditionnel",
     description: "Sauce arachide, bœuf tendre",
     price: 14.90,
     category: "repas",
+    businessId: "mama-africa",
     businessName: "Mama Africa",
     rating: 4.9,
     reviewsCount: 189,
@@ -74,11 +81,12 @@ const trendingProducts = [
     image: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=300&h=200&fit=crop",
   },
   {
-    id: "6",
+    id: "trend-6",
     name: "Enceinte Bluetooth",
     description: "Son 360°, étanche, 20h autonomie",
     price: 69.99,
     category: "articles",
+    businessId: "techstore",
     businessName: "TechStore",
     rating: 4.5,
     reviewsCount: 56,
@@ -99,6 +107,28 @@ const categoryConfig = {
 };
 
 export function TrendingProducts() {
+  const { addToCart } = useCart();
+  const { isFavorite, toggleFavorite } = useFavorites();
+
+  const handleAddToCart = (product: typeof trendingProducts[0]) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      businessId: product.businessId,
+      businessName: product.businessName,
+    });
+  };
+
+  const handleToggleFavorite = (product: typeof trendingProducts[0]) => {
+    toggleFavorite({
+      id: product.id,
+      name: product.name,
+      businessId: product.businessId,
+    });
+  };
+
   return (
     <section>
       <div className="flex items-center justify-between mb-4">
@@ -125,6 +155,7 @@ export function TrendingProducts() {
         {trendingProducts.map((product, index) => {
           const config = categoryConfig[product.category as keyof typeof categoryConfig];
           const CategoryIcon = config.icon;
+          const liked = isFavorite(product.id);
 
           return (
             <Card 
@@ -153,13 +184,20 @@ export function TrendingProducts() {
                 </Badge>
 
                 {/* Wishlist */}
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="absolute top-2 right-2 h-6 w-6 bg-card/80 hover:bg-card opacity-0 group-hover:opacity-100 transition-opacity"
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToggleFavorite(product);
+                  }}
+                  className={cn(
+                    "absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center transition-all",
+                    liked 
+                      ? "bg-destructive text-destructive-foreground" 
+                      : "bg-card/80 backdrop-blur-sm text-muted-foreground hover:bg-card hover:text-destructive opacity-0 group-hover:opacity-100"
+                  )}
                 >
-                  <Heart className="w-3 h-3 text-muted-foreground" />
-                </Button>
+                  <Heart className={cn("w-3.5 h-3.5", liked && "fill-current")} />
+                </button>
               </div>
 
               <CardContent className="p-2 sm:p-3">
@@ -189,6 +227,7 @@ export function TrendingProducts() {
                   <Button 
                     size="icon" 
                     className="h-7 w-7"
+                    onClick={() => handleAddToCart(product)}
                   >
                     <ShoppingCart className="w-3 h-3" />
                   </Button>

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Bell, Search, Store, X, Menu, Settings, LogOut } from "lucide-react";
+import { Bell, Search, Store, X, Menu, Settings, LogOut, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CartSheet } from "@/components/cart/CartSheet";
+import { useFavorites } from "@/contexts/FavoritesContext";
 import {
   Sheet,
   SheetContent,
@@ -23,6 +25,7 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClick }: MobileHeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false);
+  const { favoritesCount } = useFavorites();
 
   return (
     <header className="h-14 bg-card/95 backdrop-blur-md border-b border-border sticky top-0 z-40 lg:hidden">
@@ -114,10 +117,19 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
               <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)}>
                 <Search className="h-5 w-5" />
               </Button>
+              <Button variant="ghost" size="icon" className="relative">
+                <Heart className="h-5 w-5" />
+                {favoritesCount > 0 && (
+                  <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 p-0 flex items-center justify-center text-[9px] border-0">
+                    {favoritesCount}
+                  </Badge>
+                )}
+              </Button>
+              <CartSheet />
               <Button variant="ghost" size="icon" className="relative" onClick={onNotificationsClick}>
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
-                  <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 p-0 flex items-center justify-center text-[9px] gradient-primary border-0">
+                  <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 p-0 flex items-center justify-center text-[9px] border-0">
                     {unreadCount}
                   </Badge>
                 )}

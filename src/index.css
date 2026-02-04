@@ -61,9 +61,15 @@
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
 
-    /* Category colors */
+    /* Category colors - Cohesive palette */
     --category-repas: 24 85% 55%;
-    --category-articles: 262 83% 58%;
+    --category-mode: 340 75% 55%;
+    --category-tech: 210 90% 55%;
+    --category-maison: 160 65% 45%;
+    --category-beaute: 320 70% 60%;
+    --category-auto: 220 60% 50%;
+    --category-sport: 150 70% 45%;
+    --category-autres: 270 60% 55%;
   }
 
   .dark {
