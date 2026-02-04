@@ -11,14 +11,70 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { id: "repas", name: "Repas", icon: UtensilsCrossed, count: 342 },
-  { id: "mode", name: "Mode", icon: Shirt, count: 156 },
-  { id: "tech", name: "High-Tech", icon: Smartphone, count: 89 },
-  { id: "maison", name: "Maison", icon: Home, count: 124 },
-  { id: "beaute", name: "Beauté", icon: Sparkles, count: 67 },
-  { id: "auto", name: "Auto", icon: Car, count: 45 },
-  { id: "sport", name: "Sport", icon: Dumbbell, count: 78 },
-  { id: "autres", name: "Autres", icon: ShoppingBag, count: 234 },
+  { 
+    id: "repas", 
+    name: "Repas", 
+    icon: UtensilsCrossed, 
+    count: 342,
+    colorClass: "bg-[hsl(24,85%,55%)]",
+    bgClass: "bg-[hsl(24,85%,55%,0.15)]",
+  },
+  { 
+    id: "mode", 
+    name: "Mode", 
+    icon: Shirt, 
+    count: 156,
+    colorClass: "bg-[hsl(340,75%,55%)]",
+    bgClass: "bg-[hsl(340,75%,55%,0.15)]",
+  },
+  { 
+    id: "tech", 
+    name: "High-Tech", 
+    icon: Smartphone, 
+    count: 89,
+    colorClass: "bg-[hsl(210,90%,55%)]",
+    bgClass: "bg-[hsl(210,90%,55%,0.15)]",
+  },
+  { 
+    id: "maison", 
+    name: "Maison", 
+    icon: Home, 
+    count: 124,
+    colorClass: "bg-[hsl(160,65%,45%)]",
+    bgClass: "bg-[hsl(160,65%,45%,0.15)]",
+  },
+  { 
+    id: "beaute", 
+    name: "Beauté", 
+    icon: Sparkles, 
+    count: 67,
+    colorClass: "bg-[hsl(320,70%,60%)]",
+    bgClass: "bg-[hsl(320,70%,60%,0.15)]",
+  },
+  { 
+    id: "auto", 
+    name: "Auto", 
+    icon: Car, 
+    count: 45,
+    colorClass: "bg-[hsl(220,60%,50%)]",
+    bgClass: "bg-[hsl(220,60%,50%,0.15)]",
+  },
+  { 
+    id: "sport", 
+    name: "Sport", 
+    icon: Dumbbell, 
+    count: 78,
+    colorClass: "bg-[hsl(150,70%,45%)]",
+    bgClass: "bg-[hsl(150,70%,45%,0.15)]",
+  },
+  { 
+    id: "autres", 
+    name: "Autres", 
+    icon: ShoppingBag, 
+    count: 234,
+    colorClass: "bg-[hsl(270,60%,55%)]",
+    bgClass: "bg-[hsl(270,60%,55%,0.15)]",
+  },
 ];
 
 export function CategoryShowcase() {
@@ -42,14 +98,17 @@ export function CategoryShowcase() {
               className={cn(
                 "group flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl",
                 "bg-card border border-border",
-                "hover:border-primary/30 hover:bg-muted/50 transition-all duration-200"
+                "hover:border-border/60 hover:shadow-md transition-all duration-200"
               )}
             >
               <div className={cn(
-                "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center",
-                "group-hover:bg-primary/20 transition-colors"
+                "w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center",
+                "transition-transform group-hover:scale-110",
+                category.bgClass
               )}>
-                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                <Icon className={cn(
+                  "w-5 h-5 sm:w-6 sm:h-6 text-foreground"
+                )} />
               </div>
               <span className="text-xs sm:text-sm font-medium text-foreground text-center">
                 {category.name}

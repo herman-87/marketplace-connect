@@ -9,11 +9,14 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Heart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CartSheet } from "@/components/cart/CartSheet";
+import { useFavorites } from "@/contexts/FavoritesContext";
 import {
   Tooltip,
   TooltipContent,
@@ -42,6 +45,7 @@ const bottomNavItems: NavItem[] = [
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { favoritesCount } = useFavorites();
 
   const isActive = (href: string) => {
     if (href === "/") return location.pathname === "/";
@@ -121,6 +125,35 @@ export function AppSidebar() {
             <Store className="w-4 h-4 text-primary-foreground" />
           </div>
         )}
+      </div>
+
+      {/* Cart & Favorites Shortcuts */}
+      <div className={cn(
+        "p-3 border-b border-sidebar-border flex gap-2",
+        collapsed ? "flex-col items-center" : ""
+      )}>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size={collapsed ? "icon" : "default"}
+              className={cn(
+                "relative text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50",
+                !collapsed && "flex-1 justify-start gap-2"
+              )}
+            >
+              <Heart className="h-5 w-5" />
+              {!collapsed && <span>Favoris</span>}
+              {favoritesCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[9px]">
+                  {favoritesCount}
+                </Badge>
+              )}
+            </Button>
+          </TooltipTrigger>
+          {collapsed && <TooltipContent side="right">Favoris ({favoritesCount})</TooltipContent>}
+        </Tooltip>
+        <CartSheet />
       </div>
 
       {/* Main Navigation */}
