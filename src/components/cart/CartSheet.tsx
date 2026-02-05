@@ -1,32 +1,34 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import { 
   Sheet, 
   SheetContent, 
   SheetHeader, 
   SheetTitle, 
-  SheetTrigger,
-  SheetFooter 
+  SheetTrigger 
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Plus, Minus, Trash2, Store, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, X } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { cn } from "@/lib/utils";
+import { CheckoutProgress } from "./checkout/CheckoutProgress";
+import { CartStep } from "./checkout/CartStep";
+import { DeliveryStep } from "./checkout/DeliveryStep";
+import { PaymentStep } from "./checkout/PaymentStep";
+import { ConfirmationStep } from "./checkout/ConfirmationStep";
+import { TrackingStep } from "./checkout/TrackingStep";
+import type { CheckoutStep } from "@/types/order";
 
 interface CartSheetProps {
   trigger?: React.ReactNode;
 }
 
 export function CartSheet({ trigger }: CartSheetProps) {
-  const { 
-    subCarts, 
-    totalItems, 
-    totalPrice, 
-    updateQuantity, 
-    removeFromCart,
-    clearSubCart 
-  } = useCart();
+  const { totalItems, subCarts } = useCart();
+  const [open, setOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>('cart');
+  const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(
+    subCarts.length > 0 ? subCarts[0].businessId : null
+  );
 
   const defaultTrigger = (
     <Button variant="outline" size="icon" className="relative">
@@ -41,156 +43,120 @@ export function CartSheet({ trigger }: CartSheetProps) {
     </Button>
   );
 
+  const handleSelectBusiness = (businessId: string) => {
+    setSelectedBusinessId(businessId);
+  };
+
+  const handleStepClick = (step: CheckoutStep) => {
+    setCurrentStep(step);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    // Reset to cart step when closing
+    setTimeout(() => {
+      setCurrentStep('cart');
+    }, 300);
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 'cart':
+        return (
+          <CartStep
+            selectedBusinessId={selectedBusinessId}
+            onSelectBusiness={handleSelectBusiness}
+            onContinue={() => setCurrentStep('delivery')}
+          />
+        );
+      case 'delivery':
+        return (
+          <DeliveryStep
+            onBack={() => setCurrentStep('cart')}
+            onContinue={() => setCurrentStep('payment')}
+          />
+        );
+      case 'payment':
+        return (
+          <PaymentStep
+            selectedBusinessId={selectedBusinessId}
+            onBack={() => setCurrentStep('delivery')}
+            onConfirm={() => setCurrentStep('confirmation')}
+          />
+        );
+      case 'confirmation':
+        return (
+          <ConfirmationStep
+            selectedBusinessId={selectedBusinessId}
+            onTrackOrder={() => setCurrentStep('tracking')}
+            onClose={handleClose}
+          />
+        );
+      case 'tracking':
+        return (
+          <TrackingStep
+            onBack={() => setCurrentStep('confirmation')}
+            onClose={handleClose}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const getStepTitle = () => {
+    switch (currentStep) {
+      case 'cart': return 'Mon Panier';
+      case 'delivery': return 'Livraison';
+      case 'payment': return 'Paiement';
+      case 'confirmation': return 'Confirmation';
+      case 'tracking': return 'Suivi de commande';
+      default: return 'Mon Panier';
+    }
+  };
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         {trigger || defaultTrigger}
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg flex flex-col">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5" />
-            Mon Panier
-            {totalItems > 0 && (
-              <Badge variant="secondary">{totalItems} articles</Badge>
-            )}
-          </SheetTitle>
+      <SheetContent 
+        side="left" 
+        className="w-full sm:max-w-full p-0 flex flex-col"
+      >
+        {/* Header */}
+        <SheetHeader className="px-6 pt-6 pb-2 border-b border-border shrink-0">
+          <div className="flex items-center justify-between">
+            <SheetTitle className="flex items-center gap-2 text-xl">
+              <ShoppingCart className="w-6 h-6 text-primary" />
+              {getStepTitle()}
+              {currentStep === 'cart' && totalItems > 0 && (
+                <Badge variant="secondary">{totalItems} articles</Badge>
+              )}
+            </SheetTitle>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleClose}
+              className="rounded-full"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Progress indicator */}
+          <div className="px-4">
+            <CheckoutProgress 
+              currentStep={currentStep} 
+              onStepClick={handleStepClick}
+            />
+          </div>
         </SheetHeader>
 
-        {subCarts.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-              <ShoppingCart className="w-8 h-8 text-muted-foreground" />
-            </div>
-            <h3 className="font-semibold text-foreground mb-1">Panier vide</h3>
-            <p className="text-sm text-muted-foreground">
-              Ajoutez des produits pour commencer vos achats
-            </p>
-          </div>
-        ) : (
-          <>
-            <ScrollArea className="flex-1 -mx-6 px-6">
-              <div className="space-y-6 py-4">
-                {subCarts.map((subCart, index) => (
-                  <div key={subCart.businessId}>
-                    {/* Sub-cart header */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Store className="w-4 h-4 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm">{subCart.businessName}</h4>
-                          <p className="text-xs text-muted-foreground">
-                            {subCart.items.length} article{subCart.items.length > 1 ? 's' : ''}
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs text-muted-foreground hover:text-destructive"
-                        onClick={() => clearSubCart(subCart.businessId)}
-                      >
-                        <Trash2 className="w-3 h-3 mr-1" />
-                        Vider
-                      </Button>
-                    </div>
-
-                    {/* Items */}
-                    <div className="space-y-3">
-                      {subCart.items.map((item) => (
-                        <div 
-                          key={`${item.businessId}-${item.id}`}
-                          className="flex gap-3 p-2 rounded-lg bg-muted/30"
-                        >
-                          <img 
-                            src={item.image} 
-                            alt={item.name}
-                            className="w-16 h-16 rounded-lg object-cover"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h5 className="font-medium text-sm truncate">{item.name}</h5>
-                            <p className="text-primary font-semibold text-sm mt-1">
-                              {item.price.toFixed(2)} €
-                            </p>
-                            
-                            {/* Quantity controls */}
-                            <div className="flex items-center gap-2 mt-2">
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-7 w-7"
-                                onClick={() => updateQuantity(item.id, item.businessId, item.quantity - 1)}
-                              >
-                                <Minus className="w-3 h-3" />
-                              </Button>
-                              <span className="text-sm font-medium w-6 text-center">
-                                {item.quantity}
-                              </span>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-7 w-7"
-                                onClick={() => updateQuantity(item.id, item.businessId, item.quantity + 1)}
-                              >
-                                <Plus className="w-3 h-3" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-7 w-7 ml-auto text-muted-foreground hover:text-destructive"
-                                onClick={() => removeFromCart(item.id, item.businessId)}
-                              >
-                                <Trash2 className="w-3 h-3" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Sub-cart total and pay button */}
-                    <div className="mt-4 p-3 rounded-lg bg-card border border-border">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm text-muted-foreground">
-                          Sous-total {subCart.businessName}
-                        </span>
-                        <span className="font-bold text-foreground">
-                          {subCart.total.toFixed(2)} €
-                        </span>
-                      </div>
-                      <Button className="w-full gap-2" size="sm">
-                        <CreditCard className="w-4 h-4" />
-                        Payer {subCart.total.toFixed(2)} €
-                      </Button>
-                    </div>
-
-                    {index < subCarts.length - 1 && (
-                      <Separator className="my-6" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-
-            {subCarts.length > 1 && (
-              <SheetFooter className="border-t pt-4">
-                <div className="w-full space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Total général</span>
-                    <span className="text-xl font-bold text-foreground">
-                      {totalPrice.toFixed(2)} €
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground text-center">
-                    Vous devez payer séparément pour chaque boutique
-                  </p>
-                </div>
-              </SheetFooter>
-            )}
-          </>
-        )}
+        {/* Content */}
+        <div className="flex-1 p-6 overflow-hidden flex flex-col min-h-0">
+          {renderStep()}
+        </div>
       </SheetContent>
     </Sheet>
   );
