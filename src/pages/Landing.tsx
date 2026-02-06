@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSelector } from "@/components/ui/language-selector";
+import { useLanguage } from "@/hooks/use-language";
 import { 
   Store, 
   ShoppingBag, 
@@ -13,48 +16,50 @@ import {
   Globe
 } from "lucide-react";
 
-const features = [
-  {
-    icon: Store,
-    title: "Multi-Business",
-    description: "Gérez plusieurs boutiques depuis un seul tableau de bord",
-  },
-  {
-    icon: Users,
-    title: "Collaboration",
-    description: "Invitez des collaborateurs et partagez la gestion",
-  },
-  {
-    icon: ShoppingBag,
-    title: "Marketplace",
-    description: "Vendez vos produits sur notre marketplace intégré",
-  },
-  {
-    icon: TrendingUp,
-    title: "Analytics",
-    description: "Suivez vos performances avec des statistiques détaillées",
-  },
-];
-
-const benefits = [
-  {
-    icon: Zap,
-    title: "Rapide à configurer",
-    description: "Créez votre première boutique en moins de 5 minutes",
-  },
-  {
-    icon: Shield,
-    title: "Sécurisé",
-    description: "Vos données et transactions sont protégées",
-  },
-  {
-    icon: Globe,
-    title: "Accessible partout",
-    description: "Gérez votre business depuis n'importe quel appareil",
-  },
-];
-
 export default function Landing() {
+  const { t } = useLanguage();
+
+  const features = [
+    {
+      icon: Store,
+      title: t("landing.feature.multibusiness"),
+      description: t("landing.feature.multibusiness.desc"),
+    },
+    {
+      icon: Users,
+      title: t("landing.feature.collaboration"),
+      description: t("landing.feature.collaboration.desc"),
+    },
+    {
+      icon: ShoppingBag,
+      title: t("landing.feature.marketplace"),
+      description: t("landing.feature.marketplace.desc"),
+    },
+    {
+      icon: TrendingUp,
+      title: t("landing.feature.analytics"),
+      description: t("landing.feature.analytics.desc"),
+    },
+  ];
+
+  const benefits = [
+    {
+      icon: Zap,
+      title: t("landing.benefit.fast"),
+      description: t("landing.benefit.fast.desc"),
+    },
+    {
+      icon: Shield,
+      title: t("landing.benefit.secure"),
+      description: t("landing.benefit.secure.desc"),
+    },
+    {
+      icon: Globe,
+      title: t("landing.benefit.accessible"),
+      description: t("landing.benefit.accessible.desc"),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -67,15 +72,17 @@ export default function Landing() {
             <span className="text-xl font-bold">Marketplace</span>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageSelector />
             <Link to="/marketplace">
               <Button variant="ghost" size="sm">
-                Explorer
+                {t("landing.explore")}
               </Button>
             </Link>
             <Link to="/auth">
               <Button size="sm" className="gap-2">
-                Connexion
+                {t("landing.login")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -94,31 +101,30 @@ export default function Landing() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Sparkles className="h-4 w-4" />
-              Plateforme tout-en-un pour entrepreneurs
+              {t("landing.tagline")}
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-              Créez et gérez vos{" "}
-              <span className="text-primary">business</span>{" "}
-              en toute simplicité
+              {t("landing.hero.title.1")}{" "}
+              <span className="text-primary">{t("landing.hero.title.2")}</span>{" "}
+              {t("landing.hero.title.3")}
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Une plateforme unique pour lancer vos boutiques, vendre vos produits 
-              et collaborer avec votre équipe. Rejoignez des milliers d'entrepreneurs.
+              {t("landing.hero.description")}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth">
                 <Button size="lg" className="gap-2 w-full sm:w-auto">
-                  Commencer gratuitement
+                  {t("landing.cta.start")}
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
               <Link to="/marketplace">
                 <Button size="lg" variant="outline" className="gap-2 w-full sm:w-auto">
                   <ShoppingBag className="h-5 w-5" />
-                  Explorer le marketplace
+                  {t("landing.cta.marketplace")}
                 </Button>
               </Link>
             </div>
@@ -131,10 +137,10 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">
-              Tout ce dont vous avez besoin
+              {t("landing.features.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Des outils puissants pour développer votre activité et atteindre vos objectifs
+              {t("landing.features.description")}
             </p>
           </div>
           
@@ -160,7 +166,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-6">
-                Pourquoi choisir notre plateforme ?
+                {t("landing.benefits.title")}
               </h2>
               <div className="space-y-6">
                 {benefits.map((benefit) => (
@@ -178,7 +184,7 @@ export default function Landing() {
               
               <Link to="/auth" className="inline-block mt-8">
                 <Button className="gap-2">
-                  Créer mon compte
+                  {t("landing.cta.create")}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -192,18 +198,18 @@ export default function Landing() {
                       <Store className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div>
-                      <p className="font-semibold">Ma Boutique</p>
-                      <p className="text-xs text-muted-foreground">12 produits • 3 collaborateurs</p>
+                      <p className="font-semibold">{t("landing.shop.name")}</p>
+                      <p className="text-xs text-muted-foreground">{t("landing.shop.stats")}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-muted/50 rounded-lg p-3">
                       <p className="text-2xl font-bold">2,847€</p>
-                      <p className="text-xs text-muted-foreground">Revenus du mois</p>
+                      <p className="text-xs text-muted-foreground">{t("landing.shop.revenue")}</p>
                     </div>
                     <div className="bg-muted/50 rounded-lg p-3">
                       <p className="text-2xl font-bold">+23%</p>
-                      <p className="text-xs text-muted-foreground">vs mois dernier</p>
+                      <p className="text-xs text-muted-foreground">{t("landing.shop.growth")}</p>
                     </div>
                   </div>
                 </div>
@@ -218,14 +224,14 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 md:p-12 text-center">
             <h2 className="text-3xl font-bold text-primary-foreground mb-4">
-              Prêt à lancer votre business ?
+              {t("landing.cta.final.title")}
             </h2>
             <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-              Rejoignez notre communauté d'entrepreneurs et commencez à vendre dès aujourd'hui.
+              {t("landing.cta.final.desc")}
             </p>
             <Link to="/auth">
               <Button size="lg" variant="secondary" className="gap-2">
-                Commencer maintenant
+                {t("landing.cta.final.button")}
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
@@ -244,7 +250,7 @@ export default function Landing() {
               <span className="font-semibold">Marketplace</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 Marketplace. Tous droits réservés.
+              {t("landing.footer.rights")}
             </p>
           </div>
         </div>
