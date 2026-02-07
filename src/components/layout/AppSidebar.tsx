@@ -9,19 +9,19 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Heart,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CartSheet } from "@/components/cart/CartSheet";
-import { useFavorites } from "@/contexts/FavoritesContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 
 interface NavItem {
   title: string;
@@ -31,10 +31,9 @@ interface NavItem {
 }
 
 const mainNavItems: NavItem[] = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
   { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
-  { title: "Marketplace", href: "/marketplace", icon: ShoppingBag },
   { title: "Commandes", href: "/commandes", icon: ClipboardList, badge: 5 },
 ];
 
@@ -45,10 +44,10 @@ const bottomNavItems: NavItem[] = [
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-  const { favoritesCount } = useFavorites();
+  const { user } = useAuth();
 
   const isActive = (href: string) => {
-    if (href === "/") return location.pathname === "/";
+    if (href === "/dashboard") return location.pathname === "/dashboard";
     return location.pathname.startsWith(href);
   };
 
@@ -113,7 +112,7 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
         {!collapsed && (
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
               <Store className="w-4 h-4 text-primary-foreground" />
             </div>
@@ -127,33 +126,26 @@ export function AppSidebar() {
         )}
       </div>
 
-      {/* Cart & Favorites Shortcuts */}
-      <div className={cn(
-        "p-3 border-b border-sidebar-border flex gap-2",
-        collapsed ? "flex-col items-center" : ""
-      )}>
+      {/* Back to Marketplace */}
+      <div className={cn("p-3 border-b border-sidebar-border", collapsed ? "flex justify-center" : "")}>
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size={collapsed ? "icon" : "default"}
-              className={cn(
-                "relative text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50",
-                !collapsed && "flex-1 justify-start gap-2"
-              )}
-            >
-              <Heart className="h-5 w-5" />
-              {!collapsed && <span>Favoris</span>}
-              {favoritesCount > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[9px]">
-                  {favoritesCount}
-                </Badge>
-              )}
-            </Button>
+            <Link to="/marketplace">
+              <Button 
+                variant="ghost" 
+                size={collapsed ? "icon" : "default"}
+                className={cn(
+                  "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 w-full",
+                  !collapsed && "justify-start gap-2"
+                )}
+              >
+                <ArrowLeft className="h-5 w-5 shrink-0" />
+                {!collapsed && <span>Retour au Marketplace</span>}
+              </Button>
+            </Link>
           </TooltipTrigger>
-          {collapsed && <TooltipContent side="right">Favoris ({favoritesCount})</TooltipContent>}
+          {collapsed && <TooltipContent side="right">Retour au Marketplace</TooltipContent>}
         </Tooltip>
-        <CartSheet />
       </div>
 
       {/* Main Navigation */}
@@ -179,16 +171,16 @@ export function AppSidebar() {
           <Avatar className="h-9 w-9 border-2 border-sidebar-accent">
             <AvatarImage src="" />
             <AvatarFallback className="bg-sidebar-accent text-sidebar-foreground text-sm">
-              JD
+              {user?.email?.charAt(0).toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
           {!collapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-sidebar-foreground truncate">
-                Jean Dupont
+                {user?.email || "Utilisateur"}
               </p>
               <p className="text-xs text-sidebar-muted truncate">
-                jean@example.com
+                Espace gestion
               </p>
             </div>
           )}

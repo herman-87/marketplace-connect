@@ -28,7 +28,7 @@ export default function Auth() {
   // Redirect if already logged in
   useEffect(() => {
     if (!loading && user) {
-      navigate("/");
+      navigate("/marketplace");
     }
   }, [user, loading, navigate]);
 
@@ -84,7 +84,7 @@ export default function Auth() {
         title: "Connexion réussie",
         description: "Bienvenue sur la plateforme !",
       });
-      navigate("/");
+      navigate("/marketplace");
     }
   };
 

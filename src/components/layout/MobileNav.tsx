@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Store,
   Users,
-  ShoppingBag,
   ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,10 +16,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Business", href: "/mes-business", icon: Store, badge: 2 },
   { title: "Collab", href: "/collaborations", icon: Users },
-  { title: "Marketplace", href: "/marketplace", icon: ShoppingBag },
   { title: "Commandes", href: "/commandes", icon: ClipboardList, badge: 5 },
 ];
 
@@ -28,7 +26,7 @@ export function MobileNav() {
   const location = useLocation();
 
   const isActive = (href: string) => {
-    if (href === "/") return location.pathname === "/";
+    if (href === "/dashboard") return location.pathname === "/dashboard";
     return location.pathname.startsWith(href);
   };
 

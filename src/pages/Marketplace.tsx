@@ -1,45 +1,31 @@
-import { AppLayout } from "@/components/layout/AppLayout";
+import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { HeroBanner } from "@/components/marketplace/HeroBanner";
 import { CategoryShowcase } from "@/components/marketplace/CategoryShowcase";
 import { FlashDeals } from "@/components/marketplace/FlashDeals";
 import { FeaturedShops } from "@/components/marketplace/FeaturedShops";
 import { TrendingProducts } from "@/components/marketplace/TrendingProducts";
 import { GoodDeals } from "@/components/marketplace/GoodDeals";
-import { CartSheet } from "@/components/cart/CartSheet";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CartSheet } from "@/components/cart/CartSheet";
 
 export default function Marketplace() {
   const { totalItems } = useCart();
 
   return (
-    <AppLayout
-      title="Marketplace"
-      subtitle="Découvrez tous les produits disponibles"
-    >
-      <div className="space-y-8 md:space-y-10 animate-fade-in">
-        {/* Hero Banner */}
+    <MarketplaceLayout>
+      <div className="container mx-auto px-4 py-6 space-y-8 md:space-y-10 animate-fade-in">
         <HeroBanner />
-
-        {/* Categories */}
         <CategoryShowcase />
-
-        {/* Flash Deals */}
         <FlashDeals />
-
-        {/* Featured Shops */}
         <FeaturedShops />
-
-        {/* Trending Products */}
         <TrendingProducts />
-
-        {/* Good Deals / Promo Codes */}
         <GoodDeals />
       </div>
 
-      {/* Floating Cart Button */}
-      <div className="fixed bottom-20 right-4 z-50 lg:bottom-6 lg:right-6">
+      {/* Floating Cart Button - Mobile */}
+      <div className="fixed bottom-6 right-4 z-50 lg:hidden">
         <CartSheet 
           trigger={
             <button className="relative flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all hover:scale-105 active:scale-95">
@@ -53,6 +39,6 @@ export default function Marketplace() {
           }
         />
       </div>
-    </AppLayout>
+    </MarketplaceLayout>
   );
 }
