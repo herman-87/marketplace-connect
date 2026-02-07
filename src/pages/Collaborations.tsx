@@ -4,6 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { 
   Search, 
   Filter, 
@@ -12,8 +15,18 @@ import {
   ClipboardList, 
   Store,
   ArrowRight,
-  UserPlus
+  UserPlus,
+  MoreVertical,
+  ExternalLink,
+  LayoutGrid,
+  List,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const mockCollaborations = [
   {
@@ -23,7 +36,6 @@ const mockCollaborations = [
     productsCount: 89,
     collaboratorsCount: 5,
     status: "active" as const,
-    isOwner: false,
     invitedBy: {
       name: "Sophie Martin",
       avatar: "",
@@ -37,7 +49,6 @@ const mockCollaborations = [
     productsCount: 45,
     collaboratorsCount: 2,
     status: "active" as const,
-    isOwner: false,
     invitedBy: {
       name: "Pierre Durand",
       avatar: "",
@@ -53,109 +64,149 @@ const permissionLabels: Record<string, { label: string; icon: React.ComponentTyp
 };
 
 export default function Collaborations() {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
   return (
     <AppLayout
       title="Mes Collaborations"
       subtitle="Business où vous êtes collaborateur"
     >
       <div className="space-y-4 md:space-y-6 animate-fade-in">
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-          <div className="bg-card rounded-xl border border-border/50 p-3 md:p-4 flex items-center gap-3 md:gap-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+        {/* Header Actions */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-none">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Rechercher..."
+                className="pl-9 w-full sm:w-64"
+              />
             </div>
-            <div className="min-w-0">
-              <p className="text-xl md:text-2xl font-bold text-foreground">{mockCollaborations.length}</p>
-              <p className="text-xs md:text-sm text-muted-foreground truncate">Collaborations actives</p>
-            </div>
+            <Button variant="outline" size="icon" className="shrink-0">
+              <Filter className="h-4 w-4" />
+            </Button>
           </div>
-          <div className="bg-card rounded-xl border border-border/50 p-3 md:p-4 flex items-center gap-3 md:gap-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Package className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xl md:text-2xl font-bold text-foreground">134</p>
-              <p className="text-xs md:text-sm text-muted-foreground truncate">Produits gérés</p>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl border border-border/50 p-3 md:p-4 flex items-center gap-3 md:gap-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <ClipboardList className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xl md:text-2xl font-bold text-foreground">12</p>
-              <p className="text-xs md:text-sm text-muted-foreground truncate">Commandes en cours</p>
+
+          <div className="flex items-center gap-2 justify-between sm:justify-end">
+            <div className="flex items-center rounded-lg border border-border p-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-7 w-7 md:h-8 md:w-8",
+                  viewMode === "grid" && "bg-muted"
+                )}
+                onClick={() => setViewMode("grid")}
+              >
+                <LayoutGrid className="h-3.5 w-3.5 md:h-4 md:w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-7 w-7 md:h-8 md:w-8",
+                  viewMode === "list" && "bg-muted"
+                )}
+                onClick={() => setViewMode("list")}
+              >
+                <List className="h-3.5 w-3.5 md:h-4 md:w-4" />
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Search */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher..."
-              className="pl-9"
-            />
+        {/* Stats Info */}
+        <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <p className="font-medium text-sm md:text-base text-foreground">
+              {mockCollaborations.length} collaboration{mockCollaborations.length > 1 ? "s" : ""} active{mockCollaborations.length > 1 ? "s" : ""}
+            </p>
+            <p className="text-xs md:text-sm text-muted-foreground">
+              Vous gérez un total de 134 produits en tant que collaborateur
+            </p>
           </div>
-          <Button variant="outline" size="icon" className="shrink-0">
-            <Filter className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-4 text-sm">
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <Package className="w-4 h-4 text-primary/70" />
+              <span className="font-medium text-foreground">134</span>
+              <span className="hidden sm:inline">produits</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <ClipboardList className="w-4 h-4 text-primary/70" />
+              <span className="font-medium text-foreground">12</span>
+              <span className="hidden sm:inline">commandes</span>
+            </div>
+          </div>
         </div>
 
         {/* Collaborations Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div
+          className={cn(
+            "grid gap-3 md:gap-4",
+            viewMode === "grid"
+              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              : "grid-cols-1"
+          )}
+        >
           {mockCollaborations.map((collab) => (
-            <Card 
-              key={collab.id}
-              className="group overflow-hidden hover:shadow-md transition-all duration-200 border-border/50"
-            >
-              <CardContent className="p-0">
-                {/* Header with gradient */}
-                <div className="relative h-20 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
-                  <div className="absolute -bottom-6 left-4">
-                    <div className="w-14 h-14 rounded-xl bg-card border-2 border-background shadow-md flex items-center justify-center">
-                      <Store className="w-7 h-7 text-primary" />
-                    </div>
-                  </div>
-                  <Badge 
-                    variant="secondary" 
-                    className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm"
+            <Link key={collab.id} to={`/business/${collab.id}`} className="block group">
+              <Card className="overflow-hidden hover:bg-muted/30 transition-colors">
+                {/* Header */}
+                <div className="h-16 bg-muted/50 relative flex items-center justify-center">
+                  <Store className="w-6 h-6 text-muted-foreground" />
+                  
+                  {/* Status Badge */}
+                  <Badge
+                    variant="outline"
+                    className="absolute top-2 right-10 text-xs bg-success/10 text-success border-success/30"
                   >
-                    Collaborateur
+                    Actif
                   </Badge>
+
+                  {/* Menu */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-1 right-1 h-8 w-8 hover:bg-background/50"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        Voir sur le marketplace
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>Gérer les produits</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive">
+                        Quitter la collaboration
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
-                {/* Content */}
-                <div className="pt-10 px-4 pb-4 space-y-4">
-                  {/* Business Info */}
-                  <div>
-                    <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                <CardContent className="p-4">
+                  {/* Title & Role */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                       {collab.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                      {collab.description}
-                    </p>
+                    <Badge variant="secondary" className="text-xs shrink-0">
+                      Collaborateur
+                    </Badge>
                   </div>
 
-                  {/* Stats Row */}
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1.5 text-muted-foreground">
-                      <Package className="w-4 h-4" />
-                      <span className="font-medium text-foreground">{collab.productsCount}</span>
-                      <span className="hidden sm:inline">produits</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-muted-foreground">
-                      <Users className="w-4 h-4" />
-                      <span className="font-medium text-foreground">{collab.collaboratorsCount}</span>
-                      <span className="hidden sm:inline">membres</span>
-                    </div>
-                  </div>
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                    {collab.description}
+                  </p>
 
                   {/* Invited By */}
-                  <div className="flex items-center gap-2 p-2.5 rounded-lg bg-muted/50">
-                    <UserPlus className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <div className="flex items-center gap-2 mb-3">
+                    <UserPlus className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                     <span className="text-xs text-muted-foreground">Invité par</span>
                     <Avatar className="w-5 h-5">
                       <AvatarImage src={collab.invitedBy.avatar} />
@@ -163,43 +214,43 @@ export default function Collaborations() {
                         {collab.invitedBy.name.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium text-foreground truncate">
+                    <span className="text-xs font-medium text-foreground truncate">
                       {collab.invitedBy.name}
                     </span>
                   </div>
 
                   {/* Permissions */}
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-2">Vos permissions</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {collab.permissions.map((perm) => {
-                        const config = permissionLabels[perm];
-                        const Icon = config.icon;
-                        return (
-                          <Badge
-                            key={perm}
-                            variant="outline"
-                            className="gap-1 text-xs py-1 px-2 bg-background"
-                          >
-                            <Icon className="w-3 h-3" />
-                            {config.label}
-                          </Badge>
-                        );
-                      })}
-                    </div>
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {collab.permissions.map((perm) => {
+                      const config = permissionLabels[perm];
+                      const Icon = config.icon;
+                      return (
+                        <Badge
+                          key={perm}
+                          variant="outline"
+                          className="gap-1 text-xs py-0.5 px-2"
+                        >
+                          <Icon className="w-3 h-3" />
+                          {config.label}
+                        </Badge>
+                      );
+                    })}
                   </div>
 
-                  {/* Action */}
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-between group/btn hover:bg-primary/10 hover:text-primary"
-                  >
-                    <span>Accéder au business</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  {/* Stats Row */}
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border/50">
+                    <div className="flex items-center gap-1.5">
+                      <Package className="h-4 w-4 text-primary/70" />
+                      <span>{collab.productsCount}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Users className="h-4 w-4 text-primary/70" />
+                      <span>{collab.collaboratorsCount}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
 
