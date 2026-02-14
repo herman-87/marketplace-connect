@@ -3,13 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Check, X, Clock, Package, Truck, AlertCircle, Search, LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Order {
@@ -40,48 +33,48 @@ function OrderCardView({ order }: { order: Order }) {
   const StatusIcon = status.icon;
 
   return (
-    <div className="rounded-lg bg-card p-4 space-y-3">
+    <div className="rounded-lg bg-card border border-border/60 p-5 space-y-4 hover:border-border transition-colors">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Avatar className="h-9 w-9">
+          <Avatar className="h-11 w-11">
             <AvatarImage src={order.customer.avatar} />
-            <AvatarFallback className="bg-muted text-foreground text-xs">
+            <AvatarFallback className="bg-muted text-foreground text-sm">
               {order.customer.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium text-sm">{order.customer.name}</p>
-            <p className="text-[10px] text-muted-foreground">#{order.id}</p>
+            <p className="font-semibold text-base">{order.customer.name}</p>
+            <p className="text-xs text-muted-foreground">#{order.id}</p>
           </div>
         </div>
-        <Badge variant={status.variant} className="gap-1 text-[10px]">
-          <StatusIcon className="h-3 w-3" />
+        <Badge variant={status.variant} className="gap-1.5 text-xs">
+          <StatusIcon className="h-3.5 w-3.5" />
           {status.label}
         </Badge>
       </div>
 
-      <div className="space-y-1.5 py-2">
+      <div className="space-y-2 py-2 border-t border-b border-border/40">
         {order.products.map((p, i) => (
-          <div key={i} className="flex justify-between text-xs">
+          <div key={i} className="flex justify-between text-sm">
             <span className="text-muted-foreground">{p.quantity}x {p.name}</span>
-            <span>{p.price}€</span>
+            <span className="font-medium">{p.price}€</span>
           </div>
         ))}
       </div>
 
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground">{order.createdAt}</span>
-        <span className="font-semibold">{order.total}€</span>
+        <span className="font-bold text-lg">{order.total}€</span>
       </div>
 
       {order.status === "pending" && (
         <div className="flex gap-2 pt-1">
-          <Button size="sm" className="flex-1 h-8 gap-1.5 text-xs"><Check className="h-3 w-3" />Accepter</Button>
-          <Button size="sm" variant="outline" className="flex-1 h-8 gap-1.5 text-xs text-destructive"><X className="h-3 w-3" />Refuser</Button>
+          <Button size="sm" className="flex-1 h-9 gap-1.5 text-xs"><Check className="h-3.5 w-3.5" />Accepter</Button>
+          <Button size="sm" variant="outline" className="flex-1 h-9 gap-1.5 text-xs text-destructive"><X className="h-3.5 w-3.5" />Refuser</Button>
         </div>
       )}
       {order.status === "accepted" && (
-        <Button size="sm" variant="outline" className="w-full h-8 gap-1.5 text-xs"><Truck className="h-3 w-3" />Marquer livrée</Button>
+        <Button size="sm" variant="outline" className="w-full h-9 gap-1.5 text-xs"><Truck className="h-3.5 w-3.5" />Marquer livrée</Button>
       )}
     </div>
   );
@@ -92,32 +85,32 @@ function OrderListView({ order }: { order: Order }) {
   const StatusIcon = status.icon;
 
   return (
-    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/30 transition-colors">
-      <Avatar className="h-8 w-8 shrink-0">
+    <div className="flex items-center gap-4 px-4 py-4 hover:bg-muted/30 transition-colors">
+      <Avatar className="h-10 w-10 shrink-0">
         <AvatarImage src={order.customer.avatar} />
-        <AvatarFallback className="bg-muted text-foreground text-[10px]">
+        <AvatarFallback className="bg-muted text-foreground text-sm">
           {order.customer.name.slice(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-sm truncate">{order.customer.name}</span>
-          <span className="text-[10px] text-muted-foreground">#{order.id}</span>
+          <span className="font-semibold text-sm truncate">{order.customer.name}</span>
+          <span className="text-xs text-muted-foreground">#{order.id}</span>
         </div>
         <p className="text-xs text-muted-foreground truncate">
           {order.products.map(p => `${p.quantity}x ${p.name}`).join(", ")}
         </p>
       </div>
-      <Badge variant={status.variant} className="gap-1 text-[10px] shrink-0">
-        <StatusIcon className="h-3 w-3" />
+      <Badge variant={status.variant} className="gap-1.5 text-xs shrink-0">
+        <StatusIcon className="h-3.5 w-3.5" />
         {status.label}
       </Badge>
-      <span className="text-xs text-muted-foreground shrink-0">{order.createdAt}</span>
-      <span className="font-semibold text-sm shrink-0">{order.total}€</span>
+      <span className="text-sm text-muted-foreground shrink-0">{order.createdAt}</span>
+      <span className="font-bold text-base shrink-0">{order.total}€</span>
       {order.status === "pending" && (
-        <div className="flex gap-1 shrink-0">
-          <Button size="icon" className="h-7 w-7"><Check className="h-3 w-3" /></Button>
-          <Button size="icon" variant="outline" className="h-7 w-7 text-destructive"><X className="h-3 w-3" /></Button>
+        <div className="flex gap-1.5 shrink-0">
+          <Button size="icon" className="h-8 w-8"><Check className="h-3.5 w-3.5" /></Button>
+          <Button size="icon" variant="outline" className="h-8 w-8 text-destructive"><X className="h-3.5 w-3.5" /></Button>
         </div>
       )}
     </div>
@@ -147,6 +140,9 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
 
   return (
     <div className="space-y-4">
+      {/* Section Header */}
+      <h3 className="text-lg font-semibold">Commandes</h3>
+
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div className="relative flex-1 w-full sm:max-w-xs">
@@ -157,7 +153,7 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
           {(["all", "pending", "accepted", "delivered", "rejected"] as const).map(s => (
             <Button key={s} variant={statusFilter === s ? "default" : "ghost"} size="sm" className="h-8 text-xs" onClick={() => { setStatusFilter(s); setPage(1); }}>
               {s === "all" ? "Toutes" : s === "pending" ? "En attente" : s === "accepted" ? "Acceptées" : s === "delivered" ? "Livrées" : "Refusées"}
-              <Badge variant="secondary" className="ml-1.5 text-[10px] px-1.5">{counts[s]}</Badge>
+              <Badge variant="secondary" className="ml-1.5 text-xs px-1.5">{counts[s]}</Badge>
             </Button>
           ))}
         </div>
@@ -174,11 +170,11 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
       {/* Content */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {paginated.map(o => <OrderCardView key={o.id} order={o} />)}
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
             {paginated.map(o => <OrderListView key={o.id} order={o} />)}
           </div>
         )
