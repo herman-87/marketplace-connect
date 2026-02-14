@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { PaginationControls } from "@/components/marketplace/PaginationControls";
 
 const allPromotions = [
   {
@@ -143,12 +144,14 @@ const allPromotions = [
 ];
 
 const categories = ["Tous", "Repas", "Mode", "High-Tech"];
+const ITEMS_PER_PAGE = 12;
 
 export default function MarketplacePromotions() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [sortBy, setSortBy] = useState("discount");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [currentPage, setCurrentPage] = useState(1);
   const { addToCart } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -166,6 +169,9 @@ export default function MarketplacePromotions() {
       if (sortBy === "rating") return b.rating - a.rating;
       return 0;
     });
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleAddToCart = (deal: typeof allPromotions[0]) => {
     addToCart({
@@ -264,7 +270,7 @@ export default function MarketplacePromotions() {
           </div>
         ) : viewMode === "grid" ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {filtered.map((deal) => {
+            {paginated.map((deal) => {
               const liked = isFavorite(deal.id);
               return (
                 <Card key={deal.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
@@ -324,7 +330,7 @@ export default function MarketplacePromotions() {
           </div>
         ) : (
           <div className="space-y-3">
-            {filtered.map((deal) => {
+            {paginated.map((deal) => {
               const liked = isFavorite(deal.id);
               return (
                 <Card key={deal.id} className="overflow-hidden hover:border-primary/30 transition-all">
@@ -379,6 +385,8 @@ export default function MarketplacePromotions() {
             })}
           </div>
         )}
+
+        <PaginationControls currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       </div>
     </MarketplaceLayout>
   );

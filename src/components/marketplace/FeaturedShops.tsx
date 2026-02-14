@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Store, Star, MapPin, ArrowRight, Verified, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const featuredShops = [
   {
@@ -81,10 +82,12 @@ export function FeaturedShops() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" className="gap-1">
-          Voir tout
-          <ArrowRight className="w-4 h-4" />
-        </Button>
+        <Link to="/marketplace/shops">
+          <Button variant="outline" size="sm" className="gap-1">
+            Voir tout
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

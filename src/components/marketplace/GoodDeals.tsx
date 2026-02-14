@@ -10,6 +10,7 @@ import {
   CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const deals = [
   {
@@ -63,10 +64,12 @@ export function GoodDeals() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" className="gap-1">
-          Tous les codes
-          <ArrowRight className="w-4 h-4" />
-        </Button>
+        <Link to="/marketplace/deals">
+          <Button variant="outline" size="sm" className="gap-1">
+            Voir tout
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
