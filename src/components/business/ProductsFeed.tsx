@@ -31,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CreateProductSheet } from "./CreateProductSheet";
 
 interface Product {
   id: string;
@@ -226,11 +227,15 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
             </Button>
           </div>
           {isOwner && (
-            <Button size="sm" className="h-10 gap-2 px-4">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Nouveau produit</span>
-              <span className="sm:hidden">Nouveau</span>
-            </Button>
+            <CreateProductSheet
+              trigger={
+                <Button size="sm" className="h-10 gap-2 px-4">
+                  <Plus className="h-4 w-4" />
+                  <span className="hidden sm:inline">Nouveau produit</span>
+                  <span className="sm:hidden">Nouveau</span>
+                </Button>
+              }
+            />
           )}
         </div>
 
