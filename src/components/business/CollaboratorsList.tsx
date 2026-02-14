@@ -32,16 +32,16 @@ const ITEMS_PER_PAGE = 8;
 
 function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-4 flex flex-col items-center text-center relative group hover:border-border transition-colors">
+    <div className="rounded-lg bg-card border border-border/60 p-5 flex flex-col items-center text-center relative group hover:border-border transition-colors">
       {index < 3 && (
-        <span className="absolute top-2 left-2 text-sm">{["🥇", "🥈", "🥉"][index]}</span>
+        <span className="absolute top-3 left-3 text-base">{["🥇", "🥈", "🥉"][index]}</span>
       )}
       {isOwner && collab.role !== "owner" && (
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-7 w-7">
-                <MoreHorizontal className="h-3.5 w-3.5" />
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -51,28 +51,28 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
           </DropdownMenu>
         </div>
       )}
-      <Avatar className="h-14 w-14">
+      <Avatar className="h-16 w-16">
         <AvatarImage src={collab.avatar} />
-        <AvatarFallback className="bg-muted text-foreground">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        <AvatarFallback className="bg-muted text-foreground text-base">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
       </Avatar>
-      <div className="mt-2 flex items-center gap-1">
-        <span className="font-medium text-sm truncate max-w-[100px]">{collab.name}</span>
-        {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
+      <div className="mt-3 flex items-center gap-1.5">
+        <span className="font-semibold text-base truncate max-w-[120px]">{collab.name}</span>
+        {collab.role === "owner" && <Crown className="h-4 w-4 text-warning shrink-0" />}
       </div>
-      <span className="text-[10px] text-muted-foreground">{collab.joinedAt}</span>
-      <div className="mt-3 grid grid-cols-2 gap-2 w-full text-center">
-        <div className="p-1.5 bg-muted/50 rounded">
-          <p className="text-sm font-semibold">{collab.productsCreated}</p>
-          <p className="text-[10px] text-muted-foreground">Produits</p>
+      <span className="text-xs text-muted-foreground mt-0.5">{collab.joinedAt}</span>
+      <div className="mt-4 grid grid-cols-2 gap-3 w-full text-center">
+        <div className="p-2.5 bg-muted/50 rounded-md">
+          <p className="text-lg font-bold">{collab.productsCreated}</p>
+          <p className="text-xs text-muted-foreground">Produits</p>
         </div>
-        <div className="p-1.5 bg-muted/50 rounded">
-          <p className="text-sm font-semibold">{collab.ordersManaged}</p>
-          <p className="text-[10px] text-muted-foreground">Commandes</p>
+        <div className="p-2.5 bg-muted/50 rounded-md">
+          <p className="text-lg font-bold">{collab.ordersManaged}</p>
+          <p className="text-xs text-muted-foreground">Commandes</p>
         </div>
       </div>
-      <div className="mt-2 flex items-center gap-1 text-xs">
-        <TrendingUp className="h-3 w-3 text-primary" />
-        <span className="font-medium">{collab.activityScore}%</span>
+      <div className="mt-3 flex items-center gap-1.5 text-sm">
+        <TrendingUp className="h-4 w-4 text-primary" />
+        <span className="font-semibold">{collab.activityScore}%</span>
       </div>
     </div>
   );
@@ -80,34 +80,34 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
 
 function CollabListView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-lg border border-transparent hover:border-border/40 hover:bg-muted/30 transition-all">
+    <div className="flex items-center gap-4 px-4 py-3.5 hover:bg-muted/30 transition-colors">
       {index < 3 ? (
-        <span className="text-sm w-6 text-center">{["🥇", "🥈", "🥉"][index]}</span>
+        <span className="text-base w-7 text-center">{["🥇", "🥈", "🥉"][index]}</span>
       ) : (
-        <span className="text-xs text-muted-foreground w-6 text-center">#{index + 1}</span>
+        <span className="text-sm text-muted-foreground w-7 text-center font-medium">#{index + 1}</span>
       )}
-      <Avatar className="h-8 w-8 shrink-0">
+      <Avatar className="h-10 w-10 shrink-0">
         <AvatarImage src={collab.avatar} />
-        <AvatarFallback className="bg-muted text-foreground text-[10px]">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        <AvatarFallback className="bg-muted text-foreground text-sm">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
       </Avatar>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="font-medium text-sm truncate">{collab.name}</span>
-          {collab.role === "owner" && <Crown className="h-3 w-3 text-warning shrink-0" />}
+          <span className="font-semibold text-sm truncate">{collab.name}</span>
+          {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
         </div>
-        <span className="text-[10px] text-muted-foreground">{collab.joinedAt}</span>
+        <span className="text-xs text-muted-foreground">{collab.joinedAt}</span>
       </div>
-      <span className="text-xs text-muted-foreground shrink-0">{collab.productsCreated} produits</span>
-      <span className="text-xs text-muted-foreground shrink-0">{collab.ordersManaged} commandes</span>
-      <div className="flex items-center gap-1 text-xs shrink-0">
-        <TrendingUp className="h-3 w-3 text-primary" />
-        <span className="font-medium">{collab.activityScore}%</span>
+      <span className="text-sm text-muted-foreground shrink-0">{collab.productsCreated} produits</span>
+      <span className="text-sm text-muted-foreground shrink-0">{collab.ordersManaged} commandes</span>
+      <div className="flex items-center gap-1.5 text-sm shrink-0">
+        <TrendingUp className="h-3.5 w-3.5 text-primary" />
+        <span className="font-semibold">{collab.activityScore}%</span>
       </div>
       {isOwner && collab.role !== "owner" && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0">
-              <MoreHorizontal className="h-3.5 w-3.5" />
+            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -134,6 +134,12 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
 
   return (
     <div className="space-y-4">
+      {/* Section Header */}
+      <div className="flex items-center gap-3">
+        <h3 className="text-lg font-semibold">Collaborateurs</h3>
+        <Badge variant="secondary">{collaborators.length}</Badge>
+      </div>
+
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         <div className="relative flex-1 w-full sm:max-w-xs">
@@ -158,11 +164,11 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
       {/* Content */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {paginated.map((c, i) => <CollabCardView key={c.id} collab={c} index={(page - 1) * ITEMS_PER_PAGE + i} isOwner={isOwner} />)}
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
             {paginated.map((c, i) => <CollabListView key={c.id} collab={c} index={(page - 1) * ITEMS_PER_PAGE + i} isOwner={isOwner} />)}
           </div>
         )

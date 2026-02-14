@@ -25,59 +25,59 @@ const ITEMS_PER_PAGE = 6;
 
 function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-4 relative group hover:border-border transition-colors">
+    <div className="rounded-lg bg-card border border-border/60 p-5 relative group hover:border-border transition-colors">
       <div className="absolute top-3 right-3">
-        <Badge variant="outline" className="gap-1 text-[10px] text-warning border-warning/30 bg-warning/10">
-          <Clock className="h-3 w-3" />
+        <Badge variant="outline" className="gap-1 text-xs text-warning border-warning/30 bg-warning/10">
+          <Clock className="h-3.5 w-3.5" />
           En attente
         </Badge>
       </div>
 
-      <div className="flex flex-col items-center text-center pt-2">
+      <div className="flex flex-col items-center text-center pt-3">
         <div className="relative">
-          <Avatar className="h-14 w-14">
+          <Avatar className="h-16 w-16">
             <AvatarImage src={inv.avatar} />
-            <AvatarFallback className="bg-muted text-foreground">
+            <AvatarFallback className="bg-muted text-foreground text-base">
               {inv.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
-            <Mail className="h-3 w-3 text-warning" />
+          <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+            <Mail className="h-3.5 w-3.5 text-warning" />
           </div>
         </div>
 
-        <div className="mt-3">
-          <p className="font-medium text-sm truncate max-w-[140px]">{inv.name}</p>
-          <p className="text-[10px] text-muted-foreground truncate max-w-[140px]">{inv.email}</p>
+        <div className="mt-4">
+          <p className="font-semibold text-base truncate max-w-[180px]">{inv.name}</p>
+          <p className="text-xs text-muted-foreground truncate max-w-[180px] mt-0.5">{inv.email}</p>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1 justify-center">
+      <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
         {inv.roles.map(role => (
-          <Badge key={role} variant="secondary" className="text-[10px]">{role}</Badge>
+          <Badge key={role} variant="secondary" className="text-xs px-2.5">{role}</Badge>
         ))}
       </div>
 
-      <div className="mt-3 text-center">
-        <p className="text-[10px] text-muted-foreground">Invité {inv.invitedAt}</p>
-        <p className="text-[10px] text-muted-foreground">par {inv.invitedBy}</p>
+      <div className="mt-4 text-center">
+        <p className="text-xs text-muted-foreground">Invité {inv.invitedAt}</p>
+        <p className="text-xs text-muted-foreground">par {inv.invitedBy}</p>
       </div>
 
       {/* Flow indicator */}
-      <div className="mt-3 pt-3 border-t border-border/40 flex items-center justify-center gap-2 text-[10px] text-muted-foreground">
-        <Clock className="h-3 w-3" />
+      <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+        <Clock className="h-3.5 w-3.5" />
         <span>En attente</span>
-        <ArrowRight className="h-3 w-3 text-primary" />
+        <ArrowRight className="h-3.5 w-3.5 text-primary" />
         <span className="text-primary font-medium">Collaborateur</span>
       </div>
 
       <div className="mt-3 flex gap-2">
-        <Button size="sm" variant="ghost" className="flex-1 h-7 text-xs" onClick={() => onResend?.(inv.id)}>
-          <Mail className="h-3 w-3 mr-1" />
+        <Button size="sm" variant="ghost" className="flex-1 h-8 text-xs" onClick={() => onResend?.(inv.id)}>
+          <Mail className="h-3.5 w-3.5 mr-1.5" />
           Relancer
         </Button>
-        <Button size="sm" variant="ghost" className="flex-1 h-7 text-xs text-destructive hover:text-destructive" onClick={() => onCancel?.(inv.id)}>
-          <X className="h-3 w-3 mr-1" />
+        <Button size="sm" variant="ghost" className="flex-1 h-8 text-xs text-destructive hover:text-destructive" onClick={() => onCancel?.(inv.id)}>
+          <X className="h-3.5 w-3.5 mr-1.5" />
           Annuler
         </Button>
       </div>
@@ -85,43 +85,43 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
   );
 }
 
-function InvitationListView({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
+function InvitationListView({ inv, onCancel, onResend, isLast }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void; isLast?: boolean }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-lg border border-transparent hover:border-border/40 hover:bg-muted/30 transition-all">
+    <div className={`flex items-center gap-4 px-4 py-3.5 hover:bg-muted/30 transition-colors ${!isLast ? "border-b border-border/50" : ""}`}>
       <div className="relative shrink-0">
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-10 w-10">
           <AvatarImage src={inv.avatar} />
-          <AvatarFallback className="bg-muted text-foreground text-[10px]">
+          <AvatarFallback className="bg-muted text-foreground text-sm">
             {inv.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
-          <Mail className="h-2.5 w-2.5 text-warning" />
+        <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+          <Mail className="h-3 w-3 text-warning" />
         </div>
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-sm truncate">{inv.name}</span>
-          <Badge variant="outline" className="text-[10px] text-warning border-warning/30 bg-warning/10 shrink-0">
+          <span className="font-semibold text-sm truncate">{inv.name}</span>
+          <Badge variant="outline" className="text-xs text-warning border-warning/30 bg-warning/10 shrink-0">
             En attente
           </Badge>
         </div>
-        <span className="text-[10px] text-muted-foreground">{inv.email}</span>
+        <span className="text-xs text-muted-foreground">{inv.email}</span>
       </div>
-      <div className="flex gap-1 shrink-0">
+      <div className="flex gap-1.5 shrink-0">
         {inv.roles.slice(0, 2).map(role => (
-          <Badge key={role} variant="secondary" className="text-[10px]">{role}</Badge>
+          <Badge key={role} variant="secondary" className="text-xs">{role}</Badge>
         ))}
       </div>
-      <span className="text-[10px] text-muted-foreground shrink-0">{inv.invitedAt}</span>
-      <div className="flex items-center gap-1 text-[10px] text-muted-foreground shrink-0">
-        <ArrowRight className="h-3 w-3 text-primary" />
+      <span className="text-xs text-muted-foreground shrink-0">{inv.invitedAt}</span>
+      <div className="flex items-center gap-1 shrink-0">
+        <ArrowRight className="h-3.5 w-3.5 text-primary" />
       </div>
       <div className="flex gap-1 shrink-0">
-        <Button size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={() => onResend?.(inv.id)}>
+        <Button size="sm" variant="ghost" className="h-8 text-xs px-3" onClick={() => onResend?.(inv.id)}>
           Relancer
         </Button>
-        <Button size="sm" variant="ghost" className="h-7 text-xs px-2 text-destructive" onClick={() => onCancel?.(inv.id)}>
+        <Button size="sm" variant="ghost" className="h-8 text-xs px-3 text-destructive" onClick={() => onCancel?.(inv.id)}>
           Annuler
         </Button>
       </div>
@@ -146,18 +146,18 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
       {/* Section Header with flow indicator */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h3 className="text-base font-medium">Invitations en attente</h3>
+          <h3 className="text-lg font-semibold">Invitations en attente</h3>
           <Badge variant="outline" className="text-warning border-warning/30 bg-warning/10">
             {invitations.length}
           </Badge>
         </div>
         <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-warning/10 border border-warning/20">
-            <Clock className="h-3 w-3 text-warning" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-warning/10 border border-warning/20">
+            <Clock className="h-3.5 w-3.5 text-warning" />
             <span className="text-warning">Invitation envoyée</span>
           </div>
           <ArrowRight className="h-4 w-4 text-primary" />
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-primary/10 border border-primary/20">
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-primary/10 border border-primary/20">
             <span className="text-primary font-medium">Acceptée → Collaborateur</span>
           </div>
         </div>
@@ -187,15 +187,15 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
       {/* Content */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginated.map(inv => (
               <InvitationCardView key={inv.id} inv={inv} onCancel={onCancel} onResend={onResend} />
             ))}
           </div>
         ) : (
-          <div className="space-y-1">
-            {paginated.map(inv => (
-              <InvitationListView key={inv.id} inv={inv} onCancel={onCancel} onResend={onResend} />
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
+            {paginated.map((inv, i) => (
+              <InvitationListView key={inv.id} inv={inv} onCancel={onCancel} onResend={onResend} isLast={i === paginated.length - 1} />
             ))}
           </div>
         )
