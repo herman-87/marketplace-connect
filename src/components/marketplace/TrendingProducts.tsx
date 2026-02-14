@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { Link } from "react-router-dom";
 
 const trendingProducts = [
   {
@@ -145,10 +146,12 @@ export function TrendingProducts() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" className="gap-1">
-          Voir tout
-          <ArrowRight className="w-4 h-4" />
-        </Button>
+        <Link to="/marketplace/trending">
+          <Button variant="outline" size="sm" className="gap-1">
+            Voir tout
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
