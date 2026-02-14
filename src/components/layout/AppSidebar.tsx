@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   LayoutDashboard,
   Store,
@@ -15,6 +15,8 @@ import {
   BarChart3,
   Heart,
   PackageCheck,
+  Package,
+  ShoppingCart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -54,12 +56,30 @@ const bottomNavItems: NavItem[] = [
   { title: "Paramètres", href: "/parametres", icon: Settings },
 ];
 
+function getBusinessItems(businessId: string): NavItem[] {
+  return [
+    { title: "Vue d'ensemble", href: `/business/${businessId}`, icon: LayoutDashboard },
+    { title: "Produits", href: `/business/${businessId}/products`, icon: Package },
+    { title: "Commandes", href: `/business/${businessId}/orders`, icon: ShoppingCart, badge: 2 },
+    { title: "Équipes", href: `/business/${businessId}/team`, icon: Users },
+    { title: "Engagement", href: `/business/${businessId}/engagement`, icon: Heart },
+  ];
+}
+
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const { user } = useAuth();
 
+  // Detect if we're in a business context
+  const businessMatch = location.pathname.match(/^\/business\/([^/]+)/);
+  const businessId = businessMatch ? businessMatch[1] : null;
+  const isBusinessContext = !!businessId;
+
   const isActive = (href: string) => {
+    // Exact match for business overview
+    if (href.match(/^\/business\/[^/]+$/) && location.pathname === href) return true;
+    if (href.match(/^\/business\/[^/]+$/)) return false;
     if (href === "/dashboard") return location.pathname === "/dashboard";
     return location.pathname.startsWith(href);
   };
@@ -115,7 +135,7 @@ export function AppSidebar() {
     return content;
   };
 
-  const CollapsibleGroup = ({ label, items }: { label: string; items: NavItem[] }) => {
+  const CollapsibleGroup = ({ label, items, defaultOpen }: { label: string; items: NavItem[]; defaultOpen?: boolean }) => {
     const hasActiveItem = items.some((item) => isActive(item.href));
 
     if (collapsed) {
@@ -129,7 +149,7 @@ export function AppSidebar() {
     }
 
     return (
-      <Collapsible defaultOpen={hasActiveItem}>
+      <Collapsible defaultOpen={defaultOpen !== undefined ? defaultOpen : hasActiveItem}>
         <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/40 hover:text-sidebar-foreground/60 transition-colors">
           <span>{label}</span>
           <ChevronDown className="h-3 w-3 transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
@@ -142,6 +162,8 @@ export function AppSidebar() {
       </Collapsible>
     );
   };
+
+  const businessItems = businessId ? getBusinessItems(businessId) : [];
 
   return (
     <aside
@@ -191,13 +213,25 @@ export function AppSidebar() {
 
       {/* Navigation Groups */}
       <nav className="flex-1 p-3 overflow-y-auto space-y-1">
-        {/* Mon Compte Group - First */}
+        {/* Mon Compte Group - Always visible */}
         <CollapsibleGroup label="Mon Compte" items={compteItems} />
 
         <Separator className="my-3 bg-sidebar-border" />
 
-        {/* Espace Pro Group - Second */}
-        <CollapsibleGroup label="Espace Pro" items={gestionItems} />
+        {isBusinessContext ? (
+          <>
+            {/* Business contextual navigation */}
+            <CollapsibleGroup label="Mon Business" items={businessItems} defaultOpen={true} />
+
+            <Separator className="my-3 bg-sidebar-border" />
+
+            {/* Back to Espace Pro */}
+            <CollapsibleGroup label="Espace Pro" items={gestionItems} />
+          </>
+        ) : (
+          /* Standard Espace Pro */
+          <CollapsibleGroup label="Espace Pro" items={gestionItems} />
+        )}
       </nav>
 
       {/* Bottom Section */}

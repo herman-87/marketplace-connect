@@ -12,6 +12,10 @@ import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import MesBusiness from "./pages/MesBusiness";
 import BusinessDetail from "./pages/BusinessDetail";
+import BusinessProducts from "./pages/BusinessProducts";
+import BusinessOrders from "./pages/BusinessOrders";
+import BusinessTeam from "./pages/BusinessTeam";
+import BusinessEngagement from "./pages/BusinessEngagement";
 import BusinessSettings from "./pages/BusinessSettings";
 import Collaborations from "./pages/Collaborations";
 import Marketplace from "./pages/Marketplace";
@@ -45,6 +49,10 @@ const App = () => (
                   <Route path="/dashboard" element={<Index />} />
                   <Route path="/mes-business" element={<MesBusiness />} />
                   <Route path="/business/:id" element={<BusinessDetail />} />
+                  <Route path="/business/:id/products" element={<BusinessProducts />} />
+                  <Route path="/business/:id/orders" element={<BusinessOrders />} />
+                  <Route path="/business/:id/team" element={<BusinessTeam />} />
+                  <Route path="/business/:id/engagement" element={<BusinessEngagement />} />
                   <Route path="/business/:id/settings" element={<BusinessSettings />} />
                   <Route path="/collaborations" element={<Collaborations />} />
                   <Route path="/marketplace" element={<Marketplace />} />
