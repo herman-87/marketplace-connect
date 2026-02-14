@@ -67,7 +67,7 @@ function ProductCardView({ product, isOwner }: { product: Product; isOwner: bool
 
   return (
     <div 
-      className="group rounded-lg bg-card overflow-hidden cursor-pointer hover:bg-muted/30 transition-colors"
+      className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-border transition-colors"
       onClick={() => navigate(`/product/${product.id}`)}
     >
       <div className="relative h-36 bg-muted">
@@ -78,7 +78,7 @@ function ProductCardView({ product, isOwner }: { product: Product; isOwner: bool
             {product.category === "repas" ? "🍽️" : "🛍️"}
           </div>
         )}
-        <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-[10px]">
+        <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-xs">
           <StatusIcon className="h-3 w-3" />
           {status.label}
         </Badge>
@@ -101,16 +101,16 @@ function ProductCardView({ product, isOwner }: { product: Product; isOwner: bool
           </div>
         )}
       </div>
-      <div className="p-3">
+      <div className="p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-medium text-sm truncate">{product.name}</h3>
-          <span className="font-semibold text-sm whitespace-nowrap">{product.price}€</span>
+          <h3 className="font-semibold text-base truncate">{product.name}</h3>
+          <span className="font-bold text-base whitespace-nowrap">{product.price}€</span>
         </div>
         <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{product.description}</p>
-        <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
-          <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{product.views}</span>
-          <span className="flex items-center gap-1"><ShoppingCart className="h-3 w-3" />{product.sales}</span>
+        <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5" />{product.likes}</span>
+          <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{product.views}</span>
+          <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@ function ProductListView({ product, isOwner }: { product: Product; isOwner: bool
 
   return (
     <div 
-      className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer"
+      className="flex items-center gap-4 px-4 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
       onClick={() => navigate(`/product/${product.id}`)}
     >
       <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center text-xl shrink-0">
@@ -132,20 +132,20 @@ function ProductListView({ product, isOwner }: { product: Product; isOwner: bool
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="font-medium text-sm truncate">{product.name}</h3>
-          <Badge variant={status.variant} className="gap-1 text-[10px] shrink-0">
-            <StatusIcon className="h-3 w-3" />
+          <h3 className="font-semibold text-sm truncate">{product.name}</h3>
+          <Badge variant={status.variant} className="gap-1 text-xs shrink-0">
+            <StatusIcon className="h-3.5 w-3.5" />
             {status.label}
           </Badge>
         </div>
         <p className="text-xs text-muted-foreground truncate">{product.description}</p>
       </div>
-      <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
-        <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
-        <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{product.views}</span>
-        <span className="flex items-center gap-1"><ShoppingCart className="h-3 w-3" />{product.sales}</span>
+      <div className="flex items-center gap-4 text-sm text-muted-foreground shrink-0">
+        <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5" />{product.likes}</span>
+        <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{product.views}</span>
+        <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
       </div>
-      <span className="font-semibold text-sm shrink-0">{product.price}€</span>
+      <span className="font-bold text-base shrink-0">{product.price}€</span>
       {isOwner && (
         <div onClick={e => e.stopPropagation()}>
           <DropdownMenu>
@@ -255,11 +255,11 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       {/* Content */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} />)}
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
             {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} />)}
           </div>
         )
