@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Plus, Search, Filter, LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { CreateBusinessSheet } from "@/components/business/CreateBusinessSheet";
 
 const mockBusinesses = [
   {
@@ -77,11 +78,15 @@ export default function MesBusiness() {
                 <List className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </Button>
             </div>
-            <Button className="gradient-primary border-0 gap-1.5 text-xs md:text-sm h-8 md:h-9" disabled={remainingSlots === 0}>
-              <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
-              <span className="hidden sm:inline">Nouveau Business</span>
-              <span className="sm:hidden">Nouveau</span>
-            </Button>
+            <CreateBusinessSheet
+              trigger={
+                <Button className="gradient-primary border-0 gap-1.5 text-xs md:text-sm h-8 md:h-9" disabled={remainingSlots === 0}>
+                  <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                  <span className="hidden sm:inline">Nouveau Business</span>
+                  <span className="sm:hidden">Nouveau</span>
+                </Button>
+              }
+            />
           </div>
         </div>
 
@@ -131,15 +136,19 @@ export default function MesBusiness() {
 
           {/* Add New Business Card */}
           {remainingSlots > 0 && (
-            <button className="group min-h-[180px] md:min-h-[200px] rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition-colors flex flex-col items-center justify-center gap-3 text-muted-foreground hover:text-foreground">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted group-hover:bg-primary/10 flex items-center justify-center transition-colors">
-                <Plus className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div className="text-center">
-                <p className="font-medium text-sm md:text-base">Créer un nouveau business</p>
-                <p className="text-xs md:text-sm">{remainingSlots} emplacement{remainingSlots > 1 ? "s" : ""} disponible{remainingSlots > 1 ? "s" : ""}</p>
-              </div>
-            </button>
+            <CreateBusinessSheet
+              trigger={
+                <button className="group min-h-[180px] md:min-h-[200px] rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition-colors flex flex-col items-center justify-center gap-3 text-muted-foreground hover:text-foreground">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted group-hover:bg-primary/10 flex items-center justify-center transition-colors">
+                    <Plus className="w-5 h-5 md:w-6 md:h-6" />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-medium text-sm md:text-base">Créer un nouveau business</p>
+                    <p className="text-xs md:text-sm">{remainingSlots} emplacement{remainingSlots > 1 ? "s" : ""} disponible{remainingSlots > 1 ? "s" : ""}</p>
+                  </div>
+                </button>
+              }
+            />
           )}
         </div>
       </div>
