@@ -8,6 +8,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   ArrowLeft,
   ShoppingBag,
   Wallet,
@@ -26,6 +27,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface NavItem {
   title: string;
@@ -34,18 +36,18 @@ interface NavItem {
   badge?: number;
 }
 
-const gestionItems: NavItem[] = [
-  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
-  { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
-  { title: "Commandes reçues", href: "/commandes", icon: ClipboardList, badge: 5 },
-];
-
 const compteItems: NavItem[] = [
   { title: "Mes Achats", href: "/mes-achats", icon: PackageCheck, badge: 2 },
   { title: "Wallet", href: "/wallet", icon: Wallet },
   { title: "Mes Dépenses", href: "/mes-depenses", icon: BarChart3 },
   { title: "Favoris", href: "/favoris", icon: Heart },
+];
+
+const gestionItems: NavItem[] = [
+  { title: "Vue d'ensemble", href: "/dashboard", icon: LayoutDashboard },
+  { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
+  { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
+  { title: "Commandes reçues", href: "/commandes", icon: ClipboardList, badge: 5 },
 ];
 
 const bottomNavItems: NavItem[] = [
@@ -113,12 +115,31 @@ export function AppSidebar() {
     return content;
   };
 
-  const GroupLabel = ({ label }: { label: string }) => {
-    if (collapsed) return null;
+  const CollapsibleGroup = ({ label, items }: { label: string; items: NavItem[] }) => {
+    const hasActiveItem = items.some((item) => isActive(item.href));
+
+    if (collapsed) {
+      return (
+        <div className="space-y-1">
+          {items.map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
+        </div>
+      );
+    }
+
     return (
-      <p className="text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/40 px-3 mb-1">
-        {label}
-      </p>
+      <Collapsible defaultOpen={hasActiveItem}>
+        <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/40 hover:text-sidebar-foreground/60 transition-colors">
+          <span>{label}</span>
+          <ChevronDown className="h-3 w-3 transition-transform duration-200 [[data-state=open]>&]:rotate-180" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="space-y-1">
+          {items.map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
+        </CollapsibleContent>
+      </Collapsible>
     );
   };
 
@@ -170,23 +191,13 @@ export function AppSidebar() {
 
       {/* Navigation Groups */}
       <nav className="flex-1 p-3 overflow-y-auto space-y-1">
-        {/* Gestion Group */}
-        <div className="space-y-1">
-          <GroupLabel label="Gestion" />
-          {gestionItems.map((item) => (
-            <NavLink key={item.href} item={item} />
-          ))}
-        </div>
+        {/* Mon Compte Group - First */}
+        <CollapsibleGroup label="Mon Compte" items={compteItems} />
 
         <Separator className="my-3 bg-sidebar-border" />
 
-        {/* Mon Compte Group */}
-        <div className="space-y-1">
-          <GroupLabel label="Mon Compte" />
-          {compteItems.map((item) => (
-            <NavLink key={item.href} item={item} />
-          ))}
-        </div>
+        {/* Espace Pro Group - Second */}
+        <CollapsibleGroup label="Espace Pro" items={gestionItems} />
       </nav>
 
       {/* Bottom Section */}
