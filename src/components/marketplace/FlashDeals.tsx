@@ -113,9 +113,9 @@ export function FlashDeals() {
         {flashDeals.map((deal) => {
           const liked = isFavorite(deal.id);
           return (
+            <Link key={deal.id} to={`/product/${deal.id}`}>
             <Card 
-              key={deal.id} 
-              className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
+              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Image Area */}
               <div className="relative h-28 sm:h-36 bg-muted overflow-hidden">
@@ -197,6 +197,7 @@ export function FlashDeals() {
                 </Button>
               </CardContent>
             </Card>
+            </Link>
           );
         })}
       </div>

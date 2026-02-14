@@ -92,9 +92,9 @@ export function FeaturedShops() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {featuredShops.map((shop) => (
+          <Link key={shop.id} to={`/business/${shop.id}`}>
           <Card 
-            key={shop.id} 
-            className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
+            className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
           >
             {/* Header with Cover Image */}
             <div className="relative h-20 bg-muted overflow-hidden">
@@ -168,6 +168,7 @@ export function FeaturedShops() {
               </div>
             </CardContent>
           </Card>
+          </Link>
         ))}
       </div>
     </section>
