@@ -32,7 +32,7 @@ const ITEMS_PER_PAGE = 8;
 
 function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="rounded-lg bg-card p-4 flex flex-col items-center text-center relative group">
+    <div className="rounded-lg bg-card border border-border/60 p-4 flex flex-col items-center text-center relative group hover:border-border transition-colors">
       {index < 3 && (
         <span className="absolute top-2 left-2 text-sm">{["🥇", "🥈", "🥉"][index]}</span>
       )}
@@ -57,7 +57,7 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
       </Avatar>
       <div className="mt-2 flex items-center gap-1">
         <span className="font-medium text-sm truncate max-w-[100px]">{collab.name}</span>
-        {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-amber-500 shrink-0" />}
+        {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
       </div>
       <span className="text-[10px] text-muted-foreground">{collab.joinedAt}</span>
       <div className="mt-3 grid grid-cols-2 gap-2 w-full text-center">
@@ -80,7 +80,7 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
 
 function CollabListView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/30 transition-colors">
+    <div className="flex items-center gap-4 p-3 rounded-lg border border-transparent hover:border-border/40 hover:bg-muted/30 transition-all">
       {index < 3 ? (
         <span className="text-sm w-6 text-center">{["🥇", "🥈", "🥉"][index]}</span>
       ) : (
@@ -93,7 +93,7 @@ function CollabListView({ collab, index, isOwner }: { collab: Collaborator; inde
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
           <span className="font-medium text-sm truncate">{collab.name}</span>
-          {collab.role === "owner" && <Crown className="h-3 w-3 text-amber-500 shrink-0" />}
+          {collab.role === "owner" && <Crown className="h-3 w-3 text-warning shrink-0" />}
         </div>
         <span className="text-[10px] text-muted-foreground">{collab.joinedAt}</span>
       </div>
