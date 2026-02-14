@@ -173,6 +173,33 @@ export const mockOrders = [
   },
 ];
 
+export const mockPendingInvitations = [
+  {
+    id: "inv-1",
+    name: "Fatou Diallo",
+    email: "fatou.diallo@email.com",
+    roles: ["Produits", "Commandes"],
+    invitedAt: "Il y a 2 heures",
+    invitedBy: "Vous",
+  },
+  {
+    id: "inv-2",
+    name: "Ousmane Traoré",
+    email: "ousmane.t@email.com",
+    roles: ["Commandes"],
+    invitedAt: "Hier",
+    invitedBy: "Vous",
+  },
+  {
+    id: "inv-3",
+    name: "Aïssatou Bah",
+    email: "aissatou.b@email.com",
+    roles: ["Produits", "Sondages"],
+    invitedAt: "Il y a 3 jours",
+    invitedBy: "Marie Dupont",
+  },
+];
+
 export const mockEngagement = {
   totalLikes: 105,
   totalViews: 591,
