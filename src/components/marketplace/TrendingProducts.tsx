@@ -161,9 +161,9 @@ export function TrendingProducts() {
           const liked = isFavorite(product.id);
 
           return (
+            <Link key={product.id} to={`/product/${product.id}`}>
             <Card 
-              key={product.id} 
-              className="group overflow-hidden hover:border-primary/30 transition-all duration-300"
+              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Image Area */}
               <div className="relative h-24 sm:h-32 bg-muted overflow-hidden">
@@ -237,6 +237,7 @@ export function TrendingProducts() {
                 </div>
               </CardContent>
             </Card>
+            </Link>
           );
         })}
       </div>
