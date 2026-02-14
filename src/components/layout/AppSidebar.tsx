@@ -4,12 +4,16 @@ import {
   LayoutDashboard,
   Store,
   Users,
-  ShoppingBag,
   ClipboardList,
   Settings,
   ChevronLeft,
   ChevronRight,
   ArrowLeft,
+  ShoppingBag,
+  Wallet,
+  BarChart3,
+  Heart,
+  PackageCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,7 +25,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
+import { Separator } from "@/components/ui/separator";
 
 interface NavItem {
   title: string;
@@ -30,11 +34,18 @@ interface NavItem {
   badge?: number;
 }
 
-const mainNavItems: NavItem[] = [
+const gestionItems: NavItem[] = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
   { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
-  { title: "Commandes", href: "/commandes", icon: ClipboardList, badge: 5 },
+  { title: "Commandes reçues", href: "/commandes", icon: ClipboardList, badge: 5 },
+];
+
+const compteItems: NavItem[] = [
+  { title: "Mes Achats", href: "/mes-achats", icon: PackageCheck, badge: 2 },
+  { title: "Wallet", href: "/wallet", icon: Wallet },
+  { title: "Mes Dépenses", href: "/mes-depenses", icon: BarChart3 },
+  { title: "Favoris", href: "/favoris", icon: Heart },
 ];
 
 const bottomNavItems: NavItem[] = [
@@ -69,7 +80,7 @@ export function AppSidebar() {
         <item.icon className={cn("h-5 w-5 shrink-0", active && "text-sidebar-primary")} />
         {!collapsed && (
           <>
-            <span className="font-medium">{item.title}</span>
+            <span className="font-medium text-sm">{item.title}</span>
             {item.badge && (
               <Badge
                 variant="secondary"
@@ -102,6 +113,15 @@ export function AppSidebar() {
     return content;
   };
 
+  const GroupLabel = ({ label }: { label: string }) => {
+    if (collapsed) return null;
+    return (
+      <p className="text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/40 px-3 mb-1">
+        {label}
+      </p>
+    );
+  };
+
   return (
     <aside
       className={cn(
@@ -116,7 +136,7 @@ export function AppSidebar() {
             <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
               <Store className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg text-sidebar-foreground">MultiShop</span>
+            <span className="font-bold text-lg text-sidebar-foreground">FastRelays</span>
           </Link>
         )}
         {collapsed && (
@@ -131,8 +151,8 @@ export function AppSidebar() {
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
             <Link to="/marketplace">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size={collapsed ? "icon" : "default"}
                 className={cn(
                   "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 w-full",
@@ -148,11 +168,25 @@ export function AppSidebar() {
         </Tooltip>
       </div>
 
-      {/* Main Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {mainNavItems.map((item) => (
-          <NavLink key={item.href} item={item} />
-        ))}
+      {/* Navigation Groups */}
+      <nav className="flex-1 p-3 overflow-y-auto space-y-1">
+        {/* Gestion Group */}
+        <div className="space-y-1">
+          <GroupLabel label="Gestion" />
+          {gestionItems.map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
+        </div>
+
+        <Separator className="my-3 bg-sidebar-border" />
+
+        {/* Mon Compte Group */}
+        <div className="space-y-1">
+          <GroupLabel label="Mon Compte" />
+          {compteItems.map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
+        </div>
       </nav>
 
       {/* Bottom Section */}
@@ -180,7 +214,7 @@ export function AppSidebar() {
                 {user?.email || "Utilisateur"}
               </p>
               <p className="text-xs text-sidebar-muted truncate">
-                Espace gestion
+                Mon espace
               </p>
             </div>
           )}

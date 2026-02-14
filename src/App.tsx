@@ -21,6 +21,10 @@ import MarketplacePromotions from "./pages/MarketplacePromotions";
 import MarketplaceTrending from "./pages/MarketplaceTrending";
 import MarketplaceShops from "./pages/MarketplaceShops";
 import MarketplaceDeals from "./pages/MarketplaceDeals";
+import MesAchats from "./pages/MesAchats";
+import WalletPage from "./pages/WalletPage";
+import MesDepenses from "./pages/MesDepenses";
+import Favoris from "./pages/Favoris";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +54,10 @@ const App = () => (
                   <Route path="/marketplace/deals" element={<MarketplaceDeals />} />
                   <Route path="/commandes" element={<Commandes />} />
                   <Route path="/product/:productId" element={<ProductDetail />} />
+                  <Route path="/mes-achats" element={<MesAchats />} />
+                  <Route path="/wallet" element={<WalletPage />} />
+                  <Route path="/mes-depenses" element={<MesDepenses />} />
+                  <Route path="/favoris" element={<Favoris />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
