@@ -194,35 +194,21 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
 
   return (
     <div className="space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Rechercher un produit..." 
-            value={search} 
-            onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="pl-9 h-9 bg-background"
-          />
-        </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Status filter chips */}
-          {(["all", "published", "draft", "removed"] as const).map(s => (
-            <Button
-              key={s}
-              variant={statusFilter === s ? "default" : "ghost"}
-              size="sm"
-              className="h-8 text-xs"
-              onClick={() => { setStatusFilter(s); setPage(1); }}
-            >
-              {s === "all" ? "Tous" : s === "published" ? "Publiés" : s === "draft" ? "Brouillons" : "Retirés"}
-              <Badge variant="secondary" className="ml-1.5 text-[10px] px-1.5">{counts[s]}</Badge>
-            </Button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 ml-auto">
+      {/* Filter Bar - sticky & prominent */}
+      <div className="sticky top-0 z-10 -mx-1 px-1 py-3 bg-background/95 backdrop-blur-sm space-y-3">
+        {/* Row 1: Search + Actions */}
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+              placeholder="Rechercher un produit..." 
+              value={search} 
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+              className="pl-9 h-10 bg-card"
+            />
+          </div>
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="h-8 w-[130px] text-xs">
+            <SelectTrigger className="h-10 w-[140px] text-xs bg-card">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -231,20 +217,38 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
               <SelectItem value="price">Par prix</SelectItem>
             </SelectContent>
           </Select>
-          <div className="flex rounded-md bg-muted p-0.5">
-            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
-              <LayoutGrid className="h-3.5 w-3.5" />
+          <div className="flex rounded-lg bg-muted p-0.5">
+            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-8 w-8" onClick={() => setViewMode("grid")}>
+              <LayoutGrid className="h-4 w-4" />
             </Button>
-            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
-              <List className="h-3.5 w-3.5" />
+            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-8 w-8" onClick={() => setViewMode("list")}>
+              <List className="h-4 w-4" />
             </Button>
           </div>
           {isOwner && (
-            <Button size="sm" className="h-8 gap-1.5 text-xs">
-              <Plus className="h-3.5 w-3.5" />
-              Nouveau
+            <Button size="sm" className="h-10 gap-2 px-4">
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nouveau produit</span>
+              <span className="sm:hidden">Nouveau</span>
             </Button>
           )}
+        </div>
+
+        {/* Row 2: Status filter chips */}
+        <div className="flex items-center gap-2">
+          {(["all", "published", "draft", "removed"] as const).map(s => (
+            <Button
+              key={s}
+              variant={statusFilter === s ? "default" : "outline"}
+              size="sm"
+              className={`h-8 text-xs rounded-full ${statusFilter !== s ? "bg-card" : ""}`}
+              onClick={() => { setStatusFilter(s); setPage(1); }}
+            >
+              {s === "all" ? "Tous" : s === "published" ? "Publiés" : s === "draft" ? "Brouillons" : "Retirés"}
+              <Badge variant={statusFilter === s ? "outline" : "secondary"} className="ml-1.5 text-[10px] px-1.5 rounded-full">{counts[s]}</Badge>
+            </Button>
+          ))}
+          <span className="ml-auto text-xs text-muted-foreground">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
         </div>
       </div>
 
