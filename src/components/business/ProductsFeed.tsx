@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,15 +60,14 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
 };
 
-function ProductCardView({ product, isOwner }: { product: Product; isOwner: boolean }) {
-  const navigate = useNavigate();
+function ProductCardView({ product, isOwner, onProductClick }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
   return (
     <div 
       className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-border transition-colors"
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => onProductClick(product)}
     >
       <div className="relative h-36 bg-muted">
         {product.image ? (
@@ -92,7 +90,7 @@ function ProductCardView({ product, isOwner }: { product: Product; isOwner: bool
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Modifier</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
                 {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
                 {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
                 {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
@@ -118,15 +116,14 @@ function ProductCardView({ product, isOwner }: { product: Product; isOwner: bool
   );
 }
 
-function ProductListView({ product, isOwner }: { product: Product; isOwner: boolean }) {
-  const navigate = useNavigate();
+function ProductListView({ product, isOwner, onProductClick }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
   return (
     <div 
       className="flex items-center gap-4 px-4 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => onProductClick(product)}
     >
       <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center text-xl shrink-0">
         {product.category === "repas" ? "🍽️" : "🛍️"}
@@ -156,7 +153,7 @@ function ProductListView({ product, isOwner }: { product: Product; isOwner: bool
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Modifier</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -172,6 +169,13 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const [sortBy, setSortBy] = useState("sales");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
+  const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+
+  const handleProductClick = (product: Product) => {
+    setEditProduct(product);
+    setEditOpen(true);
+  };
 
   const filtered = products
     .filter(p => statusFilter === "all" || p.status === statusFilter)
@@ -261,11 +265,11 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} />)}
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} />)}
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} />)}
           </div>
         )
       ) : (
@@ -288,6 +292,16 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
           </Button>
         </div>
       )}
+
+      {/* Edit Product Sheet */}
+      <CreateProductSheet
+        product={editProduct}
+        open={editOpen}
+        onOpenChange={(open) => {
+          setEditOpen(open);
+          if (!open) setEditProduct(null);
+        }}
+      />
     </div>
   );
 }
