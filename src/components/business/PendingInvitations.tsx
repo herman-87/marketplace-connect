@@ -25,9 +25,9 @@ const ITEMS_PER_PAGE = 6;
 
 function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
-    <div className="rounded-lg bg-card p-4 relative group">
+    <div className="rounded-lg bg-card border border-border/60 p-4 relative group hover:border-border transition-colors">
       <div className="absolute top-3 right-3">
-        <Badge variant="outline" className="gap-1 text-[10px] text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800">
+        <Badge variant="outline" className="gap-1 text-[10px] text-warning border-warning/30 bg-warning/10">
           <Clock className="h-3 w-3" />
           En attente
         </Badge>
@@ -41,8 +41,8 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
               {inv.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
-            <Mail className="h-3 w-3 text-amber-600" />
+          <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+            <Mail className="h-3 w-3 text-warning" />
           </div>
         </div>
 
@@ -64,7 +64,7 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
       </div>
 
       {/* Flow indicator */}
-      <div className="mt-3 pt-3 border-t border-border/50 flex items-center justify-center gap-2 text-[10px] text-muted-foreground">
+      <div className="mt-3 pt-3 border-t border-border/40 flex items-center justify-center gap-2 text-[10px] text-muted-foreground">
         <Clock className="h-3 w-3" />
         <span>En attente</span>
         <ArrowRight className="h-3 w-3 text-primary" />
@@ -87,7 +87,7 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
 
 function InvitationListView({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/30 transition-colors">
+    <div className="flex items-center gap-4 p-3 rounded-lg border border-transparent hover:border-border/40 hover:bg-muted/30 transition-all">
       <div className="relative shrink-0">
         <Avatar className="h-8 w-8">
           <AvatarImage src={inv.avatar} />
@@ -95,14 +95,14 @@ function InvitationListView({ inv, onCancel, onResend }: { inv: PendingInvitatio
             {inv.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
-          <Mail className="h-2.5 w-2.5 text-amber-600" />
+        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+          <Mail className="h-2.5 w-2.5 text-warning" />
         </div>
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span className="font-medium text-sm truncate">{inv.name}</span>
-          <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 shrink-0">
+          <Badge variant="outline" className="text-[10px] text-warning border-warning/30 bg-warning/10 shrink-0">
             En attente
           </Badge>
         </div>
@@ -147,17 +147,17 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h3 className="text-base font-medium">Invitations en attente</h3>
-          <Badge variant="outline" className="text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30">
+          <Badge variant="outline" className="text-warning border-warning/30 bg-warning/10">
             {invitations.length}
           </Badge>
         </div>
         <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-amber-50 dark:bg-amber-950/20">
-            <Clock className="h-3 w-3 text-amber-600" />
-            <span>Invitation envoyée</span>
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-warning/10 border border-warning/20">
+            <Clock className="h-3 w-3 text-warning" />
+            <span className="text-warning">Invitation envoyée</span>
           </div>
           <ArrowRight className="h-4 w-4 text-primary" />
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-primary/10">
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-primary/10 border border-primary/20">
             <span className="text-primary font-medium">Acceptée → Collaborateur</span>
           </div>
         </div>
