@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { 
   Heart, 
   ShoppingCart, 
@@ -13,7 +19,11 @@ import {
   FileEdit, 
   Archive,
   Plus,
-  TrendingUp
+  Search,
+  LayoutGrid,
+  List,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -42,183 +52,233 @@ interface ProductsFeedProps {
   isOwner: boolean;
 }
 
-function ProductCard({ product, isOwner }: { product: Product; isOwner: boolean }) {
-  const navigate = useNavigate();
-  const statusConfig = {
-    draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
-    published: { label: "Publié", variant: "default" as const, icon: Send },
-    removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
-  };
+const ITEMS_PER_PAGE = 6;
 
+const statusConfig = {
+  draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
+  published: { label: "Publié", variant: "default" as const, icon: Send },
+  removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
+};
+
+function ProductCardView({ product, isOwner }: { product: Product; isOwner: boolean }) {
+  const navigate = useNavigate();
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
   return (
-    <Card 
-      className="overflow-hidden cursor-pointer hover:bg-muted/30 transition-colors"
+    <div 
+      className="group rounded-lg bg-card overflow-hidden cursor-pointer hover:bg-muted/30 transition-colors"
       onClick={() => navigate(`/product/${product.id}`)}
     >
-      {/* Product Image */}
-      <div className="relative h-40 bg-muted border-b border-border">
+      <div className="relative h-36 bg-muted">
         {product.image ? (
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl">
+          <div className="w-full h-full flex items-center justify-center text-3xl">
             {product.category === "repas" ? "🍽️" : "🛍️"}
           </div>
         )}
-        
-        {/* Status Badge */}
-        <Badge 
-          variant={status.variant}
-          className="absolute top-3 left-3 gap-1"
-        >
+        <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-[10px]">
           <StatusIcon className="h-3 w-3" />
           {status.label}
         </Badge>
+        {isOwner && (
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="h-7 w-7">
+                  <MoreHorizontal className="h-3.5 w-3.5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Modifier</DropdownMenuItem>
+                {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
+                {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
+                {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
+                <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+      </div>
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-medium text-sm truncate">{product.name}</h3>
+          <span className="font-semibold text-sm whitespace-nowrap">{product.price}€</span>
+        </div>
+        <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{product.description}</p>
+        <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
+          <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{product.views}</span>
+          <span className="flex items-center gap-1"><ShoppingCart className="h-3 w-3" />{product.sales}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* Actions */}
-        <div className="absolute top-3 right-3">
+function ProductListView({ product, isOwner }: { product: Product; isOwner: boolean }) {
+  const navigate = useNavigate();
+  const status = statusConfig[product.status];
+  const StatusIcon = status.icon;
+
+  return (
+    <div 
+      className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer"
+      onClick={() => navigate(`/product/${product.id}`)}
+    >
+      <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center text-xl shrink-0">
+        {product.category === "repas" ? "🍽️" : "🛍️"}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <h3 className="font-medium text-sm truncate">{product.name}</h3>
+          <Badge variant={status.variant} className="gap-1 text-[10px] shrink-0">
+            <StatusIcon className="h-3 w-3" />
+            {status.label}
+          </Badge>
+        </div>
+        <p className="text-xs text-muted-foreground truncate">{product.description}</p>
+      </div>
+      <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
+        <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
+        <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{product.views}</span>
+        <span className="flex items-center gap-1"><ShoppingCart className="h-3 w-3" />{product.sales}</span>
+      </div>
+      <span className="font-semibold text-sm shrink-0">{product.price}€</span>
+      {isOwner && (
+        <div onClick={e => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0">
+                <MoreHorizontal className="h-3.5 w-3.5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Modifier</DropdownMenuItem>
-              {product.status === "draft" && (
-                <DropdownMenuItem>Publier sur le marketplace</DropdownMenuItem>
-              )}
-              {product.status === "published" && (
-                <DropdownMenuItem>Retirer du marketplace</DropdownMenuItem>
-              )}
-              {product.status === "removed" && (
-                <DropdownMenuItem>Republier</DropdownMenuItem>
-              )}
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
-
-      <CardContent className="p-4">
-        {/* Product Info */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0 flex-1">
-            <h3 className="font-medium truncate">{product.name}</h3>
-            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{product.description}</p>
-          </div>
-          <p className="font-semibold text-lg whitespace-nowrap">{product.price}€</p>
-        </div>
-
-        {/* Stats */}
-        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Heart className="h-4 w-4" />
-            <span>{product.likes}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Eye className="h-4 w-4" />
-            <span>{product.views}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <ShoppingCart className="h-4 w-4" />
-            <span>{product.sales} ventes</span>
-          </div>
-        </div>
-
-        {/* Meta */}
-        <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
-          <span>Par {product.createdBy}</span>
-          <span>{product.createdAt}</span>
-        </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 }
 
 export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
-  const [activeTab, setActiveTab] = useState("all");
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("sales");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState(1);
 
-  const filteredProducts = products.filter((product) => {
-    if (activeTab === "all") return true;
-    return product.status === activeTab;
-  });
+  const filtered = products
+    .filter(p => statusFilter === "all" || p.status === statusFilter)
+    .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      if (sortBy === "sales") return b.sales - a.sales;
+      if (sortBy === "likes") return b.likes - a.likes;
+      if (sortBy === "price") return b.price - a.price;
+      return 0;
+    });
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => b.sales - a.sales);
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const counts = {
     all: products.length,
-    published: products.filter((p) => p.status === "published").length,
-    draft: products.filter((p) => p.status === "draft").length,
-    removed: products.filter((p) => p.status === "removed").length,
+    published: products.filter(p => p.status === "published").length,
+    draft: products.filter(p => p.status === "draft").length,
+    removed: products.filter(p => p.status === "removed").length,
   };
 
   return (
     <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-medium flex items-center gap-2">
-          Produits
-          <Badge variant="secondary">{products.length}</Badge>
-        </h2>
-        <Button className="gap-2">
-          <Plus className="h-4 w-4" />
-          Nouveau produit
-        </Button>
+      {/* Toolbar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div className="relative flex-1 w-full sm:max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input 
+            placeholder="Rechercher un produit..." 
+            value={search} 
+            onChange={e => { setSearch(e.target.value); setPage(1); }}
+            className="pl-9 h-9 bg-background"
+          />
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Status filter chips */}
+          {(["all", "published", "draft", "removed"] as const).map(s => (
+            <Button
+              key={s}
+              variant={statusFilter === s ? "default" : "ghost"}
+              size="sm"
+              className="h-8 text-xs"
+              onClick={() => { setStatusFilter(s); setPage(1); }}
+            >
+              {s === "all" ? "Tous" : s === "published" ? "Publiés" : s === "draft" ? "Brouillons" : "Retirés"}
+              <Badge variant="secondary" className="ml-1.5 text-[10px] px-1.5">{counts[s]}</Badge>
+            </Button>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 ml-auto">
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="h-8 w-[130px] text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="sales">Par ventes</SelectItem>
+              <SelectItem value="likes">Par likes</SelectItem>
+              <SelectItem value="price">Par prix</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="flex rounded-md bg-muted p-0.5">
+            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </Button>
+            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
+              <List className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+          {isOwner && (
+            <Button size="sm" className="h-8 gap-1.5 text-xs">
+              <Plus className="h-3.5 w-3.5" />
+              Nouveau
+            </Button>
+          )}
+        </div>
       </div>
 
-      {/* Top Performers Banner */}
-      {sortedProducts.length > 0 && sortedProducts[0].sales > 0 && (
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-foreground" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Meilleure vente</p>
-              <p className="font-medium">{sortedProducts[0].name} — {sortedProducts[0].sales} ventes</p>
-            </div>
+      {/* Content */}
+      {paginated.length > 0 ? (
+        viewMode === "grid" ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} />)}
           </div>
-        </Card>
+        ) : (
+          <div className="space-y-1">
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} />)}
+          </div>
+        )
+      ) : (
+        <div className="py-12 text-center text-muted-foreground text-sm">
+          Aucun produit trouvé
+        </div>
       )}
 
-      {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="border border-border">
-          <TabsTrigger value="all" className="gap-2">
-            Tous <Badge variant="secondary" className="text-xs">{counts.all}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="published" className="gap-2">
-            Publiés <Badge variant="secondary" className="text-xs">{counts.published}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="draft" className="gap-2">
-            Brouillons <Badge variant="secondary" className="text-xs">{counts.draft}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="removed" className="gap-2">
-            Retirés <Badge variant="secondary" className="text-xs">{counts.removed}</Badge>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value={activeTab} className="mt-4">
-          {sortedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sortedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} isOwner={isOwner} />
-              ))}
-            </div>
-          ) : (
-            <Card className="border-dashed border-2 p-8 text-center">
-              <p className="text-muted-foreground">Aucun produit dans cette catégorie</p>
-              <Button variant="outline" className="mt-4 gap-2">
-                <Plus className="h-4 w-4" />
-                Créer un produit
-              </Button>
-            </Card>
-          )}
-        </TabsContent>
-      </Tabs>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-2">
+          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === 1} onClick={() => setPage(p => p - 1)}>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            {page} / {totalPages}
+          </span>
+          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

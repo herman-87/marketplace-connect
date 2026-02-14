@@ -1,6 +1,5 @@
 import { AppLayout } from "@/components/layout/AppLayout";
 import { BusinessHeader } from "@/components/business/BusinessHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, ShoppingCart, Users, Heart, TrendingUp, Eye } from "lucide-react";
 import { mockBusiness, mockEngagement } from "@/data/businessMockData";
 
@@ -10,97 +9,64 @@ export default function BusinessDetail() {
       <div className="space-y-4 md:space-y-6">
         <BusinessHeader business={mockBusiness} />
 
-        {/* Quick Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <Package className="h-5 w-5 text-primary" />
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { icon: Package, value: mockBusiness.stats.products, label: "Produits", color: "text-primary" },
+            { icon: ShoppingCart, value: mockBusiness.stats.sales, label: "Ventes", color: "text-foreground" },
+            { icon: Users, value: mockBusiness.stats.followers, label: "Abonnés", color: "text-foreground" },
+            { icon: Heart, value: mockEngagement.totalLikes, label: "J'aime", color: "text-foreground" },
+          ].map((stat, i) => (
+            <div key={i} className="rounded-lg bg-card p-4 flex items-center gap-3">
+              <div className="p-2 rounded-md bg-muted">
+                <stat.icon className={`h-4 w-4 ${stat.color}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold">{mockBusiness.stats.products}</p>
-                <p className="text-xs text-muted-foreground">Produits</p>
+                <p className="text-xl font-bold">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground">{stat.label}</p>
               </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-accent">
-                <ShoppingCart className="h-5 w-5 text-accent-foreground" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{mockBusiness.stats.sales}</p>
-                <p className="text-xs text-muted-foreground">Ventes</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-secondary">
-                <Users className="h-5 w-5 text-secondary-foreground" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{mockBusiness.stats.followers}</p>
-                <p className="text-xs text-muted-foreground">Abonnés</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-muted">
-                <Heart className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{mockEngagement.totalLikes}</p>
-                <p className="text-xs text-muted-foreground">J'aime</p>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          ))}
         </div>
 
-        {/* Recent Activity Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                Activité cette semaine
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Nouveaux likes</span>
-                <span className="font-semibold text-primary">+{mockEngagement.likesThisWeek}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Vues</span>
-                <span className="font-semibold">+{mockEngagement.viewsThisWeek}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Nouveaux abonnés</span>
-                <span className="font-semibold text-primary">+{mockEngagement.newFollowers}</span>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Eye className="h-4 w-4 text-primary" />
-                Produits populaires
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
+        {/* Activity */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="rounded-lg bg-card p-4 space-y-3">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              Activité cette semaine
+            </h3>
+            <div className="space-y-2">
+              {[
+                { label: "Nouveaux likes", value: `+${mockEngagement.likesThisWeek}`, highlight: true },
+                { label: "Vues", value: `+${mockEngagement.viewsThisWeek}` },
+                { label: "Nouveaux abonnés", value: `+${mockEngagement.newFollowers}`, highlight: true },
+              ].map((item, i) => (
+                <div key={i} className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">{item.label}</span>
+                  <span className={`font-semibold text-sm ${item.highlight ? "text-primary" : ""}`}>{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-card p-4 space-y-3">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              <Eye className="h-4 w-4 text-primary" />
+              Produits populaires
+            </h3>
+            <div className="space-y-2">
               {mockEngagement.topLikedProducts.map((product) => (
                 <div key={product.id} className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">{product.name}</span>
-                  <span className="font-semibold flex items-center gap-1">
+                  <span className="font-semibold text-sm flex items-center gap-1">
                     <Heart className="h-3 w-3 text-destructive" />
                     {product.likes}
                   </span>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </AppLayout>

@@ -8,9 +8,7 @@ export default function BusinessEngagement() {
     <AppLayout>
       <div className="space-y-4 md:space-y-6">
         <BusinessHeader business={mockBusiness} />
-        <div className="max-w-2xl">
-          <EngagementPanel stats={mockEngagement} />
-        </div>
+        <EngagementPanel stats={mockEngagement} />
       </div>
     </AppLayout>
   );

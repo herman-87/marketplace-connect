@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
+import { mockBusiness } from "@/data/businessMockData";
 import {
   Tooltip,
   TooltipContent,
@@ -75,6 +76,7 @@ export function AppSidebar() {
   const businessMatch = location.pathname.match(/^\/business\/([^/]+)/);
   const businessId = businessMatch ? businessMatch[1] : null;
   const isBusinessContext = !!businessId;
+  const businessName = isBusinessContext ? mockBusiness.name : null;
 
   const isActive = (href: string) => {
     // Exact match for business overview
@@ -221,7 +223,7 @@ export function AppSidebar() {
         {isBusinessContext ? (
           <>
             {/* Business contextual navigation */}
-            <CollapsibleGroup label="Mon Business" items={businessItems} defaultOpen={true} />
+            <CollapsibleGroup label={businessName || "Mon Business"} items={businessItems} defaultOpen={true} />
 
             <Separator className="my-3 bg-sidebar-border" />
 
