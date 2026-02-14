@@ -13,7 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
-import { useNavigate } from "react-router-dom";
 
 const trendingProducts = [
   {
@@ -110,7 +109,6 @@ const categoryConfig = {
 export function TrendingProducts() {
   const { addToCart } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const navigate = useNavigate();
 
   const handleAddToCart = (product: typeof trendingProducts[0]) => {
     addToCart({
@@ -147,7 +145,7 @@ export function TrendingProducts() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" className="gap-1" onClick={() => navigate("/marketplace/category?section=trending")}>
+        <Button variant="outline" size="sm" className="gap-1">
           Voir tout
           <ArrowRight className="w-4 h-4" />
         </Button>
