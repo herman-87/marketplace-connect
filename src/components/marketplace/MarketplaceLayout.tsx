@@ -16,7 +16,7 @@ export function MarketplaceLayout({ children }: MarketplaceLayoutProps) {
       <footer className="border-t border-border/50 py-6 mt-8">
         <div className="container mx-auto px-4">
           <p className="text-sm text-muted-foreground text-center">
-            © 2024 Marketplace. Tous droits réservés.
+            © 2025 FastRelays. Tous droits réservés.
           </p>
         </div>
       </footer>

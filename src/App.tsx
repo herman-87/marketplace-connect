@@ -17,6 +17,7 @@ import Collaborations from "./pages/Collaborations";
 import Marketplace from "./pages/Marketplace";
 import Commandes from "./pages/Commandes";
 import ProductDetail from "./pages/ProductDetail";
+import MarketplacePromotions from "./pages/MarketplacePromotions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
                   <Route path="/business/:id/settings" element={<BusinessSettings />} />
                   <Route path="/collaborations" element={<Collaborations />} />
                   <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/marketplace/promotions" element={<MarketplacePromotions />} />
                   <Route path="/commandes" element={<Commandes />} />
                   <Route path="/product/:productId" element={<ProductDetail />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

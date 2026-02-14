@@ -69,7 +69,7 @@ export default function Landing() {
             <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
               <Store className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold">Marketplace</span>
+            <span className="text-xl font-bold">FastRelays</span>
           </div>
           
           <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export default function Landing() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Store className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-semibold">Marketplace</span>
+              <span className="font-semibold">FastRelays</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t("landing.footer.rights")}

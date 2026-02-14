@@ -49,7 +49,7 @@ export function MarketplaceHeader() {
           <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
             <Store className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold hidden sm:inline">Marketplace</span>
+          <span className="text-xl font-bold hidden sm:inline">FastRelays</span>
         </Link>
 
         {/* Search Bar - Desktop */}
