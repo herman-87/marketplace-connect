@@ -4,9 +4,8 @@ import { mockBusiness, mockEngagement } from "@/data/businessMockData";
 
 export default function BusinessEngagement() {
   return (
-    <AppLayout>
-      <div className="space-y-4 md:space-y-6">
-        <h1 className="text-xl font-semibold">{mockBusiness.name}</h1>
+    <AppLayout title={mockBusiness.name} subtitle="Suivez l'engagement et la popularité de vos produits">
+      <div className="animate-fade-in">
         <EngagementPanel stats={mockEngagement} />
       </div>
     </AppLayout>

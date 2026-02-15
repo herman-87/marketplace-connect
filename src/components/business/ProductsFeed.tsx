@@ -21,8 +21,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -31,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CreateProductSheet } from "./CreateProductSheet";
+import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 
 interface Product {
   id: string;
@@ -279,19 +278,12 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === 1} onClick={() => setPage(p => p - 1)}>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            {page} / {totalPages}
-          </span>
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
+      <AdaptivePagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        variant={filtered.length > 12 ? "full" : "compact"}
+      />
 
       {/* Edit Product Sheet */}
       <CreateProductSheet

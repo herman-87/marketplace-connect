@@ -3,7 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Crown, TrendingUp, MoreHorizontal, Search, LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
+import { Crown, TrendingUp, MoreHorizontal, Search, LayoutGrid, List } from "lucide-react";
+import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -176,17 +177,12 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
         <div className="py-12 text-center text-muted-foreground text-sm">Aucun membre trouvé</div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === 1} onClick={() => setPage(p => p - 1)}>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm text-muted-foreground">{page} / {totalPages}</span>
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
+      <AdaptivePagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        variant={sorted.length > 16 ? "full" : "compact"}
+      />
     </div>
   );
 }

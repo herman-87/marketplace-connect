@@ -6,18 +6,15 @@ import { Separator } from "@/components/ui/separator";
 
 export default function BusinessTeam() {
   return (
-    <AppLayout>
-      <div className="space-y-4 md:space-y-6">
-        <h1 className="text-xl font-semibold">{mockBusiness.name}</h1>
-        <div className="space-y-8">
-          <PendingInvitations
-            invitations={mockPendingInvitations}
-            onCancel={(id) => console.log("Cancel invitation:", id)}
-            onResend={(id) => console.log("Resend invitation:", id)}
-          />
-          <Separator />
-          <CollaboratorsList collaborators={mockCollaborators} isOwner={mockBusiness.isOwner} />
-        </div>
+    <AppLayout title={mockBusiness.name} subtitle="Gérez votre équipe et les invitations">
+      <div className="space-y-6 md:space-y-8 animate-fade-in">
+        <PendingInvitations
+          invitations={mockPendingInvitations}
+          onCancel={(id) => console.log("Cancel invitation:", id)}
+          onResend={(id) => console.log("Resend invitation:", id)}
+        />
+        <Separator />
+        <CollaboratorsList collaborators={mockCollaborators} isOwner={mockBusiness.isOwner} />
       </div>
     </AppLayout>
   );
