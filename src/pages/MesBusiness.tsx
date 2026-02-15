@@ -10,8 +10,8 @@ import { CreateBusinessSheet } from "@/components/business/CreateBusinessSheet";
 const mockBusinesses = [
   {
     id: "1",
-    name: "RestauFast",
-    description: "Restaurant rapide et livraison de plats préparés frais. Cuisine maison de qualité livrée rapidement.",
+    name: "Urban Style Shop",
+    description: "Boutique de vêtements et accessoires tendance. Articles de qualité pour un style urbain unique.",
     productsCount: 24,
     collaboratorsCount: 3,
     status: "active" as const,

@@ -46,7 +46,6 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type ProductStatus = "draft" | "published" | "removed";
-type ProductCategory = "repas" | "articles";
 
 interface ProductData {
   id: string;
@@ -57,7 +56,6 @@ interface ProductData {
   originalPrice?: number;
   image?: string;
   status: ProductStatus;
-  category: ProductCategory;
   likes: number;
   views: number;
   sales: number;
@@ -69,31 +67,23 @@ interface ProductData {
   businessId: string;
   businessName: string;
   tags: string[];
-  ingredients: string[];
-  allergens: string[];
-  nutritionInfo: {
-    calories: number;
-    proteins: number;
-    carbs: number;
-    fats: number;
-  };
+  specs: { label: string; value: string }[];
 }
 
 // Mock product data
 const mockProduct: ProductData = {
   id: "1",
-  name: "Burger Gourmet Signature",
-  description: "Un délicieux burger artisanal avec steak haché frais, fromage affiné, tomates bio, salade croquante et notre sauce secrète maison. Servi avec des frites croustillantes.",
-  longDescription: `Notre Burger Gourmet Signature est préparé avec les meilleurs ingrédients locaux. Le steak haché provient de bœuf élevé en plein air, le fromage est affiné pendant 6 mois minimum, et nos légumes sont issus de l'agriculture biologique.
+  name: "Montre Connectée Pro X",
+  description: "Une montre connectée haut de gamme avec suivi santé avancé, GPS intégré, écran AMOLED et 7 jours d'autonomie. Compatible iOS et Android.",
+  longDescription: `La Montre Connectée Pro X redéfinit l'expérience des wearables. Son écran AMOLED de 1.4 pouces offre une lisibilité parfaite en toutes conditions, même en plein soleil.
 
-Chaque burger est préparé à la commande pour garantir une fraîcheur optimale. La viande est grillée à la perfection, juteuse à l'intérieur avec une légère croûte caramélisée.
+Grâce à ses capteurs avancés, elle assure un suivi santé complet : fréquence cardiaque, SpO2, qualité du sommeil et stress. Le GPS intégré permet un suivi précis de vos activités sportives sans smartphone.
 
-Notre sauce secrète, créée par notre chef, combine mayonnaise maison, moutarde à l'ancienne, cornichons finement hachés et un mélange d'épices exclusif.`,
-  price: 14.90,
-  originalPrice: 18.90,
+Avec 7 jours d'autonomie en usage normal et une résistance à l'eau 5ATM, elle vous accompagne partout, du bureau à la salle de sport.`,
+  price: 149.99,
+  originalPrice: 199.99,
   image: undefined,
   status: "published" as const,
-  category: "repas" as const,
   likes: 245,
   views: 1820,
   sales: 89,
@@ -101,30 +91,30 @@ Notre sauce secrète, créée par notre chef, combine mayonnaise maison, moutard
   rating: 4.7,
   reviewCount: 34,
   createdAt: "12 Jan 2025",
-  createdBy: "Chef Marc",
+  createdBy: "Alex Martin",
   businessId: "1",
-  businessName: "Le Gourmet Express",
-  tags: ["Populaire", "Recommandé", "Bio"],
-  ingredients: ["Steak haché 180g", "Cheddar affiné", "Tomates bio", "Salade", "Oignons", "Sauce maison"],
-  allergens: ["Gluten", "Lactose", "Œufs"],
-  nutritionInfo: {
-    calories: 650,
-    proteins: 35,
-    carbs: 45,
-    fats: 38,
-  },
+  businessName: "TechStore",
+  tags: ["Populaire", "Recommandé", "Bestseller"],
+  specs: [
+    { label: "Écran", value: "AMOLED 1.4\"" },
+    { label: "Autonomie", value: "7 jours" },
+    { label: "Étanchéité", value: "5ATM" },
+    { label: "GPS", value: "Intégré" },
+    { label: "Compatibilité", value: "iOS / Android" },
+    { label: "Poids", value: "45g" },
+  ],
 };
 
 const mockReviews = [
-  { id: "1", author: "Marie L.", rating: 5, comment: "Meilleur burger de la ville! La viande est parfaitement cuite.", date: "Il y a 2 jours" },
-  { id: "2", author: "Pierre D.", rating: 4, comment: "Très bon, portions généreuses. Je recommande!", date: "Il y a 5 jours" },
-  { id: "3", author: "Sophie M.", rating: 5, comment: "La sauce est incroyable, j'en veux encore!", date: "Il y a 1 semaine" },
+  { id: "1", author: "Marie L.", rating: 5, comment: "Excellente montre, l'autonomie est vraiment impressionnante !", date: "Il y a 2 jours" },
+  { id: "2", author: "Pierre D.", rating: 4, comment: "Très bon produit, le GPS est précis. Je recommande !", date: "Il y a 5 jours" },
+  { id: "3", author: "Sophie M.", rating: 5, comment: "Design élégant et fonctionnalités top, parfait pour le sport.", date: "Il y a 1 semaine" },
 ];
 
 const mockSimilarProducts = [
-  { id: "2", name: "Chicken Burger", price: 12.90, image: undefined, category: "repas" as const },
-  { id: "3", name: "Veggie Burger", price: 13.50, image: undefined, category: "repas" as const },
-  { id: "4", name: "Double Cheese", price: 16.90, image: undefined, category: "repas" as const },
+  { id: "2", name: "Écouteurs Bluetooth Pro", price: 79.99, image: undefined },
+  { id: "3", name: "Bracelet Sport Fit", price: 39.99, image: undefined },
+  { id: "4", name: "Casque Audio Premium", price: 199.99, image: undefined },
 ];
 
 export default function ProductDetail() {
@@ -144,12 +134,12 @@ export default function ProductDetail() {
   }, [carouselApi]);
 
   const productImages = [
-    { id: 1, emoji: "🍔", label: "Vue principale" },
-    { id: 2, emoji: "🍟", label: "Accompagnement" },
-    { id: 3, emoji: "🥤", label: "Boisson" },
-    { id: 4, emoji: "🧀", label: "Ingrédient" },
-    { id: 5, emoji: "🥬", label: "Fraîcheur" },
-    { id: 6, emoji: "🍽️", label: "Présentation" },
+    { id: 1, emoji: "⌚", label: "Vue principale" },
+    { id: 2, emoji: "📱", label: "Avec smartphone" },
+    { id: 3, emoji: "🏃", label: "Sport" },
+    { id: 4, emoji: "💡", label: "Fonctionnalités" },
+    { id: 5, emoji: "🔋", label: "Autonomie" },
+    { id: 6, emoji: "📦", label: "Packaging" },
   ];
 
   const product = mockProduct;
@@ -277,9 +267,7 @@ export default function ProductDetail() {
                 {/* Status & Category */}
                 <div className="flex items-center gap-2 flex-wrap mb-4">
                   <Badge variant={status.variant}>{status.label}</Badge>
-                  <Badge variant="outline">
-                    {product.category === "repas" ? "🍽️ Repas" : "🛍️ Article"}
-                  </Badge>
+                  <Badge variant="outline">🛍️ Article</Badge>
                   {product.tags.map((tag) => (
                     <Badge key={tag} variant="secondary">{tag}</Badge>
                   ))}
@@ -425,10 +413,10 @@ export default function ProductDetail() {
                       Description
                     </TabsTrigger>
                     <TabsTrigger 
-                      value="ingredients" 
+                      value="specs" 
                       className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none"
                     >
-                      Ingrédients
+                      Caractéristiques
                     </TabsTrigger>
                     <TabsTrigger 
                       value="reviews" 
@@ -447,50 +435,14 @@ export default function ProductDetail() {
                     </p>
                   </TabsContent>
 
-                  <TabsContent value="ingredients" className="mt-0 space-y-6">
-                    {/* Ingredients */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Ingrédients</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {product.ingredients.map((ing) => (
-                          <Badge key={ing} variant="secondary">{ing}</Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Allergens */}
-                    <div>
-                      <h3 className="font-semibold mb-3 text-amber-600">Allergènes</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {product.allergens.map((all) => (
-                          <Badge key={all} variant="outline" className="border-amber-300 text-amber-700">
-                            {all}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Nutrition */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Valeurs nutritionnelles</h3>
-                      <div className="grid grid-cols-4 gap-4">
-                        <div className="text-center p-3 rounded-lg bg-muted/50">
-                          <p className="text-2xl font-bold">{product.nutritionInfo.calories}</p>
-                          <p className="text-xs text-muted-foreground">Calories</p>
+                  <TabsContent value="specs" className="mt-0 space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      {product.specs.map((spec) => (
+                        <div key={spec.label} className="p-3 rounded-lg bg-muted/50">
+                          <p className="text-xs text-muted-foreground">{spec.label}</p>
+                          <p className="font-semibold mt-0.5">{spec.value}</p>
                         </div>
-                        <div className="text-center p-3 rounded-lg bg-muted/50">
-                          <p className="text-2xl font-bold">{product.nutritionInfo.proteins}g</p>
-                          <p className="text-xs text-muted-foreground">Protéines</p>
-                        </div>
-                        <div className="text-center p-3 rounded-lg bg-muted/50">
-                          <p className="text-2xl font-bold">{product.nutritionInfo.carbs}g</p>
-                          <p className="text-xs text-muted-foreground">Glucides</p>
-                        </div>
-                        <div className="text-center p-3 rounded-lg bg-muted/50">
-                          <p className="text-2xl font-bold">{product.nutritionInfo.fats}g</p>
-                          <p className="text-xs text-muted-foreground">Lipides</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </TabsContent>
 
@@ -541,7 +493,7 @@ export default function ProductDetail() {
                   onClick={() => navigate(`/product/${item.id}`)}
                 >
                   <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-4xl">
-                    {item.category === "repas" ? "🍔" : "🛍️"}
+                    🛍️
                   </div>
                   <CardContent className="p-3">
                     <h4 className="font-medium truncate">{item.name}</h4>

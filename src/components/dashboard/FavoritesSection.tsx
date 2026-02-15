@@ -11,14 +11,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const favoriteProducts = [
-  { id: "1", name: "Poulet Yassa", price: 15.90, rating: 4.9, businessName: "Saveurs d'Afrique", image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=150&fit=crop" },
-  { id: "2", name: "Montre Connectée Pro", price: 149.99, rating: 4.7, businessName: "TechStore", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=150&fit=crop" },
-  { id: "3", name: "Sac à dos Urban", price: 59.99, rating: 4.6, businessName: "ModeBoutique", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&h=150&fit=crop" },
+  { id: "1", name: "Montre Connectée Pro", price: 149.99, rating: 4.9, businessName: "TechStore", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=150&fit=crop" },
+  { id: "2", name: "Sac à dos Urban", price: 59.99, rating: 4.7, businessName: "ModeBoutique", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&h=150&fit=crop" },
+  { id: "3", name: "Sneakers Limited", price: 89.99, rating: 4.6, businessName: "ModeBoutique", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=150&fit=crop" },
 ];
 
 const favoriteShops = [
-  { id: "1", name: "RestauFast", category: "Restaurant", rating: 4.8, productsCount: 24, avatar: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=80&h=80&fit=crop" },
-  { id: "2", name: "TechStore", category: "High-Tech", rating: 4.6, productsCount: 156, avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=80&h=80&fit=crop" },
+  { id: "1", name: "TechStore", category: "High-Tech", rating: 4.6, productsCount: 156, avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=80&h=80&fit=crop" },
+  { id: "2", name: "ModeBoutique", category: "Mode", rating: 4.7, productsCount: 89, avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=80&h=80&fit=crop" },
 ];
 
 export function FavoritesSection() {

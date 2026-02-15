@@ -1,24 +1,16 @@
 import { cn } from "@/lib/utils";
 import { 
-  UtensilsCrossed, 
   ShoppingBag, 
   Shirt, 
   Smartphone, 
   Home, 
   Sparkles,
   Car,
-  Dumbbell
+  Dumbbell,
+  Watch
 } from "lucide-react";
 
 const categories = [
-  { 
-    id: "repas", 
-    name: "Repas", 
-    icon: UtensilsCrossed, 
-    count: 342,
-    colorClass: "bg-[hsl(24,85%,55%)]",
-    bgClass: "bg-[hsl(24,85%,55%,0.15)]",
-  },
   { 
     id: "mode", 
     name: "Mode", 
@@ -34,6 +26,14 @@ const categories = [
     count: 89,
     colorClass: "bg-[hsl(210,90%,55%)]",
     bgClass: "bg-[hsl(210,90%,55%,0.15)]",
+  },
+  { 
+    id: "accessoires", 
+    name: "Accessoires", 
+    icon: Watch, 
+    count: 210,
+    colorClass: "bg-[hsl(24,85%,55%)]",
+    bgClass: "bg-[hsl(24,85%,55%,0.15)]",
   },
   { 
     id: "maison", 

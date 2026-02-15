@@ -18,7 +18,6 @@ import {
   Phone,
   ChevronDown,
   ChevronUp,
-  UtensilsCrossed,
   ShoppingBag
 } from "lucide-react";
 import {
@@ -38,7 +37,7 @@ interface BusinessHeaderProps {
     id: string;
     name: string;
     description: string;
-    category: "repas" | "articles";
+    category: "articles";
     coverImage?: string;
     avatar?: string;
     isOwner: boolean;
@@ -55,10 +54,6 @@ interface BusinessHeaderProps {
 }
 
 const categoryConfig = {
-  repas: {
-    label: "Restauration",
-    icon: UtensilsCrossed,
-  },
   articles: {
     label: "Commerce",
     icon: ShoppingBag,

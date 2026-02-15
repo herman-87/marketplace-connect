@@ -6,7 +6,6 @@ import {
   Star, 
   ShoppingCart, 
   Heart,
-  UtensilsCrossed,
   ShoppingBag,
   ArrowRight
 } from "lucide-react";
@@ -18,94 +17,77 @@ import { Link } from "react-router-dom";
 const trendingProducts = [
   {
     id: "trend-1",
-    name: "Poulet Yassa",
-    description: "Poulet mariné aux oignons et citron",
-    price: 15.90,
-    category: "repas",
-    businessId: "saveurs-afrique",
-    businessName: "Saveurs d'Afrique",
-    rating: 4.9,
-    reviewsCount: 234,
-    sales: 156,
-    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&h=200&fit=crop",
-  },
-  {
-    id: "trend-2",
     name: "Montre Connectée Pro",
     description: "Suivi santé, GPS, 7 jours d'autonomie",
     price: 149.99,
-    category: "articles",
     businessId: "techstore",
     businessName: "TechStore",
     rating: 4.7,
     reviewsCount: 89,
-    sales: 78,
+    sales: 156,
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
   },
   {
-    id: "trend-3",
-    name: "Thieboudienne Royal",
-    description: "Riz au poisson, légumes frais",
-    price: 18.50,
-    category: "repas",
-    businessId: "teranga",
-    businessName: "Teranga Cuisine",
-    rating: 4.8,
-    reviewsCount: 312,
-    sales: 203,
-    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
-  },
-  {
-    id: "trend-4",
+    id: "trend-2",
     name: "Sac à dos Urban",
     description: "Imperméable, compartiment laptop",
     price: 59.99,
-    category: "articles",
     businessId: "modeboutique",
     businessName: "ModeBoutique",
     rating: 4.6,
     reviewsCount: 67,
-    sales: 45,
+    sales: 78,
     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
   },
   {
-    id: "trend-5",
-    name: "Mafé Traditionnel",
-    description: "Sauce arachide, bœuf tendre",
-    price: 14.90,
-    category: "repas",
-    businessId: "mama-africa",
-    businessName: "Mama Africa",
+    id: "trend-3",
+    name: "Sneakers Urban Limited",
+    description: "Édition limitée, design exclusif",
+    price: 89.99,
+    businessId: "modeboutique",
+    businessName: "ModeBoutique",
+    rating: 4.8,
+    reviewsCount: 312,
+    sales: 203,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
+  },
+  {
+    id: "trend-4",
+    name: "Casque Audio Premium",
+    description: "Réduction de bruit active, Hi-Fi",
+    price: 199.99,
+    businessId: "techstore",
+    businessName: "TechStore",
     rating: 4.9,
     reviewsCount: 189,
     sales: 134,
-    image: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=300&h=200&fit=crop",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
   },
   {
-    id: "trend-6",
+    id: "trend-5",
     name: "Enceinte Bluetooth",
     description: "Son 360°, étanche, 20h autonomie",
     price: 69.99,
-    category: "articles",
     businessId: "techstore",
     businessName: "TechStore",
     rating: 4.5,
     reviewsCount: 56,
-    sales: 34,
+    sales: 45,
     image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=200&fit=crop",
   },
+  {
+    id: "trend-6",
+    name: "Robe Wax Ankara",
+    description: "Tissu africain authentique",
+    price: 45.00,
+    businessId: "modeboutique",
+    businessName: "ModeBoutique",
+    rating: 4.7,
+    reviewsCount: 98,
+    sales: 34,
+    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&h=200&fit=crop",
+  },
 ];
-
-const categoryConfig = {
-  repas: {
-    label: "Repas",
-    icon: UtensilsCrossed,
-  },
-  articles: {
-    label: "Articles",
-    icon: ShoppingBag,
-  },
-};
 
 export function TrendingProducts() {
   const { addToCart } = useCart();
@@ -156,8 +138,6 @@ export function TrendingProducts() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         {trendingProducts.map((product, index) => {
-          const config = categoryConfig[product.category as keyof typeof categoryConfig];
-          const CategoryIcon = config.icon;
           const liked = isFavorite(product.id);
 
           return (
@@ -182,13 +162,14 @@ export function TrendingProducts() {
                   variant="secondary"
                   className="absolute bottom-2 left-2 gap-0.5 text-[10px] px-1.5"
                 >
-                  <CategoryIcon className="w-2.5 h-2.5" />
-                  {config.label}
+                  <ShoppingBag className="w-2.5 h-2.5" />
+                  Article
                 </Badge>
 
                 {/* Wishlist */}
                 <button
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleToggleFavorite(product);
                   }}
@@ -230,7 +211,11 @@ export function TrendingProducts() {
                   <Button 
                     size="icon" 
                     className="h-7 w-7"
-                    onClick={() => handleAddToCart(product)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleAddToCart(product);
+                    }}
                   >
                     <ShoppingCart className="w-3 h-3" />
                   </Button>

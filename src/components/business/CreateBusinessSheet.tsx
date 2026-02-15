@@ -31,7 +31,8 @@ interface CreateBusinessSheetProps {
 
 const businessCategories = [
   { value: "shop", label: "Boutique" },
-  { value: "restaurant", label: "Restaurant" },
+  { value: "fashion", label: "Mode" },
+  { value: "tech", label: "High-Tech" },
   { value: "service", label: "Service" },
   { value: "artisan", label: "Artisan" },
 ];

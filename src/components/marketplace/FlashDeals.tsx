@@ -10,19 +10,6 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 const flashDeals = [
   {
     id: "flash-1",
-    name: "Burger Deluxe Menu",
-    originalPrice: 18.90,
-    discountPrice: 12.90,
-    discount: 32,
-    businessId: "restaufast",
-    businessName: "RestauFast",
-    rating: 4.8,
-    endsIn: "2h 34m",
-    stock: 12,
-    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=200&fit=crop",
-  },
-  {
-    id: "flash-2",
     name: "Écouteurs Bluetooth Pro",
     originalPrice: 129.99,
     discountPrice: 79.99,
@@ -35,20 +22,7 @@ const flashDeals = [
     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
   },
   {
-    id: "flash-3",
-    name: "Pizza Familiale",
-    originalPrice: 24.90,
-    discountPrice: 16.90,
-    discount: 32,
-    businessId: "pizzaroma",
-    businessName: "PizzaRoma",
-    rating: 4.9,
-    endsIn: "1h 45m",
-    stock: 8,
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=200&fit=crop",
-  },
-  {
-    id: "flash-4",
+    id: "flash-2",
     name: "Sneakers Urban",
     originalPrice: 89.99,
     discountPrice: 59.99,
@@ -59,6 +33,32 @@ const flashDeals = [
     endsIn: "3h 20m",
     stock: 3,
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
+  },
+  {
+    id: "flash-3",
+    name: "Sac à dos Premium",
+    originalPrice: 69.99,
+    discountPrice: 39.99,
+    discount: 43,
+    businessId: "modeboutique",
+    businessName: "ModeBoutique",
+    rating: 4.5,
+    endsIn: "2h 34m",
+    stock: 12,
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop",
+  },
+  {
+    id: "flash-4",
+    name: "Montre Sport Connectée",
+    originalPrice: 199.99,
+    discountPrice: 129.99,
+    discount: 35,
+    businessId: "techstore",
+    businessName: "TechStore",
+    rating: 4.8,
+    endsIn: "1h 45m",
+    stock: 8,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
   },
 ];
 
@@ -133,6 +133,7 @@ export function FlashDeals() {
                 {/* Like Button */}
                 <button
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleToggleFavorite(deal);
                   }}
@@ -157,7 +158,7 @@ export function FlashDeals() {
                 {/* Stock Warning */}
                 {deal.stock <= 5 && (
                   <Badge className="absolute bottom-2 right-2 bg-muted text-muted-foreground border-0 text-[10px]">
-                    {deal.stock} left
+                    {deal.stock} restants
                   </Badge>
                 )}
               </div>
@@ -190,7 +191,11 @@ export function FlashDeals() {
                 <Button 
                   size="sm" 
                   className="w-full mt-3 gap-1 text-xs"
-                  onClick={() => handleAddToCart(deal)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAddToCart(deal);
+                  }}
                 >
                   <ShoppingCart className="w-3 h-3" />
                   Ajouter
