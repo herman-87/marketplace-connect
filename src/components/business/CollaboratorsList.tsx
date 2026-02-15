@@ -22,6 +22,7 @@ interface Collaborator {
   productsCreated: number;
   ordersManaged: number;
   joinedAt: string;
+  permissions: string[];
 }
 
 interface CollaboratorsListProps {
@@ -66,6 +67,15 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
         </div>
       </div>
 
+      <div className="flex flex-wrap gap-1 mt-2.5">
+        {collab.permissions.slice(0, 3).map(perm => (
+          <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0">{perm}</Badge>
+        ))}
+        {collab.permissions.length > 3 && (
+          <Badge variant="secondary" className="text-[10px] px-2 py-0">+{collab.permissions.length - 3}</Badge>
+        )}
+      </div>
+
       {isOwner && collab.role !== "owner" && (
         <div className="mt-2.5 pt-2 border-t border-border/40 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
           <DropdownMenu>
@@ -107,6 +117,14 @@ function CollabListView({ collab, index, isOwner }: { collab: Collaborator; inde
           <span>{collab.productsCreated} prod.</span>
           <span className="hidden sm:inline">· {collab.ordersManaged} cmd.</span>
         </div>
+      </div>
+      <div className="hidden md:flex gap-1 shrink-0">
+        {collab.permissions.slice(0, 2).map(perm => (
+          <Badge key={perm} variant="secondary" className="text-[10px]">{perm}</Badge>
+        ))}
+        {collab.permissions.length > 2 && (
+          <Badge variant="secondary" className="text-[10px]">+{collab.permissions.length - 2}</Badge>
+        )}
       </div>
       <div className="flex items-center gap-1.5 text-sm shrink-0">
         <TrendingUp className="h-3.5 w-3.5 text-primary" />

@@ -24,6 +24,7 @@ export const mockCollaborators = [
     productsCreated: 18,
     ordersManaged: 89,
     joinedAt: "Depuis le début",
+    permissions: ["PRODUCT_MANAGER", "ORDER_MANAGER", "ADVERT_MANAGER", "SONDAGE_MANAGER"],
   },
   {
     id: "2",
@@ -33,6 +34,7 @@ export const mockCollaborators = [
     productsCreated: 6,
     ordersManaged: 45,
     joinedAt: "Il y a 3 mois",
+    permissions: ["PRODUCT_MANAGER", "ORDER_MANAGER"],
   },
   {
     id: "3",
@@ -42,6 +44,7 @@ export const mockCollaborators = [
     productsCreated: 0,
     ordersManaged: 22,
     joinedAt: "Il y a 1 mois",
+    permissions: ["ORDER_MANAGER"],
   },
 ];
 
