@@ -88,42 +88,40 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
 
 function InvitationListView({ inv, onCancel, onResend, isLast }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void; isLast?: boolean }) {
   return (
-    <div className={`flex items-center gap-4 px-4 py-3.5 hover:bg-muted/30 transition-colors ${!isLast ? "border-b border-border/50" : ""}`}>
+    <div className={`flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors ${!isLast ? "border-b border-border/50" : ""}`}>
       <div className="relative shrink-0">
-        <Avatar className="h-10 w-10">
+        <Avatar className="h-8 w-8 md:h-10 md:w-10">
           <AvatarImage src={inv.avatar} />
-          <AvatarFallback className="bg-muted text-foreground text-sm">
+          <AvatarFallback className="bg-muted text-foreground text-xs md:text-sm">
             {inv.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
-          <Mail className="h-3 w-3 text-warning" />
+        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 md:h-5 md:w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+          <Mail className="h-2.5 w-2.5 md:h-3 md:w-3 text-warning" />
         </div>
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <span className="font-semibold text-sm truncate">{inv.name}</span>
-          <Badge variant="outline" className="text-xs text-warning border-warning/30 bg-warning/10 shrink-0">
+          <Badge variant="outline" className="text-[10px] md:text-xs text-warning border-warning/30 bg-warning/10 shrink-0 hidden sm:flex">
             En attente
           </Badge>
         </div>
-        <span className="text-xs text-muted-foreground">{inv.email}</span>
+        <span className="text-xs text-muted-foreground truncate block">{inv.email}</span>
       </div>
-      <div className="flex gap-1.5 shrink-0">
+      <div className="hidden md:flex gap-1.5 shrink-0">
         {inv.roles.slice(0, 2).map(role => (
           <Badge key={role} variant="secondary" className="text-xs">{role}</Badge>
         ))}
       </div>
-      <span className="text-xs text-muted-foreground shrink-0">{inv.invitedAt}</span>
-      <div className="flex items-center gap-1 shrink-0">
-        <ArrowRight className="h-3.5 w-3.5 text-primary" />
-      </div>
       <div className="flex gap-1 shrink-0">
-        <Button size="sm" variant="ghost" className="h-8 text-xs px-3" onClick={() => onResend?.(inv.id)}>
-          Relancer
+        <Button size="sm" variant="ghost" className="h-7 md:h-8 text-xs px-2 md:px-3" onClick={() => onResend?.(inv.id)}>
+          <Mail className="h-3 w-3 md:mr-1" />
+          <span className="hidden md:inline">Relancer</span>
         </Button>
-        <Button size="sm" variant="ghost" className="h-8 text-xs px-3 text-destructive" onClick={() => onCancel?.(inv.id)}>
-          Annuler
+        <Button size="sm" variant="ghost" className="h-7 md:h-8 text-xs px-2 md:px-3 text-destructive" onClick={() => onCancel?.(inv.id)}>
+          <X className="h-3 w-3 md:mr-1" />
+          <span className="hidden md:inline">Annuler</span>
         </Button>
       </div>
     </div>

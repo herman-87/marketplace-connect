@@ -121,30 +121,31 @@ function ProductListView({ product, isOwner, onProductClick }: { product: Produc
 
   return (
     <div 
-      className="flex items-center gap-4 px-4 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
+      className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-4 hover:bg-muted/30 transition-colors cursor-pointer"
       onClick={() => onProductClick(product)}
     >
-      <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center text-xl shrink-0">
+      <div className="h-10 w-10 md:h-12 md:w-12 rounded-md bg-muted flex items-center justify-center text-lg md:text-xl shrink-0">
         🛍️
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           <h3 className="font-semibold text-sm truncate">{product.name}</h3>
-          <Badge variant={status.variant} className="gap-1 text-xs shrink-0">
-            <StatusIcon className="h-3.5 w-3.5" />
+          <Badge variant={status.variant} className="gap-1 text-[10px] md:text-xs shrink-0 hidden sm:flex">
+            <StatusIcon className="h-3 w-3 md:h-3.5 md:w-3.5" />
             {status.label}
           </Badge>
         </div>
-        <p className="text-xs text-muted-foreground truncate">{product.description}</p>
+        <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
+          <span className="flex items-center gap-1"><ShoppingCart className="h-3 w-3" />{product.sales}</span>
+          <span className="sm:hidden">
+            <Badge variant={status.variant} className="text-[10px] px-1.5">{status.label}</Badge>
+          </span>
+        </div>
       </div>
-      <div className="flex items-center gap-4 text-sm text-muted-foreground shrink-0">
-        <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5" />{product.likes}</span>
-        <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{product.views}</span>
-        <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
-      </div>
-      <span className="font-bold text-base shrink-0">{product.price}€</span>
+      <span className="font-bold text-sm md:text-base shrink-0">{product.price}€</span>
       {isOwner && (
-        <div onClick={e => e.stopPropagation()}>
+        <div className="hidden sm:block" onClick={e => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0">
@@ -201,27 +202,27 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       {/* Filter Bar - sticky & prominent */}
       <div className="sticky top-0 z-10 -mx-1 px-1 py-3 bg-background/95 backdrop-blur-sm space-y-3">
         {/* Row 1: Search + Actions */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="relative flex-1 min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-              placeholder="Rechercher un produit..." 
+              placeholder="Rechercher..." 
               value={search} 
               onChange={e => { setSearch(e.target.value); setPage(1); }}
-              className="pl-9 h-10 bg-card"
+              className="pl-9 h-9 md:h-10 bg-card text-sm"
             />
           </div>
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="h-10 w-[140px] text-xs bg-card">
+            <SelectTrigger className="h-9 md:h-10 w-[100px] md:w-[140px] text-xs bg-card">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="sales">Par ventes</SelectItem>
-              <SelectItem value="likes">Par likes</SelectItem>
-              <SelectItem value="price">Par prix</SelectItem>
+              <SelectItem value="sales">Ventes</SelectItem>
+              <SelectItem value="likes">Likes</SelectItem>
+              <SelectItem value="price">Prix</SelectItem>
             </SelectContent>
           </Select>
-          <div className="flex rounded-lg bg-muted p-0.5">
+          <div className="hidden sm:flex rounded-lg bg-muted p-0.5">
             <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-8 w-8" onClick={() => setViewMode("grid")}>
               <LayoutGrid className="h-4 w-4" />
             </Button>
@@ -232,31 +233,30 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
           {isOwner && (
             <CreateProductSheet
               trigger={
-                <Button size="sm" className="h-10 gap-2 px-4">
+                <Button size="sm" className="h-9 md:h-10 gap-1.5 px-2.5 md:px-4 shrink-0">
                   <Plus className="h-4 w-4" />
-                  <span className="hidden sm:inline">Nouveau produit</span>
-                  <span className="sm:hidden">Nouveau</span>
+                  <span className="hidden md:inline">Nouveau produit</span>
                 </Button>
               }
             />
           )}
         </div>
 
-        {/* Row 2: Status filter chips */}
-        <div className="flex items-center gap-2">
+        {/* Row 2: Status filter chips - horizontally scrollable on mobile */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {(["all", "published", "draft", "removed"] as const).map(s => (
             <Button
               key={s}
               variant={statusFilter === s ? "default" : "outline"}
               size="sm"
-              className={`h-8 text-xs rounded-full ${statusFilter !== s ? "bg-card" : ""}`}
+              className={`h-7 md:h-8 text-xs rounded-full whitespace-nowrap shrink-0 ${statusFilter !== s ? "bg-card" : ""}`}
               onClick={() => { setStatusFilter(s); setPage(1); }}
             >
               {s === "all" ? "Tous" : s === "published" ? "Publiés" : s === "draft" ? "Brouillons" : "Retirés"}
               <Badge variant={statusFilter === s ? "outline" : "secondary"} className="ml-1.5 text-[10px] px-1.5 rounded-full">{counts[s]}</Badge>
             </Button>
           ))}
-          <span className="ml-auto text-xs text-muted-foreground">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
+          <span className="ml-auto text-xs text-muted-foreground whitespace-nowrap shrink-0">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
         </div>
       </div>
 
