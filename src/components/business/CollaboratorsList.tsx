@@ -34,8 +34,9 @@ const ITEMS_PER_PAGE = 8;
 
 function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-3.5 group hover:border-border transition-colors">
-      <div className="flex items-start gap-3">
+    <div className="rounded-lg bg-card border border-border/60 p-4 group hover:border-border transition-colors flex flex-col justify-between min-h-[140px]">
+      {/* Top row: avatar + name left, score right */}
+      <div className="flex items-center gap-3">
         <div className="relative shrink-0">
           <Avatar className="h-10 w-10">
             <AvatarImage src={collab.avatar} />
@@ -54,30 +55,31 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
           <span className="text-xs text-muted-foreground">Rejoint {collab.joinedAt}</span>
         </div>
 
-        <div className="shrink-0 flex flex-col items-end gap-1.5">
-          <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-            <TrendingUp className="h-3 w-3" />
-            <span>{collab.activityScore}%</span>
-          </div>
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-            <span>{collab.productsCreated} prod.</span>
-            <span>·</span>
-            <span>{collab.ordersManaged} cmd.</span>
-          </div>
+        <div className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium shrink-0">
+          <TrendingUp className="h-3 w-3" />
+          <span>{collab.activityScore}%</span>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1 mt-2.5">
-        {collab.permissions.slice(0, 3).map(perm => (
-          <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0">{perm}</Badge>
-        ))}
-        {collab.permissions.length > 3 && (
-          <Badge variant="secondary" className="text-[10px] px-2 py-0">+{collab.permissions.length - 3}</Badge>
-        )}
+      {/* Middle: stats + permissions */}
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <div className="flex flex-wrap gap-1">
+          {collab.permissions.slice(0, 3).map(perm => (
+            <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0.5">{perm}</Badge>
+          ))}
+          {collab.permissions.length > 3 && (
+            <Badge variant="secondary" className="text-[10px] px-2 py-0.5">+{collab.permissions.length - 3}</Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+          <span>{collab.productsCreated} prod.</span>
+          <span>{collab.ordersManaged} cmd.</span>
+        </div>
       </div>
 
+      {/* Bottom: manage action */}
       {isOwner && collab.role !== "owner" && (
-        <div className="mt-2.5 pt-2 border-t border-border/40 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="mt-3 pt-2.5 border-t border-border/40 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5">
