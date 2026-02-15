@@ -33,48 +33,55 @@ const ITEMS_PER_PAGE = 8;
 
 function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-3 md:p-3.5 flex items-center gap-3 relative group hover:bg-muted/30 hover:border-border transition-colors">
-      <div className="relative shrink-0">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={collab.avatar} />
-          <AvatarFallback className="bg-muted text-foreground text-xs">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-        </Avatar>
-        {index < 3 && (
-          <span className="absolute -top-1 -left-1 text-xs leading-none">{["🥇", "🥈", "🥉"][index]}</span>
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className="font-semibold text-sm truncate">{collab.name}</span>
-          {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
+    <div className="rounded-lg bg-card border border-border/60 p-3.5 group hover:border-border transition-colors">
+      <div className="flex items-start gap-3">
+        <div className="relative shrink-0">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={collab.avatar} />
+            <AvatarFallback className="bg-muted text-foreground text-xs">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          {index < 3 && (
+            <span className="absolute -top-1 -left-1 text-xs leading-none">{["🥇", "🥈", "🥉"][index]}</span>
+          )}
         </div>
-        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
-          <span>{collab.productsCreated} prod.</span>
-          <span>·</span>
-          <span>{collab.ordersManaged} cmd.</span>
-        </div>
-      </div>
-      <div className="flex items-center gap-2 shrink-0">
-        <div className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
-          <TrendingUp className="h-3 w-3" />
-          <span>{collab.activityScore}%</span>
-        </div>
-        {isOwner && collab.role !== "owner" && (
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-7 w-7">
-                  <MoreHorizontal className="h-3.5 w-3.5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-sm truncate">{collab.name}</span>
+            {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
           </div>
-        )}
+          <span className="text-xs text-muted-foreground">Rejoint {collab.joinedAt}</span>
+        </div>
+
+        <div className="shrink-0 flex flex-col items-end gap-1.5">
+          <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+            <TrendingUp className="h-3 w-3" />
+            <span>{collab.activityScore}%</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+            <span>{collab.productsCreated} prod.</span>
+            <span>·</span>
+            <span>{collab.ordersManaged} cmd.</span>
+          </div>
+        </div>
       </div>
+
+      {isOwner && collab.role !== "owner" && (
+        <div className="mt-2.5 pt-2 border-t border-border/40 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5">
+                <MoreHorizontal className="h-3.5 w-3.5" />
+                Gérer
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
     </div>
   );
 }
