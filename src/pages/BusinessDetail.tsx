@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/layout/AppLayout";
 import { BusinessHeader } from "@/components/business/BusinessHeader";
+import { BusinessMobileNav } from "@/components/business/BusinessMobileNav";
 import { Package, ShoppingCart, Users, Heart, TrendingUp, Eye } from "lucide-react";
 import { mockBusiness, mockEngagement } from "@/data/businessMockData";
 
@@ -7,6 +8,7 @@ export default function BusinessDetail() {
   return (
     <AppLayout>
       <div className="space-y-4 md:space-y-6 animate-fade-in">
+        <BusinessMobileNav />
         <BusinessHeader business={mockBusiness} />
 
         {/* Quick Stats */}

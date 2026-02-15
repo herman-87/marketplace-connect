@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Upload, Image as ImageIcon, Coins, Save, Trash2 } from "lucide-react";
+import { BusinessMobileNav } from "@/components/business/BusinessMobileNav";
 import { toast } from "sonner";
 
 const currencies = [
@@ -67,6 +68,7 @@ export default function BusinessSettings() {
   return (
     <AppLayout>
       <div className="space-y-6">
+        <BusinessMobileNav />
         {/* Header */}
         <div className="flex items-center gap-4">
           <Button 
