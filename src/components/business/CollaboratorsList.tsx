@@ -64,11 +64,17 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
       {/* Middle: stats + permissions */}
       <div className="mt-3 flex items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1">
-          {collab.permissions.slice(0, 3).map(perm => (
-            <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
-          ))}
-          {collab.permissions.length > 3 && (
-            <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 3}</Badge>
+          {collab.role === "owner" ? (
+            <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">accès complet</Badge>
+          ) : (
+            <>
+              {collab.permissions.slice(0, 3).map(perm => (
+                <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
+              ))}
+              {collab.permissions.length > 3 && (
+                <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 3}</Badge>
+              )}
+            </>
           )}
         </div>
         <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
