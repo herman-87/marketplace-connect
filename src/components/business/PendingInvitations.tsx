@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, ArrowRight, Mail, ChevronLeft, ChevronRight, LayoutGrid, List, Search, X } from "lucide-react";
+import { Clock, ArrowRight, Mail, LayoutGrid, List, Search, X } from "lucide-react";
+import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import { Input } from "@/components/ui/input";
 
 interface PendingInvitation {
@@ -206,17 +207,12 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === 1} onClick={() => setPage(p => p - 1)}>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm text-muted-foreground">{page} / {totalPages}</span>
-          <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
+      <AdaptivePagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        variant={filtered.length > 12 ? "full" : "compact"}
+      />
     </div>
   );
 }

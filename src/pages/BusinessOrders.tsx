@@ -4,9 +4,8 @@ import { mockBusiness, mockOrders } from "@/data/businessMockData";
 
 export default function BusinessOrders() {
   return (
-    <AppLayout>
-      <div className="space-y-4 md:space-y-6">
-        <h1 className="text-xl font-semibold">{mockBusiness.name}</h1>
+    <AppLayout title={mockBusiness.name} subtitle="Gérez les commandes de votre boutique">
+      <div className="animate-fade-in">
         <BusinessOrdersComponent orders={mockOrders} />
       </div>
     </AppLayout>
