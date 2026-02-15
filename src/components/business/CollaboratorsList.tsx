@@ -65,10 +65,10 @@ function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; inde
       <div className="mt-3 flex items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1">
           {collab.permissions.slice(0, 3).map(perm => (
-            <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0.5">{perm}</Badge>
+            <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
           ))}
           {collab.permissions.length > 3 && (
-            <Badge variant="secondary" className="text-[10px] px-2 py-0.5">+{collab.permissions.length - 3}</Badge>
+            <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 3}</Badge>
           )}
         </div>
         <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
@@ -122,10 +122,10 @@ function CollabListView({ collab, index, isOwner }: { collab: Collaborator; inde
       </div>
       <div className="hidden md:flex gap-1 shrink-0">
         {collab.permissions.slice(0, 2).map(perm => (
-          <Badge key={perm} variant="secondary" className="text-[10px]">{perm}</Badge>
+          <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
         ))}
         {collab.permissions.length > 2 && (
-          <Badge variant="secondary" className="text-[10px]">+{collab.permissions.length - 2}</Badge>
+          <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 2}</Badge>
         )}
       </div>
       <div className="flex items-center gap-1.5 text-sm shrink-0">
