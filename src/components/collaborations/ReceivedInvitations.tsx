@@ -107,50 +107,30 @@ function InvitationCard({ inv, onAccept, onDecline }: { inv: ReceivedInvitation;
 
 function InvitationRow({ inv, onAccept, onDecline, isLast }: { inv: ReceivedInvitation; onAccept: (id: string) => void; onDecline: (id: string) => void; isLast?: boolean }) {
   return (
-    <div className={cn("flex items-center gap-4 px-4 py-3.5 hover:bg-muted/30 transition-colors", !isLast && "border-b border-border/50")}>
-      <div className="h-10 w-10 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
+    <div className={cn("flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors", !isLast && "border-b border-border/50")}>
+      <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
         <Store className="w-4 h-4 text-muted-foreground" />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           <span className="font-semibold text-sm truncate">{inv.businessName}</span>
-          <Badge variant="outline" className="text-xs text-warning border-warning/30 bg-warning/10 shrink-0">
+          <Badge variant="outline" className="text-[10px] md:text-xs text-warning border-warning/30 bg-warning/10 shrink-0 hidden sm:flex">
             En attente
           </Badge>
         </div>
         <div className="flex items-center gap-1.5 mt-0.5">
           <span className="text-xs text-muted-foreground">par</span>
-          <Avatar className="w-4 h-4">
-            <AvatarImage src={inv.invitedBy.avatar} />
-            <AvatarFallback className="text-[8px] bg-primary/10 text-primary">
-              {inv.invitedBy.name.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
           <span className="text-xs text-muted-foreground truncate">{inv.invitedBy.name}</span>
         </div>
       </div>
-      <div className="hidden md:flex gap-1.5 shrink-0">
-        {inv.permissions.map((perm) => {
-          const config = permissionLabels[perm];
-          if (!config) return null;
-          const Icon = config.icon;
-          return (
-            <Badge key={perm} variant="outline" className="gap-1 text-xs py-0.5 px-2">
-              <Icon className="w-3 h-3" />
-              {config.label}
-            </Badge>
-          );
-        })}
-      </div>
-      <span className="text-xs text-muted-foreground shrink-0 hidden sm:inline">{inv.receivedAt}</span>
-      <div className="flex gap-1.5 shrink-0">
-        <Button size="sm" className="h-8 text-xs px-3 gap-1" onClick={() => onAccept(inv.id)}>
-          <Check className="h-3.5 w-3.5" />
-          Accepter
+      <div className="flex gap-1 md:gap-1.5 shrink-0">
+        <Button size="sm" className="h-7 md:h-8 text-xs px-2 md:px-3 gap-1" onClick={() => onAccept(inv.id)}>
+          <Check className="h-3 w-3 md:h-3.5 md:w-3.5" />
+          <span className="hidden sm:inline">Accepter</span>
         </Button>
-        <Button size="sm" variant="outline" className="h-8 text-xs px-3 gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
-          <X className="h-3.5 w-3.5" />
-          Refuser
+        <Button size="sm" variant="outline" className="h-7 md:h-8 text-xs px-2 md:px-3 gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
+          <X className="h-3 w-3 md:h-3.5 md:w-3.5" />
+          <span className="hidden sm:inline">Refuser</span>
         </Button>
       </div>
     </div>

@@ -86,32 +86,31 @@ function OrderListView({ order }: { order: Order }) {
   const StatusIcon = status.icon;
 
   return (
-    <div className="flex items-center gap-4 px-4 py-4 hover:bg-muted/30 transition-colors">
-      <Avatar className="h-10 w-10 shrink-0">
+    <div className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-4 hover:bg-muted/30 transition-colors">
+      <Avatar className="h-9 w-9 md:h-10 md:w-10 shrink-0">
         <AvatarImage src={order.customer.avatar} />
-        <AvatarFallback className="bg-muted text-foreground text-sm">
+        <AvatarFallback className="bg-muted text-foreground text-xs md:text-sm">
           {order.customer.name.slice(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           <span className="font-semibold text-sm truncate">{order.customer.name}</span>
-          <span className="text-xs text-muted-foreground">#{order.id}</span>
+          <Badge variant={status.variant} className="gap-1 text-[10px] md:text-xs shrink-0">
+            <StatusIcon className="h-3 w-3" />
+            <span className="hidden sm:inline">{status.label}</span>
+          </Badge>
         </div>
         <p className="text-xs text-muted-foreground truncate">
           {order.products.map(p => `${p.quantity}x ${p.name}`).join(", ")}
         </p>
       </div>
-      <Badge variant={status.variant} className="gap-1.5 text-xs shrink-0">
-        <StatusIcon className="h-3.5 w-3.5" />
-        {status.label}
-      </Badge>
-      <span className="text-sm text-muted-foreground shrink-0">{order.createdAt}</span>
-      <span className="font-bold text-base shrink-0">{order.total}€</span>
+      <span className="hidden sm:inline text-xs text-muted-foreground shrink-0">{order.createdAt}</span>
+      <span className="font-bold text-sm md:text-base shrink-0">{order.total}€</span>
       {order.status === "pending" && (
-        <div className="flex gap-1.5 shrink-0">
-          <Button size="icon" className="h-8 w-8"><Check className="h-3.5 w-3.5" /></Button>
-          <Button size="icon" variant="outline" className="h-8 w-8 text-destructive"><X className="h-3.5 w-3.5" /></Button>
+        <div className="flex gap-1 shrink-0">
+          <Button size="icon" className="h-7 w-7 md:h-8 md:w-8"><Check className="h-3 w-3 md:h-3.5 md:w-3.5" /></Button>
+          <Button size="icon" variant="outline" className="h-7 w-7 md:h-8 md:w-8 text-destructive"><X className="h-3 w-3 md:h-3.5 md:w-3.5" /></Button>
         </div>
       )}
     </div>
@@ -145,26 +144,26 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
       <h3 className="text-lg font-semibold">Commandes</h3>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-xs">
+      <div className="flex flex-col gap-3">
+        <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Rechercher une commande..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="pl-9 h-9 bg-background" />
+          <Input placeholder="Rechercher..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="pl-9 h-9 bg-background" />
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {(["all", "pending", "accepted", "delivered", "rejected"] as const).map(s => (
-            <Button key={s} variant={statusFilter === s ? "default" : "ghost"} size="sm" className="h-8 text-xs" onClick={() => { setStatusFilter(s); setPage(1); }}>
-              {s === "all" ? "Toutes" : s === "pending" ? "En attente" : s === "accepted" ? "Acceptées" : s === "delivered" ? "Livrées" : "Refusées"}
-              <Badge variant="secondary" className="ml-1.5 text-xs px-1.5">{counts[s]}</Badge>
+            <Button key={s} variant={statusFilter === s ? "default" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(s); setPage(1); }}>
+              {s === "all" ? "Toutes" : s === "pending" ? "Attente" : s === "accepted" ? "Acceptées" : s === "delivered" ? "Livrées" : "Refusées"}
+              <Badge variant="secondary" className="ml-1 text-[10px] px-1.5">{counts[s]}</Badge>
             </Button>
           ))}
-        </div>
-        <div className="flex rounded-md bg-muted p-0.5 ml-auto">
-          <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
-            <LayoutGrid className="h-3.5 w-3.5" />
-          </Button>
-          <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
-            <List className="h-3.5 w-3.5" />
-          </Button>
+          <div className="flex rounded-md bg-muted p-0.5 ml-auto shrink-0">
+            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </Button>
+            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
+              <List className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </div>
 
