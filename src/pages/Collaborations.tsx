@@ -20,7 +20,9 @@ import {
   ExternalLink,
   LayoutGrid,
   List,
+  Mail,
 } from "lucide-react";
+import { ReceivedInvitations, ReceivedInvitation } from "@/components/collaborations/ReceivedInvitations";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,6 +59,36 @@ const mockCollaborations = [
   },
 ];
 
+const mockReceivedInvitations: ReceivedInvitation[] = [
+  {
+    id: "inv-1",
+    businessName: "SportZone Pro",
+    businessDescription: "Articles de sport et équipements fitness pour tous niveaux",
+    invitedBy: { name: "Lucas Bernard", avatar: "" },
+    permissions: ["products", "orders"],
+    receivedAt: "il y a 2 heures",
+    status: "pending",
+  },
+  {
+    id: "inv-2",
+    businessName: "ElectroHub",
+    businessDescription: "Matériel électronique et accessoires high-tech à prix compétitifs",
+    invitedBy: { name: "Emma Lefèvre", avatar: "" },
+    permissions: ["products", "orders", "marketplace"],
+    receivedAt: "il y a 1 jour",
+    status: "pending",
+  },
+  {
+    id: "inv-3",
+    businessName: "DécoMaison",
+    businessDescription: "Décoration intérieure et mobilier design pour tous les espaces",
+    invitedBy: { name: "Claire Moreau", avatar: "" },
+    permissions: ["products"],
+    receivedAt: "il y a 3 jours",
+    status: "pending",
+  },
+];
+
 const permissionLabels: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
   products: { label: "Produits", icon: Package },
   orders: { label: "Commandes", icon: ClipboardList },
@@ -65,14 +97,18 @@ const permissionLabels: Record<string, { label: string; icon: React.ComponentTyp
 
 export default function Collaborations() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
   return (
     <AppLayout
       title="Mes Collaborations"
       subtitle="Business où vous êtes collaborateur"
     >
-      <div className="space-y-4 md:space-y-6 animate-fade-in">
-        {/* Header Actions */}
+      <div className="space-y-6 md:space-y-8 animate-fade-in">
+        {/* Invitations reçues */}
+        <section className="p-4 md:p-5 rounded-xl bg-muted/20 border border-border/40">
+          <ReceivedInvitations invitations={mockReceivedInvitations} />
+        </section>
+
+        {/* Header Actions - Collaborations actives */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
