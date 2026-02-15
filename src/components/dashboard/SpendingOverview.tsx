@@ -4,9 +4,9 @@ import {
   ShoppingBag,
   TrendingUp,
   CreditCard,
-  UtensilsCrossed,
   ShoppingCart,
   Smartphone,
+  Watch,
 } from "lucide-react";
 
 const monthlySpending = [
@@ -19,9 +19,9 @@ const monthlySpending = [
 ];
 
 const categorySpending = [
-  { label: "Repas", amount: 89.50, icon: UtensilsCrossed, percentage: 37 },
-  { label: "Mode", amount: 119.97, icon: ShoppingBag, percentage: 49 },
-  { label: "High-Tech", amount: 35.00, icon: Smartphone, percentage: 14 },
+  { label: "Mode", amount: 119.97, icon: ShoppingBag, percentage: 42 },
+  { label: "High-Tech", amount: 95.00, icon: Smartphone, percentage: 33 },
+  { label: "Accessoires", amount: 72.50, icon: Watch, percentage: 25 },
 ];
 
 export function SpendingOverview() {

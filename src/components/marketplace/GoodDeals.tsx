@@ -31,9 +31,9 @@ const deals = [
   },
   {
     id: "3",
-    title: "Menu offert",
-    description: "Pour 2 menus achetés",
-    code: "MENU3FOR2",
+    title: "2 achetés = 1 offert",
+    description: "Sur les accessoires",
+    code: "ACC3FOR2",
     icon: Gift,
     validUntil: "28 Jan",
   },

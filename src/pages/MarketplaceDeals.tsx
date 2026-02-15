@@ -18,20 +18,20 @@ import { toast } from "sonner";
 const allDeals = [
   { id: "1", title: "Livraison offerte", description: "Sur votre première commande", code: "BIENVENUE", icon: Truck, validUntil: "31 Jan", category: "Livraison" },
   { id: "2", title: "-15% sur la mode", description: "Toute la catégorie Mode", code: "MODE15", icon: Tag, validUntil: "15 Fév", category: "Mode" },
-  { id: "3", title: "Menu offert", description: "Pour 2 menus achetés", code: "MENU3FOR2", icon: Gift, validUntil: "28 Jan", category: "Repas" },
+  { id: "3", title: "2 achetés = 1 offert", description: "Sur les accessoires", code: "ACC3FOR2", icon: Gift, validUntil: "28 Jan", category: "Accessoires" },
   { id: "4", title: "Cashback 10%", description: "Sur les achats High-Tech", code: "TECHBACK", icon: CreditCard, validUntil: "10 Fév", category: "High-Tech" },
   { id: "5", title: "-20% premier achat", description: "Sur tout le catalogue", code: "WELCOME20", icon: Tag, validUntil: "28 Fév", category: "Général" },
   { id: "6", title: "Livraison express offerte", description: "Dès 30€ d'achat", code: "EXPRESS30", icon: Truck, validUntil: "20 Fév", category: "Livraison" },
-  { id: "7", title: "2 achetés = 1 offert", description: "Sur les desserts", code: "DESSERT3", icon: Gift, validUntil: "14 Fév", category: "Repas" },
+  { id: "7", title: "3 pour le prix de 2", description: "Sur les t-shirts", code: "TSHIRT3", icon: Gift, validUntil: "14 Fév", category: "Mode" },
   { id: "8", title: "-25% High-Tech", description: "Accessoires et gadgets", code: "TECH25", icon: Tag, validUntil: "5 Mar", category: "High-Tech" },
   { id: "9", title: "Cashback 15%", description: "Sur la mode femme", code: "FEMME15", icon: CreditCard, validUntil: "8 Mar", category: "Mode" },
   { id: "10", title: "Livraison 1€", description: "Sur toutes les commandes", code: "LIVR1", icon: Truck, validUntil: "1 Mar", category: "Livraison" },
-  { id: "11", title: "-10% épicerie", description: "Produits frais et bio", code: "BIO10", icon: Tag, validUntil: "15 Mar", category: "Repas" },
+  { id: "11", title: "-10% sport", description: "Équipements et vêtements", code: "SPORT10", icon: Tag, validUntil: "15 Mar", category: "Accessoires" },
   { id: "12", title: "Parrainage 5€", description: "Pour vous et votre filleul", code: "PARRAIN5", icon: Gift, validUntil: "31 Mar", category: "Général" },
   { id: "13", title: "-30% soldes mode", description: "Dernière démarque", code: "SOLDES30", icon: Tag, validUntil: "10 Fév", category: "Mode" },
 ];
 
-const categories = ["Tous", "Livraison", "Mode", "Repas", "High-Tech", "Général"];
+const categories = ["Tous", "Livraison", "Mode", "Accessoires", "High-Tech", "Général"];
 const ITEMS_PER_PAGE = 12;
 
 export default function MarketplaceDeals() {

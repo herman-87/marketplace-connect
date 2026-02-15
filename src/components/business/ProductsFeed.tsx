@@ -39,7 +39,7 @@ interface Product {
   price: number;
   image?: string;
   status: "draft" | "published" | "removed";
-  category: "repas" | "articles";
+  category: "articles";
   likes: number;
   views: number;
   sales: number;
@@ -74,7 +74,7 @@ function ProductCardView({ product, isOwner, onProductClick }: { product: Produc
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-3xl">
-            {product.category === "repas" ? "🍽️" : "🛍️"}
+            🛍️
           </div>
         )}
         <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-xs">
@@ -126,7 +126,7 @@ function ProductListView({ product, isOwner, onProductClick }: { product: Produc
       onClick={() => onProductClick(product)}
     >
       <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center text-xl shrink-0">
-        {product.category === "repas" ? "🍽️" : "🛍️"}
+        🛍️
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">

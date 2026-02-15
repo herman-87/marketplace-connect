@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 const mockBusinesses = [
-  { id: "1", name: "RestauFast", description: "Restaurant rapide et livraison de plats préparés frais", productsCount: 24, collaboratorsCount: 3, status: "active" as const, isOwner: true },
+  { id: "1", name: "Urban Style Shop", description: "Boutique de vêtements et accessoires tendance", productsCount: 24, collaboratorsCount: 3, status: "active" as const, isOwner: true },
   { id: "2", name: "TechStore", description: "Boutique d'accessoires tech et gadgets innovants", productsCount: 56, collaboratorsCount: 1, status: "active" as const, isOwner: true },
   { id: "3", name: "ModeBoutique", description: "Collection de vêtements tendance et accessoires", productsCount: 89, collaboratorsCount: 5, status: "active" as const, isOwner: false },
 ];

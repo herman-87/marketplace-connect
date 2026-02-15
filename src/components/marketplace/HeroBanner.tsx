@@ -31,7 +31,7 @@ export function HeroBanner() {
             </h1>
             
             <p className="text-lg text-muted-foreground max-w-xl">
-              Repas savoureux, articles tendance, services de qualité — Tout ce dont vous avez besoin, livré chez vous.
+              Articles tendance, accessoires de qualité, gadgets innovants — Tout ce dont vous avez besoin, livré chez vous.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2">
