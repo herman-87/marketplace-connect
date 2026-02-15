@@ -154,21 +154,6 @@ export function CreateBusinessSheet({ trigger }: CreateBusinessSheetProps) {
         {/* Form Content */}
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-2xl mx-auto space-y-6">
-            {/* Images Section */}
-            <div className="space-y-3">
-              <Label className="text-base font-semibold">Images</Label>
-              <div className="grid grid-cols-2 gap-4">
-                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-                  <ImagePlus className="w-6 h-6" />
-                  <span className="text-xs font-medium">Logo</span>
-                </button>
-                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-                  <ImagePlus className="w-6 h-6" />
-                  <span className="text-xs font-medium">Bannière</span>
-                </button>
-              </div>
-            </div>
-
             {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="biz-name">Nom du business *</Label>
@@ -320,6 +305,21 @@ export function CreateBusinessSheet({ trigger }: CreateBusinessSheetProps) {
                     )}
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Images Section */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold">Images</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <ImagePlus className="w-6 h-6" />
+                  <span className="text-xs font-medium">Logo</span>
+                </button>
+                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <ImagePlus className="w-6 h-6" />
+                  <span className="text-xs font-medium">Bannière</span>
+                </button>
               </div>
             </div>
 
