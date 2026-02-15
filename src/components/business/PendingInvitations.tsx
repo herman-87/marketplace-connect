@@ -29,7 +29,7 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
     <div className="rounded-lg bg-card border border-border/60 p-3.5 group hover:border-border transition-colors">
       <div className="flex items-start gap-3">
         <div className="relative shrink-0">
-          <Avatar className="h-11 w-11">
+          <Avatar className="h-10 w-10">
             <AvatarImage src={inv.avatar} />
             <AvatarFallback className="bg-muted text-foreground text-sm">
               {inv.name.slice(0, 2).toUpperCase()}
@@ -41,25 +41,25 @@ function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitatio
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-2">
-            <p className="font-semibold text-sm truncate">{inv.name}</p>
-            <Badge variant="outline" className="gap-1 text-[10px] text-warning border-warning/30 bg-warning/10 shrink-0">
-              <Clock className="h-3 w-3" />
-              En attente
-            </Badge>
-          </div>
+          <p className="font-semibold text-sm truncate">{inv.name}</p>
           <p className="text-xs text-muted-foreground truncate mt-0.5">{inv.email}</p>
+        </div>
 
-          <div className="flex flex-wrap gap-1 mt-2">
-            {inv.roles.map(role => (
-              <Badge key={role} variant="secondary" className="text-[10px] px-2 py-0">{role}</Badge>
-            ))}
-          </div>
-
-          <p className="text-[11px] text-muted-foreground mt-2">
-            Invité {inv.invitedAt} par {inv.invitedBy}
+        <div className="shrink-0 flex flex-col items-end gap-1.5">
+          <Badge variant="outline" className="gap-1 text-[10px] text-warning border-warning/30 bg-warning/10">
+            <Clock className="h-3 w-3" />
+            En attente
+          </Badge>
+          <p className="text-[11px] text-muted-foreground text-right">
+            {inv.invitedAt}
           </p>
         </div>
+      </div>
+
+      <div className="flex flex-wrap gap-1 mt-2.5 ml-[52px]">
+        {inv.roles.map(role => (
+          <Badge key={role} variant="secondary" className="text-[10px] px-2 py-0">{role}</Badge>
+        ))}
       </div>
 
       <div className="mt-3 pt-2.5 border-t border-border/40 flex gap-2">
