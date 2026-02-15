@@ -26,6 +26,35 @@ export type CheckoutStep =
   | 'confirmation'   // Order confirmation
   | 'tracking';      // Order tracking
 
+export type UserRole = 'client' | 'business';
+
+export interface StatusHistoryEntry {
+  status: OrderStatus;
+  timestamp: string;
+  note?: string;
+}
+
+export interface OrderProduct {
+  name: string;
+  quantity: number;
+  price: number;
+  image?: string;
+}
+
+export interface Order {
+  id: string;
+  customer: { name: string; phone?: string; avatar?: string };
+  products: OrderProduct[];
+  total: number;
+  status: OrderStatus;
+  createdAt: string;
+  deliveryAddress?: string;
+  deliveryMethod?: 'standard' | 'express' | 'scheduled';
+  statusHistory: StatusHistoryEntry[];
+  rejectionReason?: string;
+  paymentMethod?: string;
+}
+
 export interface OrderStatusInfo {
   status: OrderStatus;
   label: string;
@@ -33,6 +62,18 @@ export interface OrderStatusInfo {
   color: 'default' | 'warning' | 'success' | 'destructive' | 'secondary';
   icon: string;
 }
+
+// The normal flow order for the timeline
+export const ORDER_FLOW_STEPS: OrderStatus[] = [
+  'CREATED',
+  'ACCEPTED',
+  'PENDING_PAYMENT',
+  'PAID',
+  'PENDING_DELIVERY',
+  'IN_DELIVERY',
+  'DELIVERED',
+  'COMPLETED',
+];
 
 export const ORDER_STATUS_CONFIG: Record<OrderStatus, Omit<OrderStatusInfo, 'status'>> = {
   CREATED: {
