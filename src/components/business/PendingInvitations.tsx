@@ -26,53 +26,43 @@ const ITEMS_PER_PAGE = 6;
 
 function InvitationCardView({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-5 relative group hover:border-border transition-colors">
-      <div className="absolute top-3 right-3">
-        <Badge variant="outline" className="gap-1 text-xs text-warning border-warning/30 bg-warning/10">
-          <Clock className="h-3.5 w-3.5" />
-          En attente
-        </Badge>
-      </div>
-
-      <div className="flex flex-col items-center text-center pt-3">
-        <div className="relative">
-          <Avatar className="h-16 w-16">
+    <div className="rounded-lg bg-card border border-border/60 p-3.5 group hover:border-border transition-colors">
+      <div className="flex items-start gap-3">
+        <div className="relative shrink-0">
+          <Avatar className="h-11 w-11">
             <AvatarImage src={inv.avatar} />
-            <AvatarFallback className="bg-muted text-foreground text-base">
+            <AvatarFallback className="bg-muted text-foreground text-sm">
               {inv.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
-            <Mail className="h-3.5 w-3.5 text-warning" />
+          <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-warning/20 border border-warning/30 flex items-center justify-center">
+            <Mail className="h-3 w-3 text-warning" />
           </div>
         </div>
 
-        <div className="mt-4">
-          <p className="font-semibold text-base truncate max-w-[180px]">{inv.name}</p>
-          <p className="text-xs text-muted-foreground truncate max-w-[180px] mt-0.5">{inv.email}</p>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <p className="font-semibold text-sm truncate">{inv.name}</p>
+            <Badge variant="outline" className="gap-1 text-[10px] text-warning border-warning/30 bg-warning/10 shrink-0">
+              <Clock className="h-3 w-3" />
+              En attente
+            </Badge>
+          </div>
+          <p className="text-xs text-muted-foreground truncate mt-0.5">{inv.email}</p>
+
+          <div className="flex flex-wrap gap-1 mt-2">
+            {inv.roles.map(role => (
+              <Badge key={role} variant="secondary" className="text-[10px] px-2 py-0">{role}</Badge>
+            ))}
+          </div>
+
+          <p className="text-[11px] text-muted-foreground mt-2">
+            Invité {inv.invitedAt} par {inv.invitedBy}
+          </p>
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
-        {inv.roles.map(role => (
-          <Badge key={role} variant="secondary" className="text-xs px-2.5">{role}</Badge>
-        ))}
-      </div>
-
-      <div className="mt-4 text-center">
-        <p className="text-xs text-muted-foreground">Invité {inv.invitedAt}</p>
-        <p className="text-xs text-muted-foreground">par {inv.invitedBy}</p>
-      </div>
-
-      {/* Flow indicator */}
-      <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-        <Clock className="h-3.5 w-3.5" />
-        <span>En attente</span>
-        <ArrowRight className="h-3.5 w-3.5 text-primary" />
-        <span className="text-primary font-medium">Collaborateur</span>
-      </div>
-
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 pt-2.5 border-t border-border/40 flex gap-2">
         <Button size="sm" variant="ghost" className="flex-1 h-8 text-xs" onClick={() => onResend?.(inv.id)}>
           <Mail className="h-3.5 w-3.5 mr-1.5" />
           Relancer
