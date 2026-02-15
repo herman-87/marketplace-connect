@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  type CarouselApi,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import {
   ArrowLeft,
   Heart,
@@ -124,9 +132,28 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
-  const product = mockProduct; // In real app, fetch by productId
-  const isOwner = true; // In real app, check if current user owns this product's business
+  useEffect(() => {
+    if (!carouselApi) return;
+    const onSelect = () => setActiveSlide(carouselApi.selectedScrollSnap());
+    carouselApi.on("select", onSelect);
+    onSelect();
+    return () => { carouselApi.off("select", onSelect); };
+  }, [carouselApi]);
+
+  const productImages = [
+    { id: 1, emoji: "🍔", label: "Vue principale" },
+    { id: 2, emoji: "🍟", label: "Accompagnement" },
+    { id: 3, emoji: "🥤", label: "Boisson" },
+    { id: 4, emoji: "🧀", label: "Ingrédient" },
+    { id: 5, emoji: "🥬", label: "Fraîcheur" },
+    { id: 6, emoji: "🍽️", label: "Présentation" },
+  ];
+
+  const product = mockProduct;
+  const isOwner = true;
 
   const statusConfig = {
     draft: { label: "Brouillon", variant: "secondary" as const, color: "text-muted-foreground" },
@@ -162,22 +189,26 @@ export default function ProductDetail() {
           {/* Left Column - Image & Gallery */}
           <div className="lg:col-span-1 space-y-4">
             <Card className="border-0 shadow-card overflow-hidden">
-              <div className="relative aspect-square bg-gradient-to-br from-muted to-muted/50">
-                {product.image ? (
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover" 
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-8xl">
-                    {product.category === "repas" ? "🍔" : "🛍️"}
-                  </div>
-                )}
-                
+              <div className="relative">
+                <Carousel className="w-full" opts={{ loop: true }} setApi={setCarouselApi}>
+                  <CarouselContent>
+                    {productImages.map((img, index) => (
+                      <CarouselItem key={img.id}>
+                        <div className="relative aspect-square bg-gradient-to-br from-muted to-muted/50">
+                          <div className="w-full h-full flex items-center justify-center text-8xl">
+                            {img.emoji}
+                          </div>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-3 bg-background/80 backdrop-blur-sm border-0" />
+                  <CarouselNext className="right-3 bg-background/80 backdrop-blur-sm border-0" />
+                </Carousel>
+
                 {/* Discount Badge */}
                 {product.originalPrice && product.originalPrice > product.price && (
-                  <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground">
+                  <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground z-10">
                     -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                   </Badge>
                 )}
@@ -186,11 +217,25 @@ export default function ProductDetail() {
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm"
+                  className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm z-10"
                   onClick={() => setIsLiked(!isLiked)}
                 >
                   <Heart className={`h-5 w-5 ${isLiked ? "fill-rose-500 text-rose-500" : ""}`} />
                 </Button>
+
+                {/* Slide indicators */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                  {productImages.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-1.5 rounded-full transition-all ${
+                        index === activeSlide
+                          ? "w-6 bg-primary"
+                          : "w-1.5 bg-background/60"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </Card>
 
