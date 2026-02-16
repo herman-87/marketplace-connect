@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Store,
@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  Lock,
   ArrowLeft,
   ShoppingBag,
   Wallet,
@@ -23,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSubscription } from "@/contexts/SubscriptionContext";
 import { mockBusiness } from "@/data/businessMockData";
 import {
   Tooltip,
@@ -70,7 +72,9 @@ function getBusinessItems(businessId: string): NavItem[] {
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
+  const { isPro } = useSubscription();
 
   // Detect if we're in a business context
   const businessMatch = location.pathname.match(/^\/business\/([^/]+)/);
@@ -137,8 +141,32 @@ export function AppSidebar() {
     return content;
   };
 
-  const CollapsibleGroup = ({ label, items, defaultOpen }: { label: string; items: NavItem[]; defaultOpen?: boolean }) => {
+  const CollapsibleGroup = ({ label, items, defaultOpen, locked }: { label: string; items: NavItem[]; defaultOpen?: boolean; locked?: boolean }) => {
     const hasActiveItem = items.some((item) => isActive(item.href));
+
+    if (locked) {
+      return collapsed ? (
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => navigate("/subscription")}
+              className="flex items-center justify-center w-full px-3 py-2.5 rounded-lg text-sidebar-foreground/40 hover:text-sidebar-foreground/60 transition-colors"
+            >
+              <Lock className="h-5 w-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Espace Pro (verrouillé)</TooltipContent>
+        </Tooltip>
+      ) : (
+        <button
+          onClick={() => navigate("/subscription")}
+          className="flex items-center justify-between w-full px-3 py-2 text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/30 hover:text-sidebar-foreground/50 transition-colors"
+        >
+          <span>{label}</span>
+          <Lock className="h-3 w-3" />
+        </button>
+      );
+    }
 
     if (collapsed) {
       return (
@@ -220,19 +248,14 @@ export function AppSidebar() {
 
         <Separator className="my-3 bg-sidebar-border" />
 
-        {isBusinessContext ? (
+        {isBusinessContext && isPro ? (
           <>
-            {/* Business contextual navigation */}
             <CollapsibleGroup label={businessName || "Mon Business"} items={businessItems} defaultOpen={true} />
-
             <Separator className="my-3 bg-sidebar-border" />
-
-            {/* Back to Espace Pro */}
             <CollapsibleGroup label="Espace Pro" items={gestionItems} />
           </>
         ) : (
-          /* Standard Espace Pro */
-          <CollapsibleGroup label="Espace Pro" items={gestionItems} />
+          <CollapsibleGroup label="Espace Pro" items={gestionItems} locked={!isPro} />
         )}
       </nav>
 

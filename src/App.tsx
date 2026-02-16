@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { CartProvider } from "@/contexts/CartContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Index from "./pages/Index";
@@ -29,6 +30,7 @@ import MesAchats from "./pages/MesAchats";
 import WalletPage from "./pages/WalletPage";
 import MesDepenses from "./pages/MesDepenses";
 import Favoris from "./pages/Favoris";
+import Subscription from "./pages/Subscription";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +39,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <AuthProvider>
+        <SubscriptionProvider>
         <CartProvider>
           <FavoritesProvider>
             <TooltipProvider>
@@ -66,6 +69,7 @@ const App = () => (
                   <Route path="/wallet" element={<WalletPage />} />
                   <Route path="/mes-depenses" element={<MesDepenses />} />
                   <Route path="/favoris" element={<Favoris />} />
+                  <Route path="/subscription" element={<Subscription />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
@@ -73,6 +77,7 @@ const App = () => (
             </TooltipProvider>
           </FavoritesProvider>
         </CartProvider>
+        </SubscriptionProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
