@@ -4,7 +4,7 @@ import { CategoryShowcase } from "@/components/marketplace/CategoryShowcase";
 import { FlashDeals } from "@/components/marketplace/FlashDeals";
 import { FeaturedShops } from "@/components/marketplace/FeaturedShops";
 import { TrendingProducts } from "@/components/marketplace/TrendingProducts";
-import { GoodDeals } from "@/components/marketplace/GoodDeals";
+
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,6 @@ export default function Marketplace() {
         <FlashDeals />
         <FeaturedShops />
         <TrendingProducts />
-        <GoodDeals />
       </div>
 
       {/* Floating Cart Button - Mobile */}
