@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,12 +33,13 @@ const allTrending = [
   { id: "trend-14", name: "Clavier Mécanique RGB", description: "Switches Cherry MX, rétroéclairage", price: 119.99, category: "High-Tech", businessId: "techstore", businessName: "TechStore", rating: 4.8, sales: 65, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=300&fit=crop" },
 ];
 
-const categories = ["Tous", "Mode", "High-Tech"];
+const categories = ["Tous", "Mode", "High-Tech", "Accessoires", "Maison", "Beauté", "Auto", "Sport", "Autres"];
 const ITEMS_PER_PAGE = 12;
 
 const categoryIcons: Record<string, any> = { Mode: ShoppingBag, "High-Tech": ShoppingBag };
 
 export default function MarketplaceTrending() {
+  const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [sortBy, setSortBy] = useState("sales");
@@ -46,6 +47,14 @@ export default function MarketplaceTrending() {
   const [currentPage, setCurrentPage] = useState(1);
   const { addToCart } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
+
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat && categories.includes(cat)) {
+      setSelectedCategory(cat);
+      setCurrentPage(1);
+    }
+  }, [searchParams]);
 
   const filtered = allTrending
     .filter((p) => {

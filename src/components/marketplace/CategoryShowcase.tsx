@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { 
   ShoppingBag, 
@@ -10,77 +10,20 @@ import {
   Dumbbell,
   Watch
 } from "lucide-react";
-import { CategoryProductsModal } from "./CategoryProductsModal";
 
 const categories = [
-  { 
-    id: "mode", 
-    name: "Mode", 
-    icon: Shirt, 
-    count: 156,
-    colorClass: "bg-[hsl(340,75%,55%)]",
-    bgClass: "bg-[hsl(340,75%,55%,0.15)]",
-  },
-  { 
-    id: "tech", 
-    name: "High-Tech", 
-    icon: Smartphone, 
-    count: 89,
-    colorClass: "bg-[hsl(210,90%,55%)]",
-    bgClass: "bg-[hsl(210,90%,55%,0.15)]",
-  },
-  { 
-    id: "accessoires", 
-    name: "Accessoires", 
-    icon: Watch, 
-    count: 210,
-    colorClass: "bg-[hsl(24,85%,55%)]",
-    bgClass: "bg-[hsl(24,85%,55%,0.15)]",
-  },
-  { 
-    id: "maison", 
-    name: "Maison", 
-    icon: Home, 
-    count: 124,
-    colorClass: "bg-[hsl(160,65%,45%)]",
-    bgClass: "bg-[hsl(160,65%,45%,0.15)]",
-  },
-  { 
-    id: "beaute", 
-    name: "Beauté", 
-    icon: Sparkles, 
-    count: 67,
-    colorClass: "bg-[hsl(320,70%,60%)]",
-    bgClass: "bg-[hsl(320,70%,60%,0.15)]",
-  },
-  { 
-    id: "auto", 
-    name: "Auto", 
-    icon: Car, 
-    count: 45,
-    colorClass: "bg-[hsl(220,60%,50%)]",
-    bgClass: "bg-[hsl(220,60%,50%,0.15)]",
-  },
-  { 
-    id: "sport", 
-    name: "Sport", 
-    icon: Dumbbell, 
-    count: 78,
-    colorClass: "bg-[hsl(150,70%,45%)]",
-    bgClass: "bg-[hsl(150,70%,45%,0.15)]",
-  },
-  { 
-    id: "autres", 
-    name: "Autres", 
-    icon: ShoppingBag, 
-    count: 234,
-    colorClass: "bg-[hsl(270,60%,55%)]",
-    bgClass: "bg-[hsl(270,60%,55%,0.15)]",
-  },
+  { id: "mode", name: "Mode", icon: Shirt, count: 156, bgClass: "bg-[hsl(340,75%,55%,0.15)]" },
+  { id: "tech", name: "High-Tech", icon: Smartphone, count: 89, bgClass: "bg-[hsl(210,90%,55%,0.15)]" },
+  { id: "accessoires", name: "Accessoires", icon: Watch, count: 210, bgClass: "bg-[hsl(24,85%,55%,0.15)]" },
+  { id: "maison", name: "Maison", icon: Home, count: 124, bgClass: "bg-[hsl(160,65%,45%,0.15)]" },
+  { id: "beaute", name: "Beauté", icon: Sparkles, count: 67, bgClass: "bg-[hsl(320,70%,60%,0.15)]" },
+  { id: "auto", name: "Auto", icon: Car, count: 45, bgClass: "bg-[hsl(220,60%,50%,0.15)]" },
+  { id: "sport", name: "Sport", icon: Dumbbell, count: 78, bgClass: "bg-[hsl(150,70%,45%,0.15)]" },
+  { id: "autres", name: "Autres", icon: ShoppingBag, count: 234, bgClass: "bg-[hsl(270,60%,55%,0.15)]" },
 ];
 
 export function CategoryShowcase() {
-  const [selectedCategory, setSelectedCategory] = useState<{ id: string; name: string } | null>(null);
+  const navigate = useNavigate();
 
   return (
     <section>
@@ -88,7 +31,10 @@ export function CategoryShowcase() {
         <h2 className="text-xl sm:text-2xl font-bold text-foreground">
           Explorez par catégorie
         </h2>
-        <button className="text-sm text-primary hover:underline">
+        <button
+          className="text-sm text-primary hover:underline"
+          onClick={() => navigate("/marketplace/trending")}
+        >
           Voir tout
         </button>
       </div>
@@ -99,7 +45,7 @@ export function CategoryShowcase() {
           return (
             <button
               key={category.id}
-              onClick={() => setSelectedCategory({ id: category.id, name: category.name })}
+              onClick={() => navigate(`/marketplace/trending?category=${encodeURIComponent(category.name)}`)}
               className={cn(
                 "group flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl",
                 "bg-card border border-border",
@@ -111,9 +57,7 @@ export function CategoryShowcase() {
                 "transition-transform group-hover:scale-110",
                 category.bgClass
               )}>
-                <Icon className={cn(
-                  "w-5 h-5 sm:w-6 sm:h-6 text-foreground"
-                )} />
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
               </div>
               <span className="text-xs sm:text-sm font-medium text-foreground text-center">
                 {category.name}
@@ -125,13 +69,6 @@ export function CategoryShowcase() {
           );
         })}
       </div>
-
-      <CategoryProductsModal
-        open={!!selectedCategory}
-        onOpenChange={(open) => !open && setSelectedCategory(null)}
-        categoryName={selectedCategory?.name ?? ""}
-        categoryId={selectedCategory?.id ?? ""}
-      />
     </section>
   );
 }
