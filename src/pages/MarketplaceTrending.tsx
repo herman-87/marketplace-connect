@@ -34,7 +34,7 @@ const allTrending = [
 ];
 
 const categories = ["Tous", "Mode", "High-Tech", "Accessoires", "Maison", "Beauté", "Auto", "Sport", "Autres"];
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 20;
 
 const categoryIcons: Record<string, any> = { Mode: ShoppingBag, "High-Tech": ShoppingBag };
 
@@ -122,7 +122,7 @@ export default function MarketplaceTrending() {
             <p className="text-sm text-muted-foreground">Essayez de modifier vos filtres</p>
           </div>
         ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {paginated.map((product) => {
               const liked = isFavorite(product.id);
               return (
