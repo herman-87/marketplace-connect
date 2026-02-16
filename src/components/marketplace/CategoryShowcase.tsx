@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { 
   ShoppingBag, 
@@ -9,6 +10,7 @@ import {
   Dumbbell,
   Watch
 } from "lucide-react";
+import { CategoryProductsModal } from "./CategoryProductsModal";
 
 const categories = [
   { 
@@ -78,6 +80,8 @@ const categories = [
 ];
 
 export function CategoryShowcase() {
+  const [selectedCategory, setSelectedCategory] = useState<{ id: string; name: string } | null>(null);
+
   return (
     <section>
       <div className="flex items-center justify-between mb-4">
@@ -95,6 +99,7 @@ export function CategoryShowcase() {
           return (
             <button
               key={category.id}
+              onClick={() => setSelectedCategory({ id: category.id, name: category.name })}
               className={cn(
                 "group flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl",
                 "bg-card border border-border",
@@ -120,6 +125,13 @@ export function CategoryShowcase() {
           );
         })}
       </div>
+
+      <CategoryProductsModal
+        open={!!selectedCategory}
+        onOpenChange={(open) => !open && setSelectedCategory(null)}
+        categoryName={selectedCategory?.name ?? ""}
+        categoryId={selectedCategory?.id ?? ""}
+      />
     </section>
   );
 }
