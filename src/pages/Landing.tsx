@@ -72,18 +72,18 @@ export default function Landing() {
             <span className="text-xl font-bold">FastRelays</span>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
             <LanguageSelector />
-            <Link to="/marketplace">
+            <Link to="/marketplace" className="hidden sm:inline-flex">
               <Button variant="ghost" size="sm">
                 {t("landing.explore")}
               </Button>
             </Link>
             <Link to="/auth">
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
                 {t("landing.login")}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
             </Link>
           </div>
