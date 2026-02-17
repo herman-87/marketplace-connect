@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,15 +13,11 @@ import {
   Sparkles,
   Shield,
   Zap,
-  Globe,
-  Menu,
-  X,
-  LogIn
+  Globe
 } from "lucide-react";
 
 export default function Landing() {
   const { t } = useLanguage();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const features = [
     {
@@ -77,52 +72,23 @@ export default function Landing() {
             <span className="text-xl font-bold">FastRelays</span>
           </div>
           
-          {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-2">
+          {/* Nav */}
+          <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
             <LanguageSelector />
             <Link to="/marketplace">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-3">
                 {t("landing.explore")}
               </Button>
             </Link>
             <Link to="/auth">
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
                 {t("landing.login")}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
-          </div>
-
-          {/* Mobile nav toggle */}
-          <div className="flex items-center gap-1 sm:hidden">
-            <ThemeToggle />
-            <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
         </div>
-
-        {/* Mobile dropdown */}
-        {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-border/50 bg-background px-4 py-3 space-y-2 animate-fade-in">
-            <Link to="/marketplace" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start gap-3">
-                <ShoppingBag className="h-4 w-4" />
-                {t("landing.explore")}
-              </Button>
-            </Link>
-            <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start gap-3">
-                <LogIn className="h-4 w-4" />
-                {t("landing.login")}
-              </Button>
-            </Link>
-            <div className="pt-1">
-              <LanguageSelector />
-            </div>
-          </div>
-        )}
       </header>
 
       {/* Hero Section */}
