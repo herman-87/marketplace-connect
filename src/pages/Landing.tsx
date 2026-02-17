@@ -76,11 +76,6 @@ export default function Landing() {
           <div className="flex items-center gap-1 sm:gap-2">
             <ThemeToggle />
             <LanguageSelector />
-            <Link to="/marketplace">
-              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-3">
-                {t("landing.explore")}
-              </Button>
-            </Link>
             <Link to="/auth">
               <Button size="sm" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
                 {t("landing.login")}
