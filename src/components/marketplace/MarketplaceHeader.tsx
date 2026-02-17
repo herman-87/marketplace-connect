@@ -147,7 +147,7 @@ export function MarketplaceHeader() {
             <Link to="/auth">
               <Button size="sm" className="gap-2">
                 <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Connexion</span>
+                <span className="text-xs sm:text-sm">Connexion</span>
               </Button>
             </Link>
           )}
