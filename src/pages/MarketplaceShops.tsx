@@ -29,10 +29,19 @@ const allShops = [
   { id: "11", name: "FitGear", category: "Sport", description: "Équipements fitness premium", rating: 4.7, reviewsCount: 198, location: "Paris 16ème", productsCount: 67, isVerified: false, followers: 720, coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop" },
   { id: "12", name: "AccessoirePlus", category: "Accessoires", description: "Bijoux, montres et accessoires", rating: 4.6, reviewsCount: 234, location: "Paris 2ème", productsCount: 145, isVerified: true, followers: 560, coverImage: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop" },
   { id: "13", name: "WaxDesign", category: "Mode", description: "Créations en tissu wax", rating: 4.7, reviewsCount: 198, location: "Paris 2ème", productsCount: 45, isVerified: true, followers: 820, coverImage: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=100&h=100&fit=crop" },
+  { id: "14", name: "LuxeMontre", category: "Accessoires", description: "Montres de luxe et horlogerie", rating: 4.8, reviewsCount: 310, location: "Paris 1er", productsCount: 55, isVerified: true, followers: 2300, coverImage: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop" },
+  { id: "15", name: "RunFast", category: "Sport", description: "Équipements de running", rating: 4.5, reviewsCount: 167, location: "Paris 14ème", productsCount: 82, isVerified: true, followers: 640, coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop" },
+  { id: "16", name: "NaturaBio", category: "Beauté", description: "Soins naturels et végans", rating: 4.6, reviewsCount: 203, location: "Paris 11ème", productsCount: 38, isVerified: false, followers: 510, coverImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=100&h=100&fit=crop" },
+  { id: "17", name: "PixelTech", category: "High-Tech", description: "PC Gaming et composants", rating: 4.7, reviewsCount: 278, location: "Paris 13ème", productsCount: 240, isVerified: true, followers: 1650, coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop" },
+  { id: "18", name: "ChezSoi", category: "Maison", description: "Mobilier moderne et design", rating: 4.4, reviewsCount: 112, location: "Paris 7ème", productsCount: 95, isVerified: true, followers: 420, coverImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&h=100&fit=crop" },
+  { id: "19", name: "StreetKings", category: "Streetwear", description: "Sneakers et streetwear exclusif", rating: 4.6, reviewsCount: 345, location: "Paris 9ème", productsCount: 110, isVerified: true, followers: 1900, coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop" },
+  { id: "20", name: "AfroStyle", category: "Mode", description: "Mode afro-urbaine tendance", rating: 4.8, reviewsCount: 287, location: "Paris 20ème", productsCount: 64, isVerified: true, followers: 1350, coverImage: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=100&h=100&fit=crop" },
+  { id: "21", name: "DriveShop", category: "Auto", description: "Accessoires auto et tuning", rating: 4.3, reviewsCount: 78, location: "Paris 17ème", productsCount: 185, isVerified: false, followers: 390, coverImage: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=100&h=100&fit=crop" },
+  { id: "22", name: "YogaZen", category: "Sport", description: "Yoga, méditation et bien-être", rating: 4.9, reviewsCount: 198, location: "Paris 6ème", productsCount: 42, isVerified: true, followers: 870, coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop" },
 ];
 
 const categories = ["Tous", "Mode", "High-Tech", "Streetwear", "Sport", "Beauté", "Maison"];
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 20;
 
 export default function MarketplaceShops() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -103,7 +112,7 @@ export default function MarketplaceShops() {
             <p className="text-sm text-muted-foreground">Essayez de modifier vos filtres</p>
           </div>
         ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {paginated.map((shop) => (
               <Card key={shop.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
                 <div className="relative h-20 bg-muted overflow-hidden">
