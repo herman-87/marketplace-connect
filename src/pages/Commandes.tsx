@@ -8,10 +8,83 @@ import { Check, X, Search, LayoutGrid, List } from "lucide-react";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import { Order, OrderStatus, ORDER_STATUS_CONFIG } from "@/types/order";
 import { OrderDetailView } from "@/components/orders/OrderDetailView";
-import { mockOrders } from "@/data/businessMockData";
+import { mockOrders as baseMockOrders } from "@/data/businessMockData";
 import { cn } from "@/lib/utils";
 
 const ITEMS_PER_PAGE = 6;
+
+// Generate more orders for pagination demo
+const extraOrders: Order[] = [
+  {
+    id: "ord-006",
+    customer: { name: "Ibrahim Keita" },
+    products: [{ name: "Casque Audio Premium", quantity: 2, price: 199.99 }],
+    total: 399.98,
+    status: "PAID" as const,
+    createdAt: "2025-02-09T14:00:00Z",
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-09T14:00:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-09T14:30:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-09T14:30:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-09T15:00:00Z" },
+    ],
+  },
+  {
+    id: "ord-007",
+    customer: { name: "Fatou Diallo" },
+    products: [{ name: "Sneakers Urban Limited", quantity: 1, price: 89.99 }],
+    total: 89.99,
+    status: "REJECTED" as const,
+    createdAt: "2025-02-08T11:00:00Z",
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-08T11:00:00Z" },
+      { status: "REJECTED" as const, timestamp: "2025-02-08T12:00:00Z", note: "Rupture de stock" },
+    ],
+  },
+  {
+    id: "ord-008",
+    customer: { name: "Ousmane Traoré" },
+    products: [
+      { name: "Montre Connectée Sport", quantity: 1, price: 149.99 },
+      { name: "Sac à dos Urban Pro", quantity: 1, price: 59.99 },
+    ],
+    total: 209.98,
+    status: "CREATED" as const,
+    createdAt: "2025-02-16T08:00:00Z",
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-16T08:00:00Z" },
+    ],
+  },
+  {
+    id: "ord-009",
+    customer: { name: "Aïssatou Bah" },
+    products: [{ name: "Sac à dos Urban Pro", quantity: 3, price: 59.99 }],
+    total: 179.97,
+    status: "PENDING_DELIVERY" as const,
+    createdAt: "2025-02-12T10:00:00Z",
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-12T10:00:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-12T10:30:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-12T10:30:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-12T11:00:00Z" },
+      { status: "PENDING_DELIVERY" as const, timestamp: "2025-02-12T13:00:00Z" },
+    ],
+  },
+  {
+    id: "ord-010",
+    customer: { name: "Mamadou Coulibaly" },
+    products: [{ name: "Casque Audio Premium", quantity: 1, price: 199.99 }],
+    total: 199.99,
+    status: "CANCELLED_BY_CLIENT" as const,
+    createdAt: "2025-02-11T09:00:00Z",
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-11T09:00:00Z" },
+      { status: "CANCELLED_BY_CLIENT" as const, timestamp: "2025-02-11T09:30:00Z" },
+    ],
+  },
+];
+
+const allMockOrders = [...(baseMockOrders as Order[]), ...extraOrders];
 
 const statusFilters: { key: string; label: string; statuses: OrderStatus[] }[] = [
   { key: "all", label: "Toutes", statuses: [] },
@@ -117,7 +190,7 @@ function OrderListView({ order, onClick }: { order: Order; onClick: () => void }
 }
 
 export default function Commandes() {
-  const orders = mockOrders as Order[];
+  const orders = allMockOrders;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
