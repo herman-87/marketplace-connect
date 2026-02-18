@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useSubscription } from "@/contexts/SubscriptionContext";
+import { SubscriptionSheet } from "@/components/subscription/SubscriptionSheet";
 
 interface NavItem {
   title: string;
@@ -27,6 +29,7 @@ const navItems: NavItem[] = [
 const proHrefs = ["/mes-business", "/collaborations", "/commandes"];
 
 export function MobileNav() {
+  const [subscriptionOpen, setSubscriptionOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { isPro } = useSubscription();
@@ -39,11 +42,12 @@ export function MobileNav() {
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (!isPro && proHrefs.includes(href)) {
       e.preventDefault();
-      navigate("/subscription");
+      setSubscriptionOpen(true);
     }
   };
 
   return (
+    <>
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border lg:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-16 px-2">
         {navItems.map((item) => {
@@ -84,5 +88,7 @@ export function MobileNav() {
         })}
       </div>
     </nav>
+    <SubscriptionSheet open={subscriptionOpen} onOpenChange={setSubscriptionOpen} />
+    </>
   );
 }

@@ -30,7 +30,7 @@ import MesAchats from "./pages/MesAchats";
 import WalletPage from "./pages/WalletPage";
 import MesDepenses from "./pages/MesDepenses";
 import Favoris from "./pages/Favoris";
-import Subscription from "./pages/Subscription";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -69,7 +69,7 @@ const App = () => (
                   <Route path="/wallet" element={<WalletPage />} />
                   <Route path="/mes-depenses" element={<MesDepenses />} />
                   <Route path="/favoris" element={<Favoris />} />
-                  <Route path="/subscription" element={<Subscription />} />
+                  
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
