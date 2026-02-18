@@ -1,367 +1,202 @@
+import { useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Search,
-  Filter,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  Truck,
-  Package,
-  Store,
-  Calendar,
-  MoreVertical,
-} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Check, X, Search, LayoutGrid, List } from "lucide-react";
+import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import { Order, OrderStatus, ORDER_STATUS_CONFIG } from "@/types/order";
+import { OrderDetailView } from "@/components/orders/OrderDetailView";
+import { mockOrders } from "@/data/businessMockData";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-interface Order {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  businessName: string;
-  items: { name: string; quantity: number; price: number }[];
-  total: number;
-  status: "pending" | "accepted" | "rejected" | "delivered";
-  createdAt: string;
-  isOwner: boolean;
-}
+const ITEMS_PER_PAGE = 6;
 
-const mockOrders: Order[] = [
-  {
-    id: "ORD-2024-001",
-    customerName: "Marie Martin",
-    customerEmail: "marie@example.com",
-    businessName: "RestauFast",
-    items: [
-      { name: "Burger Gourmet", quantity: 2, price: 14.90 },
-      { name: "Frites maison", quantity: 2, price: 4.50 },
-    ],
-    total: 38.80,
-    status: "pending",
-    createdAt: "2024-01-15T10:30:00",
-    isOwner: true,
-  },
-  {
-    id: "ORD-2024-002",
-    customerName: "Pierre Dubois",
-    customerEmail: "pierre@example.com",
-    businessName: "TechStore",
-    items: [
-      { name: "Écouteurs Bluetooth Pro", quantity: 1, price: 89.99 },
-    ],
-    total: 89.99,
-    status: "accepted",
-    createdAt: "2024-01-15T09:15:00",
-    isOwner: true,
-  },
-  {
-    id: "ORD-2024-003",
-    customerName: "Sophie Leroy",
-    customerEmail: "sophie@example.com",
-    businessName: "ModeBoutique",
-    items: [
-      { name: "T-shirt Premium", quantity: 3, price: 34.99 },
-    ],
-    total: 104.97,
-    status: "delivered",
-    createdAt: "2024-01-14T16:45:00",
-    isOwner: false,
-  },
-  {
-    id: "ORD-2024-004",
-    customerName: "Lucas Bernard",
-    customerEmail: "lucas@example.com",
-    businessName: "RestauFast",
-    items: [
-      { name: "Salade César", quantity: 1, price: 12.50 },
-    ],
-    total: 12.50,
-    status: "rejected",
-    createdAt: "2024-01-14T12:00:00",
-    isOwner: true,
-  },
+const statusFilters: { key: string; label: string; statuses: OrderStatus[] }[] = [
+  { key: "all", label: "Toutes", statuses: [] },
+  { key: "new", label: "Nouvelles", statuses: ["CREATED"] },
+  { key: "active", label: "En cours", statuses: ["ACCEPTED", "PENDING_PAYMENT", "PAID", "PENDING_DELIVERY", "IN_DELIVERY"] },
+  { key: "delivered", label: "Livrées", statuses: ["DELIVERED", "COMPLETED"] },
+  { key: "issues", label: "Problèmes", statuses: ["REJECTED", "CANCELLED_BY_CLIENT", "PAYMENT_FAILED", "DELIVERY_FAILED", "ACCEPTANCE_TIMEOUT", "DISPUTED"] },
 ];
 
-const statusConfig = {
-  pending: {
-    label: "En attente",
-    icon: Clock,
-    className: "bg-warning/10 text-warning border-warning/20",
-  },
-  accepted: {
-    label: "Acceptée",
-    icon: CheckCircle2,
-    className: "bg-success/10 text-success border-success/20",
-  },
-  rejected: {
-    label: "Refusée",
-    icon: XCircle,
-    className: "bg-destructive/10 text-destructive border-destructive/20",
-  },
-  delivered: {
-    label: "Livrée",
-    icon: Truck,
-    className: "bg-info/10 text-info border-info/20",
-  },
+const badgeColor: Record<string, string> = {
+  success: "bg-green-500/10 text-green-600 border-green-500/20",
+  warning: "bg-warning/10 text-warning border-warning/20",
+  destructive: "bg-destructive/10 text-destructive border-destructive/20",
+  secondary: "bg-muted text-muted-foreground border-border",
+  default: "bg-primary/10 text-primary border-primary/20",
 };
 
-function OrderCard({ order }: { order: Order }) {
-  const StatusIcon = statusConfig[order.status].icon;
-  const formattedDate = new Date(order.createdAt).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+function OrderCardView({ order, onClick }: { order: Order; onClick: () => void }) {
+  const config = ORDER_STATUS_CONFIG[order.status];
 
   return (
-    <div className="bg-card rounded-xl border border-border overflow-hidden">
-      {/* Header */}
-      <div className="p-3 md:p-4 border-b border-border flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 md:gap-3 min-w-0">
-          <div
-            className={cn(
-              "w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0",
-              statusConfig[order.status].className
-            )}
-          >
-            <StatusIcon className="h-4 w-4 md:h-5 md:w-5" />
-          </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="font-semibold text-xs md:text-sm text-foreground">{order.id}</p>
-              <Badge
-                variant="outline"
-                className={cn("text-[10px] md:text-xs", statusConfig[order.status].className)}
-              >
-                {statusConfig[order.status].label}
-              </Badge>
-            </div>
-            <div className="flex items-center gap-1.5 text-[10px] md:text-sm text-muted-foreground">
-              <Calendar className="w-2.5 h-2.5 md:w-3 md:h-3" />
-              {formattedDate}
-            </div>
+    <div className="rounded-lg bg-card border border-border/60 p-4 md:p-5 space-y-3 hover:border-primary/30 transition-colors cursor-pointer" onClick={onClick}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={order.customer.avatar} />
+            <AvatarFallback className="bg-muted text-foreground text-xs">
+              {order.customer.name.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-semibold text-sm">{order.customer.name}</p>
+            <p className="text-[10px] text-muted-foreground">#{order.id}</p>
           </div>
         </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 shrink-0">
-              <MoreVertical className="h-3.5 w-3.5 md:h-4 md:w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Voir les détails</DropdownMenuItem>
-            <DropdownMenuItem>Contacter le client</DropdownMenuItem>
-            {order.status === "accepted" && (
-              <DropdownMenuItem>Marquer comme livrée</DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Badge variant="outline" className={cn("text-[10px] md:text-xs", badgeColor[config.color])}>
+          {config.label}
+        </Badge>
       </div>
 
-      {/* Content */}
-      <div className="p-3 md:p-4">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 md:mb-4 gap-2">
-          <div>
-            <p className="font-medium text-sm md:text-base text-foreground">{order.customerName}</p>
-            <p className="text-xs md:text-sm text-muted-foreground truncate">{order.customerEmail}</p>
+      <div className="space-y-1.5 py-2 border-t border-b border-border/40">
+        {order.products.slice(0, 2).map((p, i) => (
+          <div key={i} className="flex justify-between text-xs">
+            <span className="text-muted-foreground truncate mr-2">{p.quantity}x {p.name}</span>
+            <span className="font-medium shrink-0">{p.price.toFixed(2)}€</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs md:text-sm text-muted-foreground">
-            <Store className="w-3.5 h-3.5 md:w-4 md:h-4" />
-            <span>{order.businessName}</span>
-            {!order.isOwner && (
-              <Badge variant="outline" className="ml-1 text-[10px] md:text-xs">
-                Collab
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        {/* Items */}
-        <div className="space-y-1.5 md:space-y-2 mb-3 md:mb-4">
-          {order.items.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between text-xs md:text-sm"
-            >
-              <div className="flex items-center gap-1.5 md:gap-2 min-w-0">
-                <Package className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground shrink-0" />
-                <span className="truncate">
-                  {item.quantity}x {item.name}
-                </span>
-              </div>
-              <span className="text-muted-foreground shrink-0 ml-2">
-                {(item.quantity * item.price).toFixed(2)} €
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Total & Actions */}
-        <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-border">
-          <div>
-            <p className="text-[10px] md:text-sm text-muted-foreground">Total</p>
-            <p className="text-lg md:text-xl font-bold text-foreground">
-              {order.total.toFixed(2)} €
-            </p>
-          </div>
-
-          {order.status === "pending" && (
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="h-7 md:h-8 text-xs md:text-sm px-2 md:px-3">
-                Refuser
-              </Button>
-              <Button size="sm" className="gradient-primary border-0 h-7 md:h-8 text-xs md:text-sm px-2 md:px-3">
-                Accepter
-              </Button>
-            </div>
-          )}
-        </div>
+        ))}
+        {order.products.length > 2 && (
+          <p className="text-[10px] text-muted-foreground">+{order.products.length - 2} autre(s)</p>
+        )}
       </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] text-muted-foreground">
+          {new Date(order.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+        </span>
+        <span className="font-bold text-base">{order.total.toFixed(2)}€</span>
+      </div>
+
+      {order.status === "CREATED" && (
+        <div className="flex gap-2 pt-1">
+          <Button size="sm" className="flex-1 h-9 gap-1.5 text-xs" onClick={e => e.stopPropagation()}>
+            <Check className="h-3.5 w-3.5" />Accepter
+          </Button>
+          <Button size="sm" variant="outline" className="flex-1 h-9 gap-1.5 text-xs text-destructive" onClick={e => e.stopPropagation()}>
+            <X className="h-3.5 w-3.5" />Refuser
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function OrderListView({ order, onClick }: { order: Order; onClick: () => void }) {
+  const config = ORDER_STATUS_CONFIG[order.status];
+
+  return (
+    <div className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-4 hover:bg-muted/30 transition-colors cursor-pointer" onClick={onClick}>
+      <Avatar className="h-9 w-9 md:h-10 md:w-10 shrink-0">
+        <AvatarImage src={order.customer.avatar} />
+        <AvatarFallback className="bg-muted text-foreground text-xs md:text-sm">
+          {order.customer.name.slice(0, 2).toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 md:gap-2">
+          <span className="font-semibold text-sm truncate">{order.customer.name}</span>
+          <Badge variant="outline" className={cn("text-[10px] md:text-xs shrink-0", badgeColor[config.color])}>
+            <span className="hidden sm:inline">{config.label}</span>
+            <span className="sm:hidden">{config.label.slice(0, 6)}</span>
+          </Badge>
+        </div>
+        <p className="text-xs text-muted-foreground truncate">
+          {order.products.map(p => `${p.quantity}x ${p.name}`).join(", ")}
+        </p>
+      </div>
+      <span className="hidden sm:inline text-xs text-muted-foreground shrink-0">
+        {new Date(order.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+      </span>
+      <span className="font-bold text-sm md:text-base shrink-0">{order.total.toFixed(2)}€</span>
     </div>
   );
 }
 
 export default function Commandes() {
-  const pendingCount = mockOrders.filter((o) => o.status === "pending").length;
-  const acceptedCount = mockOrders.filter((o) => o.status === "accepted").length;
+  const orders = mockOrders as Order[];
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  if (selectedOrder) {
+    return (
+      <AppLayout title="Commandes" subtitle="Gérez les commandes de vos business">
+        <div className="animate-fade-in">
+          <OrderDetailView
+            order={selectedOrder}
+            role="client"
+            onBack={() => setSelectedOrder(null)}
+          />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  const activeFilter = statusFilters.find(f => f.key === statusFilter)!;
+  const filtered = orders
+    .filter(o => statusFilter === "all" || activeFilter.statuses.includes(o.status))
+    .filter(o => !search || o.customer.name.toLowerCase().includes(search.toLowerCase()) || o.id.includes(search));
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   return (
-    <AppLayout
-      title="Commandes"
-      subtitle="Gérez les commandes de vos business"
-    >
-      <div className="space-y-4 md:space-y-6 animate-fade-in">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-warning/10 flex items-center justify-center shrink-0">
-              <Clock className="w-4 h-4 md:w-5 md:h-5 text-warning" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg md:text-2xl font-bold text-foreground">{pendingCount}</p>
-              <p className="text-[10px] md:text-sm text-muted-foreground truncate">En attente</p>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-success/10 flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-success" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg md:text-2xl font-bold text-foreground">{acceptedCount}</p>
-              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Acceptées</p>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-info/10 flex items-center justify-center shrink-0">
-              <Truck className="w-4 h-4 md:w-5 md:h-5 text-info" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg md:text-2xl font-bold text-foreground">12</p>
-              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Livrées</p>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg gradient-primary flex items-center justify-center shrink-0">
-              <span className="text-primary-foreground font-bold text-sm md:text-base">€</span>
-            </div>
-            <div className="min-w-0">
-              <p className="text-lg md:text-2xl font-bold text-foreground">847</p>
-              <p className="text-[10px] md:text-sm text-muted-foreground truncate">Revenus</p>
-            </div>
-          </div>
-        </div>
+    <AppLayout title="Commandes" subtitle="Gérez les commandes de vos business">
+      <div className="space-y-4 animate-fade-in">
+        <h3 className="text-lg font-semibold">Commandes</h3>
 
-        {/* Search & Filter */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="relative flex-1 max-w-sm">
+        <div className="flex flex-col gap-3">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher..."
-              className="pl-9"
-            />
+            <Input placeholder="Rechercher..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="pl-9 h-9 bg-background" />
           </div>
-          <Button variant="outline" size="icon" className="shrink-0">
-            <Filter className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {statusFilters.map(f => {
+              const count = f.key === "all" ? orders.length : orders.filter(o => f.statuses.includes(o.status)).length;
+              return (
+                <Button key={f.key} variant={statusFilter === f.key ? "default" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(f.key); setPage(1); }}>
+                  {f.label}
+                  <Badge variant="secondary" className="ml-1 text-[10px] px-1.5">{count}</Badge>
+                </Button>
+              );
+            })}
+            <div className="flex rounded-md bg-muted p-0.5 ml-auto shrink-0">
+              <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
+                <LayoutGrid className="h-3.5 w-3.5" />
+              </Button>
+              <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
+                <List className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
         </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="all" className="space-y-4">
-          <TabsList className="h-auto flex-wrap gap-1 p-1">
-            <TabsTrigger value="all" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Toutes</TabsTrigger>
-            <TabsTrigger value="pending" className="gap-1 text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">
-              <span className="hidden sm:inline">En attente</span>
-              <span className="sm:hidden">Attente</span>
-              {pendingCount > 0 && (
-                <Badge className="ml-0.5 h-4 w-4 md:h-5 md:w-5 p-0 flex items-center justify-center text-[9px] md:text-[10px] gradient-primary border-0">
-                  {pendingCount}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="accepted" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Acceptées</TabsTrigger>
-            <TabsTrigger value="delivered" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Livrées</TabsTrigger>
-            <TabsTrigger value="rejected" className="text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">Refusées</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="all" className="space-y-3 md:space-y-4">
-            <div className="flex flex-col gap-3 md:gap-4 w-full">
-              {mockOrders.map((order) => (
-                <OrderCard key={order.id} order={order} />
-              ))}
+        {paginated.length > 0 ? (
+          viewMode === "grid" ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginated.map(o => <OrderCardView key={o.id} order={o} onClick={() => setSelectedOrder(o)} />)}
             </div>
-          </TabsContent>
-
-          <TabsContent value="pending" className="space-y-3 md:space-y-4">
-            <div className="flex flex-col gap-3 md:gap-4 w-full">
-              {mockOrders
-                .filter((o) => o.status === "pending")
-                .map((order) => (
-                  <OrderCard key={order.id} order={order} />
-                ))}
+          ) : (
+            <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
+              {paginated.map(o => <OrderListView key={o.id} order={o} onClick={() => setSelectedOrder(o)} />)}
             </div>
-          </TabsContent>
+          )
+        ) : (
+          <div className="py-12 text-center text-muted-foreground text-sm">Aucune commande trouvée</div>
+        )}
 
-          <TabsContent value="accepted" className="space-y-3 md:space-y-4">
-            <div className="flex flex-col gap-3 md:gap-4 w-full">
-              {mockOrders
-                .filter((o) => o.status === "accepted")
-                .map((order) => (
-                  <OrderCard key={order.id} order={order} />
-                ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="delivered" className="space-y-3 md:space-y-4">
-            <div className="flex flex-col gap-3 md:gap-4 w-full">
-              {mockOrders
-                .filter((o) => o.status === "delivered")
-                .map((order) => (
-                  <OrderCard key={order.id} order={order} />
-                ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="rejected" className="space-y-3 md:space-y-4">
-            <div className="flex flex-col gap-3 md:gap-4 w-full">
-              {mockOrders
-                .filter((o) => o.status === "rejected")
-                .map((order) => (
-                  <OrderCard key={order.id} order={order} />
-                ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+        <AdaptivePagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          variant={filtered.length > 12 ? "full" : "compact"}
+        />
       </div>
     </AppLayout>
   );
