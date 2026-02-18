@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SubscriptionSheet } from "@/components/subscription/SubscriptionSheet";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -71,6 +72,7 @@ function getBusinessItems(businessId: string): NavItem[] {
 
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [subscriptionOpen, setSubscriptionOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -149,7 +151,7 @@ export function AppSidebar() {
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
             <button
-              onClick={() => navigate("/subscription")}
+              onClick={() => setSubscriptionOpen(true)}
               className="flex items-center justify-center w-full px-3 py-2.5 rounded-lg text-sidebar-foreground/40 hover:text-sidebar-foreground/60 transition-colors"
             >
               <Lock className="h-5 w-5" />
@@ -159,7 +161,7 @@ export function AppSidebar() {
         </Tooltip>
       ) : (
         <button
-          onClick={() => navigate("/subscription")}
+          onClick={() => setSubscriptionOpen(true)}
           className="flex items-center justify-between w-full px-3 py-2 text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/30 hover:text-sidebar-foreground/50 transition-colors"
         >
           <span>{label}</span>
@@ -196,6 +198,7 @@ export function AppSidebar() {
   const businessItems = businessId ? getBusinessItems(businessId) : [];
 
   return (
+    <>
     <aside
       className={cn(
         "h-screen bg-sidebar sticky top-0 flex-col border-r border-sidebar-border transition-all duration-300 hidden lg:flex",
@@ -305,5 +308,8 @@ export function AppSidebar() {
         )}
       </Button>
     </aside>
+
+    <SubscriptionSheet open={subscriptionOpen} onOpenChange={setSubscriptionOpen} />
+    </>
   );
 }
