@@ -21,12 +21,7 @@ import {
   ArrowLeft,
   Heart,
   ShoppingCart,
-  Eye,
   Share2,
-  Edit,
-  Trash2,
-  Send,
-  Archive,
   Star,
   Package,
   Clock,
@@ -36,17 +31,6 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 type ProductStatus = "draft" | "published" | "removed";
 
@@ -123,7 +107,6 @@ export default function ProductDetail() {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   const product = mockProduct;
-  const isOwner = true;
 
   const liked = isLiked("product", product.id);
   const likesCount = getLikesCount("product", product.id);
@@ -231,30 +214,35 @@ export default function ProductDetail() {
               </div>
             </Card>
 
-            {/* Stats Card */}
+            {/* Actions Card */}
             <Card className="border-0 shadow-card">
               <CardContent className="p-4">
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <div className="flex items-center justify-center gap-1 text-rose-500">
-                      <Heart className="h-4 w-4" />
-                      <span className="font-bold">{likesCount}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">Likes</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-rose-500">
+                    <Heart className={`h-4 w-4 ${liked ? "fill-rose-500" : ""}`} />
+                    <span className="font-bold text-sm">{likesCount}</span>
+                    <span className="text-xs text-muted-foreground ml-0.5">likes</span>
                   </div>
-                  <div>
-                    <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                      <Eye className="h-4 w-4" />
-                      <span className="font-bold">{product.views}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">Vues</p>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-center gap-1 text-success">
-                      <ShoppingCart className="h-4 w-4" />
-                      <span className="font-bold">{product.sales}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">Ventes</p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1.5 h-8 text-xs"
+                      onClick={handleShare}
+                    >
+                      <Share2 className="h-3.5 w-3.5" />
+                      Partager
+                    </Button>
+                    <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
+                    <Button
+                      variant={liked ? "default" : "outline"}
+                      size="sm"
+                      className={`gap-1.5 h-8 text-xs ${liked ? "bg-rose-500 hover:bg-rose-600 text-white border-rose-500" : ""}`}
+                      onClick={() => toggleLike("product", product.id, product.name)}
+                    >
+                      <Heart className={`h-3.5 w-3.5 ${liked ? "fill-white" : ""}`} />
+                      {liked ? "Liké" : "Liker"}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -345,62 +333,6 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                {/* Owner Actions */}
-                {isOwner && (
-                  <>
-                    <Separator className="my-4 md:my-6" />
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Button variant="outline" className="gap-2 text-xs md:text-sm h-8 md:h-9">
-                        <Edit className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                        Modifier
-                      </Button>
-                      {product.status === "draft" && (
-                        <Button variant="outline" className="gap-2 text-xs md:text-sm h-8 md:h-9">
-                          <Send className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                          Publier
-                        </Button>
-                      )}
-                      {product.status !== "draft" && product.status === "published" && (
-                        <Button variant="outline" className="gap-2 text-xs md:text-sm h-8 md:h-9">
-                          <Archive className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                          Retirer
-                        </Button>
-                      )}
-                      {product.status === "removed" && (
-                        <Button variant="outline" className="gap-2 text-xs md:text-sm h-8 md:h-9">
-                          <Send className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                          Republier
-                        </Button>
-                      )}
-                      <Button variant="outline" className="gap-2 text-xs md:text-sm h-8 md:h-9" onClick={handleShare}>
-                        <Share2 className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                        <span className="hidden sm:inline">Partager</span>
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" className="gap-2 text-xs md:text-sm h-8 md:h-9">
-                            <Trash2 className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                            <span className="hidden sm:inline">Supprimer</span>
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Supprimer ce produit ?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Cette action est irréversible. Le produit sera définitivement supprimé.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Annuler</AlertDialogCancel>
-                            <AlertDialogAction className="bg-destructive text-destructive-foreground">
-                              Supprimer
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </>
-                )}
               </CardContent>
             </Card>
 
