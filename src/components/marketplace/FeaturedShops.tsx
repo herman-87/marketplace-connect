@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Store, Star, MapPin, ArrowRight, Verified, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { useReviews } from "@/contexts/ReviewsContext";
+import { ReviewDialog } from "@/components/reviews/ReviewDialog";
 
 const featuredShops = [
   {
@@ -12,12 +14,9 @@ const featuredShops = [
     name: "TechStore",
     category: "High-Tech",
     description: "Les meilleurs gadgets au meilleur prix",
-    rating: 4.6,
-    reviewsCount: 189,
     location: "Paris 8ème",
     productsCount: 156,
     isVerified: true,
-    followers: 890,
     coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop",
     avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop",
   },
@@ -26,12 +25,9 @@ const featuredShops = [
     name: "ModeBoutique",
     category: "Mode",
     description: "Tendances et styles uniques",
-    rating: 4.7,
-    reviewsCount: 256,
     location: "Paris 3ème",
     productsCount: 89,
     isVerified: true,
-    followers: 2100,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop",
     avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=100&h=100&fit=crop",
   },
@@ -40,12 +36,9 @@ const featuredShops = [
     name: "UrbanWear",
     category: "Streetwear",
     description: "Streetwear et accessoires tendance",
-    rating: 4.5,
-    reviewsCount: 134,
     location: "Paris 10ème",
     productsCount: 78,
     isVerified: false,
-    followers: 670,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop",
     avatar: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop",
   },
@@ -54,18 +47,17 @@ const featuredShops = [
     name: "SportZone",
     category: "Sport",
     description: "Équipements sportifs de qualité",
-    rating: 4.3,
-    reviewsCount: 76,
     location: "Paris 15ème",
     productsCount: 95,
     isVerified: true,
-    followers: 567,
     coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=200&fit=crop",
     avatar: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop",
   },
 ];
 
 export function FeaturedShops() {
+  const { isLiked, toggleLike, getLikesCount, getAverageRating } = useReviews();
+
   return (
     <section>
       <div className="flex items-center justify-between mb-4">
@@ -91,85 +83,110 @@ export function FeaturedShops() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {featuredShops.map((shop) => (
-          <Link key={shop.id} to={`/business/${shop.id}`}>
-          <Card 
-            className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
-          >
-            {/* Header with Cover Image */}
-            <div className="relative h-20 bg-muted overflow-hidden">
-              <img 
-                src={shop.coverImage} 
-                alt={shop.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              {/* Follow Button */}
+        {featuredShops.map((shop) => {
+          const liked = isLiked("shop", shop.id);
+          const likesCount = getLikesCount("shop", shop.id);
+          const { average, count } = getAverageRating("shop", shop.id);
+
+          return (
+            <Card 
+              key={shop.id}
+              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
+            >
+              {/* Header with Cover Image */}
+              <Link to={`/business/${shop.id}`}>
+                <div className="relative h-20 bg-muted overflow-hidden">
+                  <img 
+                    src={shop.coverImage} 
+                    alt={shop.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {/* Avatar */}
+                  <div className="absolute -bottom-6 left-4">
+                    <Avatar className="h-14 w-14 border-4 border-card">
+                      <AvatarImage src={shop.avatar} alt={shop.name} />
+                      <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                        {shop.name.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Like Button */}
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute top-2 right-2 h-8 w-8 bg-card/80 hover:bg-card text-muted-foreground hover:text-primary"
+                className="absolute top-2 right-2 h-8 w-8 bg-card/80 hover:bg-card z-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  toggleLike("shop", shop.id, shop.name);
+                }}
               >
-                <Heart className="w-4 h-4" />
+                <Heart className={cn("w-4 h-4", liked ? "fill-rose-500 text-rose-500" : "text-muted-foreground")} />
               </Button>
 
-              {/* Avatar */}
-              <div className="absolute -bottom-6 left-4">
-                <Avatar className="h-14 w-14 border-4 border-card">
-                  <AvatarImage src={shop.avatar} alt={shop.name} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                    {shop.name.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-            </div>
+              <CardContent className="pt-8 pb-4 px-4">
+                <Link to={`/business/${shop.id}`}>
+                  {/* Name & Verified */}
+                  <div className="flex items-center gap-1.5">
+                    <h3 className="font-semibold text-foreground">{shop.name}</h3>
+                    {shop.isVerified && (
+                      <Verified className="w-4 h-4 text-primary fill-primary/20" />
+                    )}
+                  </div>
 
-            <CardContent className="pt-8 pb-4 px-4">
-              {/* Name & Verified */}
-              <div className="flex items-center gap-1.5">
-                <h3 className="font-semibold text-foreground">{shop.name}</h3>
-                {shop.isVerified && (
-                  <Verified className="w-4 h-4 text-primary fill-primary/20" />
-                )}
-              </div>
+                  {/* Category */}
+                  <Badge variant="secondary" className="mt-1 text-[10px]">
+                    {shop.category}
+                  </Badge>
 
-              {/* Category */}
-              <Badge variant="secondary" className="mt-1 text-[10px]">
-                {shop.category}
-              </Badge>
+                  {/* Description */}
+                  <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
+                    {shop.description}
+                  </p>
 
-              {/* Description */}
-              <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                {shop.description}
-              </p>
+                  {/* Stats */}
+                  <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="font-medium text-foreground">{average || "—"}</span>
+                      {count > 0 && <span>({count})</span>}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Heart className="w-3 h-3 text-rose-500" />
+                      <span>{likesCount}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      <span>{shop.location}</span>
+                    </div>
+                  </div>
+                </Link>
 
-              {/* Stats */}
-              <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-primary text-primary" />
-                  <span className="font-medium text-foreground">{shop.rating}</span>
-                  <span>({shop.reviewsCount})</span>
+                {/* Footer */}
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
+                  <div className="text-xs">
+                    <span className="font-semibold text-foreground">{shop.productsCount}</span>
+                    <span className="text-muted-foreground"> produits</span>
+                  </div>
+                  <ReviewDialog
+                    type="shop"
+                    targetId={shop.id}
+                    targetName={shop.name}
+                    trigger={
+                      <Button size="sm" variant="ghost" className="text-xs h-7 gap-1 text-primary hover:text-primary" onClick={(e) => e.stopPropagation()}>
+                        <Star className="w-3 h-3" />
+                        Noter
+                      </Button>
+                    }
+                  />
                 </div>
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  <span>{shop.location}</span>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
-                <div className="text-xs">
-                  <span className="font-semibold text-foreground">{shop.productsCount}</span>
-                  <span className="text-muted-foreground"> produits</span>
-                </div>
-                <Button size="sm" variant="ghost" className="text-xs h-7 gap-1 text-primary hover:text-primary">
-                  Visiter
-                  <ArrowRight className="w-3 h-3" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          </Link>
-        ))}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </section>
   );

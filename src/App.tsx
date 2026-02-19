@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { CartProvider } from "@/contexts/CartContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
+import { ReviewsProvider } from "@/contexts/ReviewsContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import Landing from "./pages/Landing";
@@ -42,6 +43,7 @@ const App = () => (
         <SubscriptionProvider>
         <CartProvider>
           <FavoritesProvider>
+          <ReviewsProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -75,6 +77,7 @@ const App = () => (
                 </Routes>
               </BrowserRouter>
             </TooltipProvider>
+          </ReviewsProvider>
           </FavoritesProvider>
         </CartProvider>
         </SubscriptionProvider>

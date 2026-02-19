@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useReviews } from "@/contexts/ReviewsContext";
+import { ReviewDialog } from "@/components/reviews/ReviewDialog";
+import { StarRatingInput } from "@/components/reviews/StarRatingInput";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -105,12 +108,6 @@ Avec 7 jours d'autonomie en usage normal et une résistance à l'eau 5ATM, elle 
   ],
 };
 
-const mockReviews = [
-  { id: "1", author: "Marie L.", rating: 5, comment: "Excellente montre, l'autonomie est vraiment impressionnante !", date: "Il y a 2 jours" },
-  { id: "2", author: "Pierre D.", rating: 4, comment: "Très bon produit, le GPS est précis. Je recommande !", date: "Il y a 5 jours" },
-  { id: "3", author: "Sophie M.", rating: 5, comment: "Design élégant et fonctionnalités top, parfait pour le sport.", date: "Il y a 1 semaine" },
-];
-
 const mockSimilarProducts = [
   { id: "2", name: "Écouteurs Bluetooth Pro", price: 79.99, image: undefined },
   { id: "3", name: "Bracelet Sport Fit", price: 39.99, image: undefined },
@@ -120,10 +117,18 @@ const mockSimilarProducts = [
 export default function ProductDetail() {
   const { productId } = useParams();
   const navigate = useNavigate();
+  const { isLiked, toggleLike, getLikesCount, getReviews, getAverageRating } = useReviews();
   const [quantity, setQuantity] = useState(1);
-  const [isLiked, setIsLiked] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  const product = mockProduct;
+  const isOwner = true;
+
+  const liked = isLiked("product", product.id);
+  const likesCount = getLikesCount("product", product.id);
+  const reviews = getReviews("product", product.id);
+  const { average: rating, count: reviewCount } = getAverageRating("product", product.id);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -141,9 +146,6 @@ export default function ProductDetail() {
     { id: 5, emoji: "🔋", label: "Autonomie" },
     { id: 6, emoji: "📦", label: "Packaging" },
   ];
-
-  const product = mockProduct;
-  const isOwner = true;
 
   const statusConfig = {
     draft: { label: "Brouillon", variant: "secondary" as const, color: "text-muted-foreground" },
@@ -208,9 +210,9 @@ export default function ProductDetail() {
                   variant="secondary"
                   size="icon"
                   className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm z-10"
-                  onClick={() => setIsLiked(!isLiked)}
+                  onClick={() => toggleLike("product", product.id, product.name)}
                 >
-                  <Heart className={`h-5 w-5 ${isLiked ? "fill-rose-500 text-rose-500" : ""}`} />
+                  <Heart className={`h-5 w-5 ${liked ? "fill-rose-500 text-rose-500" : ""}`} />
                 </Button>
 
                 {/* Slide indicators */}
@@ -236,7 +238,7 @@ export default function ProductDetail() {
                   <div>
                     <div className="flex items-center justify-center gap-1 text-rose-500">
                       <Heart className="h-4 w-4" />
-                      <span className="font-bold">{product.likes}</span>
+                      <span className="font-bold">{likesCount}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">Likes</p>
                   </div>
@@ -284,11 +286,12 @@ export default function ProductDetail() {
                 <div className="flex items-center gap-4 mt-4">
                   <div className="flex items-center gap-1">
                     <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-                    <span className="font-bold">{product.rating}</span>
+                    <span className="font-bold">{rating || "—"}</span>
                   </div>
                   <span className="text-muted-foreground">
-                    ({product.reviewCount} avis)
+                    ({reviewCount} avis)
                   </span>
+                  <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
                 </div>
 
                 <Separator className="my-4 md:my-6" />
@@ -422,7 +425,7 @@ export default function ProductDetail() {
                       value="reviews" 
                       className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-xs md:text-sm px-2 md:px-4"
                     >
-                      Avis ({product.reviewCount})
+                      Avis ({reviewCount})
                     </TabsTrigger>
                   </TabsList>
                 </CardHeader>
@@ -447,7 +450,13 @@ export default function ProductDetail() {
                   </TabsContent>
 
                   <TabsContent value="reviews" className="mt-0 space-y-3 md:space-y-4">
-                    {mockReviews.map((review) => (
+                    <div className="flex justify-end mb-2">
+                      <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
+                    </div>
+                    {reviews.length === 0 && (
+                      <p className="text-sm text-muted-foreground text-center py-6">Aucun avis pour le moment. Soyez le premier !</p>
+                    )}
+                    {reviews.map((review) => (
                       <div key={review.id} className="p-3 md:p-4 rounded-lg bg-muted/30 space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
