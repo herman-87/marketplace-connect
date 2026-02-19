@@ -1,10 +1,8 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useReviews } from "@/contexts/ReviewsContext";
 import { ReviewDialog } from "@/components/reviews/ReviewDialog";
-import { StarRatingInput } from "@/components/reviews/StarRatingInput";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -24,14 +22,13 @@ import {
   Share2,
   Star,
   Package,
-  Clock,
   User,
-  MessageSquare,
   TrendingUp,
   Plus,
   Minus,
 } from "lucide-react";
 
+// ProductData type and mock data
 type ProductStatus = "draft" | "published" | "removed";
 
 interface ProductData {
@@ -57,7 +54,6 @@ interface ProductData {
   specs: { label: string; value: string }[];
 }
 
-// Mock product data
 const mockProduct: ProductData = {
   id: "1",
   name: "Montre Connectée Pro X",
@@ -107,7 +103,6 @@ export default function ProductDetail() {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   const product = mockProduct;
-
   const liked = isLiked("product", product.id);
   const likesCount = getLikesCount("product", product.id);
   const reviews = getReviews("product", product.id);
@@ -130,14 +125,6 @@ export default function ProductDetail() {
     { id: 6, emoji: "📦", label: "Packaging" },
   ];
 
-  const statusConfig = {
-    draft: { label: "Brouillon", variant: "secondary" as const, color: "text-muted-foreground" },
-    published: { label: "Publié", variant: "default" as const, color: "text-success" },
-    removed: { label: "Retiré", variant: "outline" as const, color: "text-destructive" },
-  };
-
-  const status = statusConfig[product.status];
-
   const handleAddToCart = () => {
     console.log(`Added ${quantity} ${product.name} to cart`);
   };
@@ -148,317 +135,269 @@ export default function ProductDetail() {
 
   return (
     <AppLayout>
-      <div className="space-y-4 md:space-y-6">
-        {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          className="gap-2 -ml-2 h-8 text-sm"
-          onClick={() => navigate(-1)}
-        >
+      <div className="space-y-5">
+        {/* Back */}
+        <Button variant="ghost" className="gap-2 -ml-2 h-8 text-sm" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
           Retour
         </Button>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* Left Column - Image & Gallery */}
-          <div className="lg:col-span-1 space-y-3 md:space-y-4">
-            <Card className="border-0 shadow-card overflow-hidden">
-              <div className="relative">
-                <Carousel className="w-full" opts={{ loop: true }} setApi={setCarouselApi}>
-                  <CarouselContent>
-                    {productImages.map((img, index) => (
-                      <CarouselItem key={img.id}>
-                        <div className="relative aspect-square bg-gradient-to-br from-muted to-muted/50">
-                          <div className="w-full h-full flex items-center justify-center text-8xl">
-                            {img.emoji}
-                          </div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-3 bg-background/80 backdrop-blur-sm border-0" />
-                  <CarouselNext className="right-3 bg-background/80 backdrop-blur-sm border-0" />
-                </Carousel>
+        {/* Hero: Image + Key Info side by side on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Image */}
+          <div className="relative rounded-2xl overflow-hidden bg-muted/30">
+            <Carousel className="w-full" opts={{ loop: true }} setApi={setCarouselApi}>
+              <CarouselContent>
+                {productImages.map((img) => (
+                  <CarouselItem key={img.id}>
+                    <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-8xl md:text-9xl">
+                      {img.emoji}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-3 bg-background/80 backdrop-blur-sm border-0" />
+              <CarouselNext className="right-3 bg-background/80 backdrop-blur-sm border-0" />
+            </Carousel>
 
-                {/* Discount Badge */}
-                {product.originalPrice && product.originalPrice > product.price && (
-                  <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground z-10">
-                    -{Math.round((1 - product.price / product.originalPrice) * 100)}%
-                  </Badge>
-                )}
+            {product.originalPrice && product.originalPrice > product.price && (
+              <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground z-10">
+                -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+              </Badge>
+            )}
 
-                {/* Like Button */}
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm z-10"
-                  onClick={() => toggleLike("product", product.id, product.name)}
+            {/* Slide indicators */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {productImages.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-1.5 rounded-full transition-all ${
+                    index === activeSlide ? "w-6 bg-primary" : "w-1.5 bg-background/60"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Thumbnail strip */}
+            <div className="flex gap-2 p-3 overflow-x-auto">
+              {productImages.map((img, index) => (
+                <button
+                  key={img.id}
+                  onClick={() => carouselApi?.scrollTo(index)}
+                  className={`shrink-0 w-14 h-14 rounded-lg flex items-center justify-center text-2xl transition-all ${
+                    index === activeSlide
+                      ? "ring-2 ring-primary bg-muted"
+                      : "bg-muted/40 hover:bg-muted/70"
+                  }`}
                 >
-                  <Heart className={`h-5 w-5 ${liked ? "fill-rose-500 text-rose-500" : ""}`} />
-                </Button>
-
-                {/* Slide indicators */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {productImages.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-1.5 rounded-full transition-all ${
-                        index === activeSlide
-                          ? "w-6 bg-primary"
-                          : "w-1.5 bg-background/60"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </Card>
-
-            {/* Actions Card */}
-            <Card className="border-0 shadow-card">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-rose-500">
-                    <Heart className={`h-4 w-4 ${liked ? "fill-rose-500" : ""}`} />
-                    <span className="font-bold text-sm">{likesCount}</span>
-                    <span className="text-xs text-muted-foreground ml-0.5">likes</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-1.5 h-8 text-xs"
-                      onClick={handleShare}
-                    >
-                      <Share2 className="h-3.5 w-3.5" />
-                      Partager
-                    </Button>
-                    <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
-                    <Button
-                      variant={liked ? "default" : "outline"}
-                      size="sm"
-                      className={`gap-1.5 h-8 text-xs ${liked ? "bg-rose-500 hover:bg-rose-600 text-white border-rose-500" : ""}`}
-                      onClick={() => toggleLike("product", product.id, product.name)}
-                    >
-                      <Heart className={`h-3.5 w-3.5 ${liked ? "fill-white" : ""}`} />
-                      {liked ? "Liké" : "Liker"}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  {img.emoji}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Middle Column - Product Info */}
-          <div className="lg:col-span-2 space-y-4 md:space-y-6">
-            {/* Header Card */}
-            <Card className="border-0 shadow-card">
-              <CardContent className="p-4 md:p-6">
-                {/* Status & Category */}
-                <div className="flex items-center gap-2 flex-wrap mb-4">
-                  <Badge variant={status.variant}>{status.label}</Badge>
-                  <Badge variant="outline">🛍️ Article</Badge>
-                  {product.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">{tag}</Badge>
-                  ))}
+          {/* Product Info */}
+          <div className="flex flex-col justify-between gap-4">
+            {/* Top section */}
+            <div className="space-y-3">
+              {/* Tags */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {product.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                ))}
+              </div>
+
+              {/* Title */}
+              <h1 className="text-2xl md:text-3xl font-bold leading-tight">{product.name}</h1>
+
+              {/* Business */}
+              <button
+                className="text-sm text-muted-foreground flex items-center gap-1.5 hover:text-foreground transition-colors"
+                onClick={() => navigate(`/business/${product.businessId}`)}
+              >
+                <Package className="h-4 w-4" />
+                {product.businessName}
+              </button>
+
+              {/* Rating inline */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  <span className="font-semibold text-sm">{rating || "—"}</span>
                 </div>
+                <span className="text-xs text-muted-foreground">({reviewCount} avis)</span>
+                <span className="text-muted-foreground">·</span>
+                <div className="flex items-center gap-1 text-rose-500">
+                  <Heart className={`h-3.5 w-3.5 ${liked ? "fill-rose-500" : ""}`} />
+                  <span className="text-xs font-medium">{likesCount}</span>
+                </div>
+              </div>
 
-                {/* Title & Business */}
-                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">{product.name}</h1>
-                <p className="text-sm md:text-base text-muted-foreground mt-1 md:mt-2 flex items-center gap-2">
-                  <Package className="h-4 w-4" />
-                  {product.businessName}
-                </p>
+              {/* Description courte */}
+              <p className="text-sm text-muted-foreground leading-relaxed">{product.description}</p>
+            </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-4 mt-4">
-                  <div className="flex items-center gap-1">
-                    <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
-                    <span className="font-bold">{rating || "—"}</span>
-                  </div>
-                  <span className="text-muted-foreground">
-                    ({reviewCount} avis)
+            {/* Price + Actions */}
+            <div className="space-y-4">
+              <Separator />
+
+              {/* Price */}
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-bold text-primary">{product.price.toFixed(2)}€</span>
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <span className="text-base text-muted-foreground line-through">
+                    {product.originalPrice.toFixed(2)}€
                   </span>
-                  <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
+                )}
+              </div>
+
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <Package className="h-3 w-3" />
+                {product.stock} en stock
+              </p>
+
+              {/* Quantity + Add to cart */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center border rounded-lg">
+                  <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="w-8 text-center font-medium text-sm">{quantity}</span>
+                  <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setQuantity(quantity + 1)}>
+                    <Plus className="h-4 w-4" />
+                  </Button>
                 </div>
+                <Button className="flex-1 gap-2 gradient-primary text-primary-foreground h-10" onClick={handleAddToCart}>
+                  <ShoppingCart className="h-4 w-4" />
+                  Ajouter au panier
+                </Button>
+              </div>
 
-                <Separator className="my-4 md:my-6" />
-
-                {/* Price & Actions */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl md:text-3xl font-bold text-primary">{product.price.toFixed(2)}€</span>
-                      {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-lg text-muted-foreground line-through">
-                          {product.originalPrice.toFixed(2)}€
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-                      <Package className="h-3 w-3" />
-                      {product.stock} en stock
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                    {/* Quantity Selector */}
-                    <div className="flex items-center gap-2 border rounded-lg p-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <span className="w-8 text-center font-medium">{quantity}</span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => setQuantity(quantity + 1)}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-
-                    <Button 
-                      className="gap-2 gradient-primary text-primary-foreground w-full sm:w-auto"
-                      onClick={handleAddToCart}
-                    >
-                      <ShoppingCart className="h-4 w-4" />
-                      Ajouter au panier
+              {/* Quick actions row */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={liked ? "default" : "outline"}
+                  size="sm"
+                  className={`flex-1 gap-1.5 ${liked ? "bg-rose-500 hover:bg-rose-600 text-white border-rose-500" : ""}`}
+                  onClick={() => toggleLike("product", product.id, product.name)}
+                >
+                  <Heart className={`h-4 w-4 ${liked ? "fill-white" : ""}`} />
+                  {liked ? "Liké" : "J'aime"}
+                </Button>
+                <ReviewDialog
+                  type="product"
+                  targetId={product.id}
+                  targetName={product.name}
+                  trigger={
+                    <Button variant="outline" size="sm" className="flex-1 gap-1.5">
+                      <Star className="h-4 w-4" />
+                      Donner un avis
                     </Button>
-                  </div>
-                </div>
-
-              </CardContent>
-            </Card>
-
-            {/* Tabs for Details */}
-            <Card className="border-0 shadow-card">
-              <Tabs defaultValue="description" className="w-full">
-                <CardHeader className="pb-0 px-3 md:px-6">
-                  <TabsList className="w-full justify-start bg-transparent border-b rounded-none h-auto p-0 gap-0">
-                    <TabsTrigger 
-                      value="description" 
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-xs md:text-sm px-2 md:px-4"
-                    >
-                      Description
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="specs" 
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-xs md:text-sm px-2 md:px-4"
-                    >
-                      Specs
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="reviews" 
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-xs md:text-sm px-2 md:px-4"
-                    >
-                      Avis ({reviewCount})
-                    </TabsTrigger>
-                  </TabsList>
-                </CardHeader>
-
-                <CardContent className="pt-4 md:pt-6 px-3 md:px-6">
-                  <TabsContent value="description" className="mt-0 space-y-3 md:space-y-4">
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{product.description}</p>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-                      {product.longDescription}
-                    </p>
-                  </TabsContent>
-
-                  <TabsContent value="specs" className="mt-0 space-y-3 md:space-y-4">
-                    <div className="grid grid-cols-2 gap-2 md:gap-3">
-                      {product.specs.map((spec) => (
-                        <div key={spec.label} className="p-2.5 md:p-3 rounded-lg bg-muted/50">
-                          <p className="text-[10px] md:text-xs text-muted-foreground">{spec.label}</p>
-                          <p className="font-semibold text-sm md:text-base mt-0.5">{spec.value}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="reviews" className="mt-0 space-y-3 md:space-y-4">
-                    <div className="flex justify-end mb-2">
-                      <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
-                    </div>
-                    {reviews.length === 0 && (
-                      <p className="text-sm text-muted-foreground text-center py-6">Aucun avis pour le moment. Soyez le premier !</p>
-                    )}
-                    {reviews.map((review) => (
-                      <div key={review.id} className="p-3 md:p-4 rounded-lg bg-muted/30 space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 md:h-8 md:w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                              <User className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
-                            </div>
-                            <span className="font-medium text-sm">{review.author}</span>
-                          </div>
-                          <div className="flex items-center gap-0.5">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className={`h-3 w-3 md:h-4 md:w-4 ${i < review.rating ? "fill-amber-400 text-amber-400" : "text-muted"}`} 
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{review.comment}</p>
-                        <p className="text-xs text-muted-foreground">{review.date}</p>
-                      </div>
-                    ))}
-                  </TabsContent>
-                </CardContent>
-              </Tabs>
-            </Card>
+                  }
+                />
+                <Button variant="outline" size="sm" className="flex-1 gap-1.5" onClick={handleShare}>
+                  <Share2 className="h-4 w-4" />
+                  Partager
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Similar Products */}
-        <Card className="border-0 shadow-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Produits similaires
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-              {mockSimilarProducts.map((item) => (
-                <Card 
-                  key={item.id} 
-                  className="border-0 shadow-sm hover:shadow-card transition-shadow cursor-pointer"
-                  onClick={() => navigate(`/product/${item.id}`)}
-                >
-                  <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-4xl">
-                    🛍️
-                  </div>
-                  <CardContent className="p-2 md:p-3">
-                    <h4 className="font-medium text-xs md:text-sm truncate">{item.name}</h4>
-                    <p className="text-primary font-bold text-sm md:text-base">{item.price.toFixed(2)}€</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Tabs: full width below */}
+        <div className="rounded-2xl bg-card p-4 md:p-6 shadow-card">
+          <Tabs defaultValue="description" className="w-full">
+            <TabsList className="w-full justify-start bg-transparent border-b rounded-none h-auto p-0 gap-0 mb-4">
+              <TabsTrigger
+                value="description"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-sm px-4"
+              >
+                Description
+              </TabsTrigger>
+              <TabsTrigger
+                value="specs"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-sm px-4"
+              >
+                Caractéristiques
+              </TabsTrigger>
+              <TabsTrigger
+                value="reviews"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none text-sm px-4"
+              >
+                Avis ({reviewCount})
+              </TabsTrigger>
+            </TabsList>
 
-        {/* Meta Info */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-3 md:gap-4 flex-wrap">
-            <span className="flex items-center gap-1">
-              <User className="h-3.5 w-3.5 md:h-4 md:w-4" />
-              {product.createdBy}
-            </span>
-            <span className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5 md:h-4 md:w-4" />
-              {product.createdAt}
-            </span>
+            <TabsContent value="description" className="mt-0">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
+                {product.longDescription}
+              </p>
+            </TabsContent>
+
+            <TabsContent value="specs" className="mt-0">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {product.specs.map((spec) => (
+                  <div key={spec.label} className="p-3 rounded-xl bg-muted/50">
+                    <p className="text-xs text-muted-foreground">{spec.label}</p>
+                    <p className="font-semibold text-sm mt-0.5">{spec.value}</p>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="reviews" className="mt-0 space-y-3">
+              <div className="flex justify-end mb-2">
+                <ReviewDialog type="product" targetId={product.id} targetName={product.name} />
+              </div>
+              {reviews.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">Aucun avis pour le moment. Soyez le premier !</p>
+              )}
+              {reviews.map((review) => (
+                <div key={review.id} className="p-3 md:p-4 rounded-xl bg-muted/30 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <User className="h-4 w-4 text-primary" />
+                      </div>
+                      <span className="font-medium text-sm">{review.author}</span>
+                    </div>
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`h-3.5 w-3.5 ${i < review.rating ? "fill-amber-400 text-amber-400" : "text-muted"}`} />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{review.comment}</p>
+                  <p className="text-xs text-muted-foreground">{review.date}</p>
+                </div>
+              ))}
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Similar Products */}
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Produits similaires
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {mockSimilarProducts.map((item) => (
+              <div
+                key={item.id}
+                className="rounded-xl overflow-hidden bg-card shadow-sm hover:shadow-card transition-shadow cursor-pointer"
+                onClick={() => navigate(`/product/${item.id}`)}
+              >
+                <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-4xl">
+                  🛍️
+                </div>
+                <div className="p-3">
+                  <h4 className="font-medium text-sm truncate">{item.name}</h4>
+                  <p className="text-primary font-bold">{item.price.toFixed(2)}€</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <span className="text-xs">ID: {productId}</span>
         </div>
       </div>
     </AppLayout>
