@@ -143,14 +143,14 @@ export default function ProductDetail() {
         </Button>
 
         {/* Hero: Image + Key Info side by side on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
           {/* Image */}
-          <div className="relative rounded-2xl overflow-hidden bg-muted/30">
+          <div className="md:col-span-2 relative rounded-2xl overflow-hidden bg-muted/30">
             <Carousel className="w-full" opts={{ loop: true }} setApi={setCarouselApi}>
               <CarouselContent>
                 {productImages.map((img) => (
                   <CarouselItem key={img.id}>
-                    <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-8xl md:text-9xl">
+                    <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center text-7xl md:text-8xl">
                       {img.emoji}
                     </div>
                   </CarouselItem>
@@ -197,7 +197,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Product Info */}
-          <div className="flex flex-col justify-between gap-4">
+          <div className="md:col-span-3 flex flex-col justify-between gap-4">
             {/* Top section */}
             <div className="space-y-3">
               {/* Tags */}
