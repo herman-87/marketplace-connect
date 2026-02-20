@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, MapPin, Clock, Package, MessageCircle, History } from "lucide-react";
 import { Order, OrderStatus, UserRole, ORDER_STATUS_CONFIG } from "@/types/order";
 import { OrderTimeline } from "./OrderTimeline";
@@ -24,6 +23,7 @@ const deliveryLabels: Record<string, string> = {
 
 export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDetailViewProps) {
   const [order, setOrder] = useState(initialOrder);
+  const [activePanel, setActivePanel] = useState<"timeline" | "chat">("timeline");
   const config = ORDER_STATUS_CONFIG[order.status];
 
   const handleStatusChange = (newStatus: OrderStatus, data?: Record<string, string>) => {
@@ -148,31 +148,85 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
           )}
         </div>
 
-        {/* Right: Timeline + Chat + Action Panel */}
+        {/* Right: Timeline / Chat + Action Panel */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="rounded-xl bg-card border border-border/60 overflow-hidden">
-            <Tabs defaultValue="timeline" className="w-full">
-              <TabsList className="w-full rounded-none border-b border-border/60 bg-muted/30 h-auto p-0">
-                <TabsTrigger value="timeline" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
+          <div className="rounded-2xl bg-card border border-border/60 overflow-hidden flex flex-col">
+            {/* Toggle Switch */}
+            <div className="p-3 border-b border-border/40">
+              <div className="relative flex bg-muted/50 rounded-xl p-1">
+                {/* Animated pill background */}
+                <div
+                  className={cn(
+                    "absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-lg bg-background shadow-sm border border-border/60 transition-all duration-300 ease-out",
+                    activePanel === "timeline" ? "left-1" : "left-[calc(50%+2px)]"
+                  )}
+                />
+                <button
+                  onClick={() => setActivePanel("timeline")}
+                  className={cn(
+                    "relative z-10 flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-medium transition-colors duration-200",
+                    activePanel === "timeline"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground/70"
+                  )}
+                >
                   <History className="h-3.5 w-3.5" />
                   Suivi
-                </TabsTrigger>
-                <TabsTrigger value="chat" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
+                </button>
+                <button
+                  onClick={() => setActivePanel("chat")}
+                  className={cn(
+                    "relative z-10 flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-medium transition-colors duration-200",
+                    activePanel === "chat"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground/70"
+                  )}
+                >
                   <MessageCircle className="h-3.5 w-3.5" />
                   Discussion
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="timeline" className="mt-0 p-4">
-                <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
-              </TabsContent>
-              <TabsContent value="chat" className="mt-0 h-[400px]">
-                <OrderChat
-                  orderId={order.id}
-                  role={role}
-                  senderName={role === "client" ? order.customer.name : "Business"}
-                />
-              </TabsContent>
-            </Tabs>
+                  {/* Notification dot placeholder */}
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/60 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Panel Content */}
+            <div className="relative">
+              {/* Timeline */}
+              <div
+                className={cn(
+                  "transition-all duration-300 ease-out",
+                  activePanel === "timeline"
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-4 absolute inset-0 pointer-events-none"
+                )}
+              >
+                <div className="p-4">
+                  <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
+                </div>
+              </div>
+
+              {/* Chat */}
+              <div
+                className={cn(
+                  "transition-all duration-300 ease-out",
+                  activePanel === "chat"
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-4 absolute inset-0 pointer-events-none"
+                )}
+              >
+                <div className="h-[420px]">
+                  <OrderChat
+                    orderId={order.id}
+                    role={role}
+                    senderName={role === "client" ? order.customer.name : "Business"}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Action Panel - sticky on desktop */}
