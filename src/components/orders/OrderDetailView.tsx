@@ -151,26 +151,26 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
         {/* Right: Timeline + Chat + Action Panel */}
         <div className="lg:col-span-2 space-y-4">
           <div className="rounded-xl bg-card border border-border/60 overflow-hidden">
-            <Tabs defaultValue="chat" className="w-full">
+            <Tabs defaultValue="timeline" className="w-full">
               <TabsList className="w-full rounded-none border-b border-border/60 bg-muted/30 h-auto p-0">
-                <TabsTrigger value="chat" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
-                  <MessageCircle className="h-3.5 w-3.5" />
-                  Discussion
-                </TabsTrigger>
                 <TabsTrigger value="timeline" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
                   <History className="h-3.5 w-3.5" />
                   Suivi
                 </TabsTrigger>
+                <TabsTrigger value="chat" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  Discussion
+                </TabsTrigger>
               </TabsList>
+              <TabsContent value="timeline" className="mt-0 p-4">
+                <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
+              </TabsContent>
               <TabsContent value="chat" className="mt-0 h-[400px]">
                 <OrderChat
                   orderId={order.id}
                   role={role}
                   senderName={role === "client" ? order.customer.name : "Business"}
                 />
-              </TabsContent>
-              <TabsContent value="timeline" className="mt-0 p-4">
-                <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
               </TabsContent>
             </Tabs>
           </div>
