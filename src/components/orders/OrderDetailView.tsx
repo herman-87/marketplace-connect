@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeft, MapPin, Clock, Package } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, MapPin, Clock, Package, MessageCircle, History } from "lucide-react";
 import { Order, OrderStatus, UserRole, ORDER_STATUS_CONFIG } from "@/types/order";
 import { OrderTimeline } from "./OrderTimeline";
 import { OrderActionPanel } from "./OrderActionPanel";
+import { OrderChat } from "./OrderChat";
 import { cn } from "@/lib/utils";
 
 interface OrderDetailViewProps {
@@ -146,15 +148,34 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
           )}
         </div>
 
-        {/* Right: Timeline + Action Panel */}
+        {/* Right: Timeline + Chat + Action Panel */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Timeline */}
-          <div className="p-4 rounded-xl bg-card border border-border/60">
-            <h3 className="text-sm font-semibold mb-4">Suivi de la commande</h3>
-            <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
+          <div className="rounded-xl bg-card border border-border/60 overflow-hidden">
+            <Tabs defaultValue="chat" className="w-full">
+              <TabsList className="w-full rounded-none border-b border-border/60 bg-muted/30 h-auto p-0">
+                <TabsTrigger value="chat" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  Discussion
+                </TabsTrigger>
+                <TabsTrigger value="timeline" className="flex-1 gap-1.5 rounded-none data-[state=active]:bg-background py-2.5 text-xs">
+                  <History className="h-3.5 w-3.5" />
+                  Suivi
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="chat" className="mt-0 h-[400px]">
+                <OrderChat
+                  orderId={order.id}
+                  role={role}
+                  senderName={role === "client" ? order.customer.name : "Business"}
+                />
+              </TabsContent>
+              <TabsContent value="timeline" className="mt-0 p-4">
+                <OrderTimeline currentStatus={order.status} statusHistory={order.statusHistory} />
+              </TabsContent>
+            </Tabs>
           </div>
 
-          {/* Action Panel - sticky on desktop, fixed bottom on mobile */}
+          {/* Action Panel - sticky on desktop */}
           <div className="hidden lg:block sticky top-4">
             <div className="p-4 rounded-xl bg-card border border-border/60">
               <h3 className="text-sm font-semibold mb-3">Action</h3>
