@@ -31,6 +31,25 @@ export function OrderChat({ orderId, role, senderName = "Utilisateur" }: OrderCh
 
   const senderRole = role === "client" ? "client" : "business";
 
+  const demoMessages: Message[] = [
+    {
+      id: "demo-1",
+      order_id: orderId,
+      sender_role: "client",
+      sender_name: "Marie Dupont",
+      content: "Bonjour, est-ce que ma commande sera livrée avant vendredi ?",
+      created_at: new Date(Date.now() - 3600000).toISOString(),
+    },
+    {
+      id: "demo-2",
+      order_id: orderId,
+      sender_role: "business",
+      sender_name: "Business",
+      content: "Bonjour Marie ! Oui, votre commande est en cours de préparation et sera expédiée demain. Livraison prévue jeudi 👍",
+      created_at: new Date(Date.now() - 3000000).toISOString(),
+    },
+  ];
+
   // Fetch existing messages
   useEffect(() => {
     const fetchMessages = async () => {
@@ -40,7 +59,11 @@ export function OrderChat({ orderId, role, senderName = "Utilisateur" }: OrderCh
         .eq("order_id", orderId)
         .order("created_at", { ascending: true });
 
-      if (data) setMessages(data);
+      if (data && data.length > 0) {
+        setMessages(data);
+      } else {
+        setMessages(demoMessages);
+      }
     };
 
     fetchMessages();
