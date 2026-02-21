@@ -8,13 +8,7 @@ interface SubscriptionContextType {
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
 
 export function SubscriptionProvider({ children }: { children: ReactNode }) {
-  const [isPro, setIsPro] = useState(() => {
-    return localStorage.getItem("fastrelays_pro") === "true";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("fastrelays_pro", String(isPro));
-  }, [isPro]);
+  const [isPro, setIsPro] = useState(false);
 
   const upgradeToPro = () => setIsPro(true);
 
