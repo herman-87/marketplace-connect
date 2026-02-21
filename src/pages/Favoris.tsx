@@ -26,6 +26,16 @@ const favoriteProducts = [
   { id: "8", name: "Parfum Élégance", price: 85.00, rating: 4.9, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=200&h=150&fit=crop" },
   { id: "9", name: "Tapis Berbère", price: 210.00, rating: 4.3, businessName: "MaisonDeco", category: "Maison", image: "https://images.unsplash.com/photo-1600166898405-da9535204843?w=200&h=150&fit=crop" },
   { id: "10", name: "Bracelet Artisanal", price: 35.00, rating: 4.6, businessName: "AccessoiresPlus", category: "Accessoires", image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=200&h=150&fit=crop" },
+  { id: "11", name: "Enceinte Bluetooth", price: 69.99, rating: 4.5, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=200&h=150&fit=crop" },
+  { id: "12", name: "Lunettes de Soleil", price: 45.00, rating: 4.4, businessName: "AccessoiresPlus", category: "Accessoires", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=200&h=150&fit=crop" },
+  { id: "13", name: "Coussin Velours", price: 29.99, rating: 4.3, businessName: "MaisonDeco", category: "Maison", image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=150&fit=crop" },
+  { id: "14", name: "Crème Hydratante Bio", price: 22.50, rating: 4.7, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=150&fit=crop" },
+  { id: "15", name: "Chargeur Sans Fil", price: 34.99, rating: 4.6, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=200&h=150&fit=crop" },
+  { id: "16", name: "Écharpe Cachemire", price: 79.00, rating: 4.8, businessName: "ModeBoutique", category: "Mode", image: "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=200&h=150&fit=crop" },
+  { id: "17", name: "Bougie Parfumée", price: 18.99, rating: 4.5, businessName: "MaisonDeco", category: "Maison", image: "https://images.unsplash.com/photo-1602607616907-1147af831de5?w=200&h=150&fit=crop" },
+  { id: "18", name: "Souris Ergonomique", price: 54.99, rating: 4.4, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=200&h=150&fit=crop" },
+  { id: "19", name: "Sac Bandoulière", price: 42.00, rating: 4.6, businessName: "AccessoiresPlus", category: "Accessoires", image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=150&fit=crop" },
+  { id: "20", name: "Rouge à Lèvres Mat", price: 15.99, rating: 4.7, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=200&h=150&fit=crop" },
 ];
 
 const favoriteShops = [
@@ -38,7 +48,7 @@ const favoriteShops = [
 
 type TabFilter = "products" | "shops";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 20;
 
 export default function Favoris() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -153,7 +163,7 @@ export default function Favoris() {
             {paginatedProducts.length === 0 ? (
               <Card><CardContent className="p-8 text-center text-muted-foreground">Aucun produit favori trouvé.</CardContent></Card>
             ) : viewMode === "grid" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {paginatedProducts.map((product) => (
                   <Card key={product.id} className="group overflow-hidden hover:border-primary/30 transition-all">
                     <div className="relative h-32 sm:h-36 bg-muted overflow-hidden">
@@ -234,7 +244,7 @@ export default function Favoris() {
             {paginatedShops.length === 0 ? (
               <Card><CardContent className="p-8 text-center text-muted-foreground">Aucune boutique favorite trouvée.</CardContent></Card>
             ) : viewMode === "grid" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {paginatedShops.map((shop) => (
                   <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all group">
                     <CardContent className="p-4 text-center">
