@@ -36,6 +36,14 @@ const favoriteProducts = [
   { id: "18", name: "Souris Ergonomique", price: 54.99, rating: 4.4, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=200&h=150&fit=crop" },
   { id: "19", name: "Sac Bandoulière", price: 42.00, rating: 4.6, businessName: "AccessoiresPlus", category: "Accessoires", image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=150&fit=crop" },
   { id: "20", name: "Rouge à Lèvres Mat", price: 15.99, rating: 4.7, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=200&h=150&fit=crop" },
+  { id: "21", name: "Tablette Graphique", price: 159.99, rating: 4.8, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=200&h=150&fit=crop" },
+  { id: "22", name: "Chapeau Panama", price: 48.00, rating: 4.5, businessName: "AccessoiresPlus", category: "Accessoires", image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=200&h=150&fit=crop" },
+  { id: "23", name: "Miroir Décoratif", price: 65.00, rating: 4.3, businessName: "MaisonDeco", category: "Maison", image: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=200&h=150&fit=crop" },
+  { id: "24", name: "Sérum Anti-Âge", price: 39.99, rating: 4.9, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1570194065650-d99fb4a38c5f?w=200&h=150&fit=crop" },
+  { id: "25", name: "Pull en Maille", price: 55.00, rating: 4.6, businessName: "ModeBoutique", category: "Mode", image: "https://images.unsplash.com/photo-1434389677669-e08b4cda3a14?w=200&h=150&fit=crop" },
+  { id: "26", name: "Webcam HD", price: 79.99, rating: 4.4, businessName: "TechStore", category: "High-Tech", image: "https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=200&h=150&fit=crop" },
+  { id: "27", name: "Vase Artisanal", price: 32.00, rating: 4.5, businessName: "MaisonDeco", category: "Maison", image: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=200&h=150&fit=crop" },
+  { id: "28", name: "Palette Maquillage", price: 27.99, rating: 4.7, businessName: "BeautéShop", category: "Beauté", image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=200&h=150&fit=crop" },
 ];
 
 const favoriteShops = [
