@@ -1,5 +1,17 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface FavoriteItem {
   id: string;
@@ -18,12 +30,19 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(undefin
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [showAuthAlert, setShowAuthAlert] = useState(false);
+  const { user } = useAuth();
 
   const isFavorite = useCallback((productId: string) => {
     return favorites.has(productId);
   }, [favorites]);
 
   const toggleFavorite = useCallback((product: FavoriteItem) => {
+    if (!user) {
+      setShowAuthAlert(true);
+      return;
+    }
+
     setFavorites((prev) => {
       const newFavorites = new Set(prev);
       if (newFavorites.has(product.id)) {
@@ -35,7 +54,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       }
       return newFavorites;
     });
-  }, []);
+  }, [user]);
 
   const favoritesCount = favorites.size;
 
@@ -49,7 +68,31 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+      <AuthAlertDialog open={showAuthAlert} onOpenChange={setShowAuthAlert} />
     </FavoritesContext.Provider>
+  );
+}
+
+function AuthAlertDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const navigate = useNavigate();
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Connexion requise</AlertDialogTitle>
+          <AlertDialogDescription>
+            Vous devez être connecté pour ajouter des articles à vos favoris. Souhaitez-vous vous connecter maintenant ?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Non, plus tard</AlertDialogCancel>
+          <AlertDialogAction onClick={() => navigate("/auth")}>
+            Oui, me connecter
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
