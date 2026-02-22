@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Crown, Store, ClipboardList, Users, BarChart3, X } from "lucide-react";
+import { Check, Crown, Store, ClipboardList, Users, BarChart3, X, RefreshCw } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +29,7 @@ interface SubscriptionSheetProps {
 
 export function SubscriptionSheet({ trigger, open: controlledOpen, onOpenChange }: SubscriptionSheetProps) {
   const [internalOpen, setInternalOpen] = useState(false);
-  const { upgradeToPro } = useSubscription();
+  const { upgradeToPro, autoRenew, setAutoRenew } = useSubscription();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -112,6 +113,17 @@ export function SubscriptionSheet({ trigger, open: controlledOpen, onOpenChange 
                     </li>
                   ))}
                 </ul>
+
+                <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <RefreshCw className="h-4 w-4 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Renouvellement automatique</p>
+                      <p className="text-xs text-muted-foreground">Renouveler l'abonnement à la fin de la période</p>
+                    </div>
+                  </div>
+                  <Switch checked={autoRenew} onCheckedChange={setAutoRenew} />
+                </div>
 
                 <Button onClick={handleActivate} className="w-full" size="lg">
                   Activer gratuitement
