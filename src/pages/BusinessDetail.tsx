@@ -1,7 +1,7 @@
 import { AppLayout } from "@/components/layout/AppLayout";
 import { BusinessHeader } from "@/components/business/BusinessHeader";
 import { BusinessMobileNav } from "@/components/business/BusinessMobileNav";
-import { Package, ShoppingCart, Users, Heart, TrendingUp, Eye } from "lucide-react";
+import { Heart, TrendingUp, Eye } from "lucide-react";
 import { mockBusiness, mockEngagement } from "@/data/businessMockData";
 
 export default function BusinessDetail() {
@@ -10,26 +10,6 @@ export default function BusinessDetail() {
       <div className="space-y-4 md:space-y-6 animate-fade-in">
         <BusinessMobileNav />
         <BusinessHeader business={mockBusiness} />
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {[
-            { icon: Package, value: mockBusiness.stats.products, label: "Produits" },
-            { icon: ShoppingCart, value: mockBusiness.stats.sales, label: "Ventes" },
-            { icon: Users, value: mockBusiness.stats.followers, label: "Abonnés" },
-            { icon: Heart, value: mockEngagement.totalLikes, label: "J'aime" },
-          ].map((stat, i) => (
-            <div key={i} className="bg-card rounded-xl border border-border p-3 md:p-4 flex items-center gap-2 md:gap-3">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                <stat.icon className="w-4 h-4 md:w-5 md:h-5 text-foreground" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-lg md:text-2xl font-bold text-foreground">{stat.value}</p>
-                <p className="text-[10px] md:text-sm text-muted-foreground truncate">{stat.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Activity */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">

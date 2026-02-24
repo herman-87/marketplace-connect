@@ -26,7 +26,7 @@ export function BusinessMobileNav() {
   };
 
   return (
-    <div className="lg:hidden -mx-4 px-0 mb-4">
+    <div className="lg:hidden -mx-4 px-0 mb-4 sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border/50 py-2">
       <ScrollArea className="w-full">
         <div className="flex gap-1.5 px-4 pb-2">
           {navItems.map((item) => {
