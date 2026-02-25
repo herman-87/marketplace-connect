@@ -40,173 +40,141 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
+      {/* Scrollable content area */}
       <div className="flex-1 overflow-auto min-h-0">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left: Sub-carts list */}
-          <div className="lg:w-80 shrink-0">
-            <h3 className="font-semibold mb-4 text-foreground">
-              Vos boutiques ({subCarts.length})
-            </h3>
-            <ScrollArea className="h-[200px] lg:h-[calc(100vh-420px)]">
-              <div className="space-y-3 pr-4">
-                {subCarts.map((subCart) => (
-                  <button
-                    key={subCart.businessId}
-                    onClick={() => onSelectBusiness(subCart.businessId)}
-                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
-                      selectedBusinessId === subCart.businessId 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover:border-primary/50 bg-card'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <Store className="w-6 h-6 text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-sm truncate">{subCart.businessName}</h4>
-                        <p className="text-xs text-muted-foreground">
-                          {subCart.items.length} article{subCart.items.length > 1 ? 's' : ''}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-primary">{subCart.total.toFixed(2)} €</p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </ScrollArea>
-            
-            <div className="mt-4 p-4 rounded-xl bg-muted/50 border border-border">
-              <p className="text-xs text-muted-foreground text-center">
-                💡 Chaque boutique nécessite un paiement séparé
-              </p>
-            </div>
-          </div>
+        {/* Boutiques tabs - horizontal on mobile, vertical sidebar on desktop */}
+        <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
+          {subCarts.map((subCart) => (
+            <button
+              key={subCart.businessId}
+              onClick={() => onSelectBusiness(subCart.businessId)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition-all whitespace-nowrap shrink-0 ${
+                selectedBusinessId === subCart.businessId 
+                  ? 'border-primary bg-primary/10 text-primary' 
+                  : 'border-border hover:border-primary/50 bg-card text-foreground'
+              }`}
+            >
+              <Store className="w-4 h-4 shrink-0" />
+              <span className="text-sm font-medium truncate max-w-[120px]">{subCart.businessName}</span>
+              <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-5">
+                {subCart.items.length}
+              </Badge>
+            </button>
+          ))}
+        </div>
 
-          {/* Right: Selected sub-cart details */}
-          <div className="flex-1 flex flex-col min-h-0">
-            {selectedSubCart ? (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Store className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{selectedSubCart.businessName}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''}
+        {/* Selected sub-cart items */}
+        {selectedSubCart ? (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-muted-foreground">
+                {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''} · {selectedSubCart.total.toFixed(2)} €
+              </p>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs h-7 text-muted-foreground hover:text-destructive"
+                onClick={() => clearSubCart(selectedSubCart.businessId)}
+              >
+                <Trash2 className="w-3 h-3 mr-1" />
+                Vider
+              </Button>
+            </div>
+
+            <div className="space-y-2">
+              {selectedSubCart.items.map((item) => (
+                <div 
+                  key={`${item.businessId}-${item.id}`}
+                  className="flex gap-3 p-2.5 rounded-lg bg-card border border-border"
+                >
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-14 h-14 rounded-md object-cover shrink-0"
+                  />
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div className="flex items-start justify-between gap-2">
+                      <h5 className="text-sm font-medium truncate">{item.name}</h5>
+                      <p className="text-sm font-bold shrink-0">
+                        {(item.price * item.quantity).toFixed(2)} €
                       </p>
                     </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-destructive"
-                    onClick={() => clearSubCart(selectedSubCart.businessId)}
-                  >
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Vider
-                  </Button>
-                </div>
-
-                <div className="space-y-3">
-                  {selectedSubCart.items.map((item) => (
-                    <div 
-                      key={`${item.businessId}-${item.id}`}
-                      className="flex gap-4 p-3 rounded-xl bg-card border border-border"
-                    >
-                      <img 
-                        src={item.image} 
-                        alt={item.name}
-                        className="w-20 h-20 rounded-lg object-cover"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h5 className="font-medium truncate">{item.name}</h5>
-                        <p className="text-primary font-bold mt-1">
-                          {item.price.toFixed(2)} €
-                        </p>
-                        
-                        <div className="flex items-center gap-2 mt-3">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.businessId, item.quantity - 1)}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </Button>
-                          <span className="text-sm font-semibold w-8 text-center">
-                            {item.quantity}
-                          </span>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.businessId, item.quantity + 1)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 ml-auto text-muted-foreground hover:text-destructive"
-                            onClick={() => removeFromCart(item.id, item.businessId)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold">
-                          {(item.price * item.quantity).toFixed(2)} €
-                        </p>
+                    <div className="flex items-center justify-between mt-1">
+                      <p className="text-xs text-muted-foreground">
+                        {item.price.toFixed(2)} € / unité
+                      </p>
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => updateQuantity(item.id, item.businessId, item.quantity - 1)}
+                        >
+                          <Minus className="w-3 h-3" />
+                        </Button>
+                        <span className="text-xs font-semibold w-5 text-center">
+                          {item.quantity}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => updateQuantity(item.id, item.businessId, item.quantity + 1)}
+                        >
+                          <Plus className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 ml-1 text-muted-foreground hover:text-destructive"
+                          onClick={() => removeFromCart(item.id, item.businessId)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <Store className="w-8 h-8 text-muted-foreground" />
-                </div>
-                <h3 className="font-semibold text-foreground mb-1">Sélectionnez une boutique</h3>
-                <p className="text-sm text-muted-foreground">
-                  Choisissez une boutique à gauche pour voir les détails
-                </p>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
+            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+              <Store className="w-6 h-6 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold text-sm text-foreground mb-1">Sélectionnez une boutique</h3>
+            <p className="text-xs text-muted-foreground">
+              Choisissez une boutique ci-dessus pour voir les détails
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Sticky bottom action */}
       {selectedSubCart && (
-        <div className="sticky bottom-0 pt-4 pb-2 bg-background border-t border-border mt-auto shrink-0">
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
+        <div className="sticky bottom-0 pt-3 pb-2 bg-background border-t border-border mt-auto shrink-0">
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Sous-total</span>
               <span>{selectedSubCart.total.toFixed(2)} €</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Livraison</span>
               <span className="text-muted-foreground">Calculé à l'étape suivante</span>
             </div>
             <Separator />
-            <div className="flex justify-between font-bold text-lg">
+            <div className="flex justify-between font-bold text-base">
               <span>Total</span>
               <span className="text-primary">{selectedSubCart.total.toFixed(2)} €</span>
             </div>
             <Button 
-              className="w-full h-12 text-base gap-2" 
+              className="w-full h-11 text-sm gap-2" 
               size="lg"
               onClick={onContinue}
             >
               Continuer vers la livraison
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
