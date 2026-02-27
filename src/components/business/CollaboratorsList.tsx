@@ -2,9 +2,22 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Crown, TrendingUp, MoreHorizontal, Search, LayoutGrid, List } from "lucide-react";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import {
+  Crown,
+  TrendingUp,
+  MoreHorizontal,
+  Search,
+  LayoutGrid,
+  List,
+  UserCheck,
+  Package,
+  ClipboardList,
+  Store,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,113 +43,141 @@ interface CollaboratorsListProps {
   isOwner: boolean;
 }
 
-const ITEMS_PER_PAGE = 8;
+const permissionLabels: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
+  products: { label: "Produits", icon: Package },
+  orders: { label: "Commandes", icon: ClipboardList },
+  marketplace: { label: "Marketplace", icon: Store },
+};
 
-function CollabCardView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
+const ITEMS_PER_PAGE = 6;
+
+function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: boolean }) {
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-4 group hover:border-border transition-colors flex flex-col justify-between min-h-[140px]">
-      {/* Top row: avatar + name left, score right */}
-      <div className="flex items-center gap-3">
-        <div className="relative shrink-0">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={collab.avatar} />
-            <AvatarFallback className="bg-muted text-foreground text-xs">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-          </Avatar>
-          {index < 3 && (
-            <span className="absolute -top-1 -left-1 text-xs leading-none">{["🥇", "🥈", "🥉"][index]}</span>
-          )}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-sm truncate">{collab.name}</span>
-            {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
-          </div>
-          <span className="text-xs text-muted-foreground">Rejoint {collab.joinedAt}</span>
-        </div>
-
-        <div className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium shrink-0">
-          <TrendingUp className="h-3 w-3" />
-          <span>{collab.activityScore}%</span>
-        </div>
+    <Card className="overflow-hidden hover:bg-muted/30 transition-colors group">
+      <div className="h-14 bg-muted/50 relative flex items-center justify-center">
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={collab.avatar} />
+          <AvatarFallback className="text-xs bg-primary/10 text-primary">
+            {collab.name.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        {collab.role === "owner" ? (
+          <Badge variant="outline" className="absolute top-2 right-2 text-xs gap-1 text-warning border-warning/30 bg-warning/10">
+            <Crown className="h-3 w-3" />
+            Propriétaire
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="absolute top-2 right-2 text-xs gap-1 text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
+            <UserCheck className="h-3 w-3" />
+            Actif
+          </Badge>
+        )}
       </div>
+      <CardContent className="p-4 space-y-3">
+        <div>
+          <h4 className="font-semibold text-foreground text-base">{collab.name}</h4>
+          <p className="text-xs text-muted-foreground mt-0.5">Rejoint {collab.joinedAt}</p>
+        </div>
 
-      {/* Middle: stats + permissions */}
-      <div className="mt-3 flex items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-1">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+          <span className="text-xs text-muted-foreground">Activité</span>
+          <span className="text-xs font-medium text-foreground">{collab.activityScore}%</span>
+          <span className="text-xs text-muted-foreground ml-auto">{collab.productsCreated} prod. · {collab.ordersManaged} cmd.</span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
           {collab.role === "owner" ? (
-            <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">accès complet</Badge>
+            <Badge variant="outline" className="gap-1 text-xs py-0.5 px-2">
+              accès complet
+            </Badge>
           ) : (
-            <>
-              {collab.permissions.slice(0, 3).map(perm => (
-                <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
-              ))}
-              {collab.permissions.length > 3 && (
-                <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 3}</Badge>
-              )}
-            </>
+            collab.permissions.map((perm) => {
+              const config = permissionLabels[perm];
+              if (!config) {
+                return (
+                  <Badge key={perm} variant="outline" className="gap-1 text-xs py-0.5 px-2 lowercase">
+                    {perm}
+                  </Badge>
+                );
+              }
+              const Icon = config.icon;
+              return (
+                <Badge key={perm} variant="outline" className="gap-1 text-xs py-0.5 px-2">
+                  <Icon className="w-3 h-3" />
+                  {config.label}
+                </Badge>
+              );
+            })
           )}
         </div>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
-          <span>{collab.productsCreated} prod.</span>
-          <span>{collab.ordersManaged} cmd.</span>
-        </div>
-      </div>
 
-      {/* Bottom: manage action */}
-      {isOwner && collab.role !== "owner" && (
-        <div className="mt-3 pt-2.5 border-t border-border/40 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5">
-                <MoreHorizontal className="h-3.5 w-3.5" />
-                Gérer
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
-    </div>
+        {isOwner && collab.role !== "owner" && (
+          <div className="flex gap-2 pt-2 border-t border-border/40">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline" className="flex-1 h-8 text-xs gap-1.5">
+                  <MoreHorizontal className="h-3.5 w-3.5" />
+                  Gérer
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
-function CollabListView({ collab, index, isOwner }: { collab: Collaborator; index: number; isOwner: boolean }) {
+function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isOwner: boolean; isLast?: boolean }) {
   return (
-    <div className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors">
-      {index < 3 ? (
-        <span className="text-sm md:text-base w-6 md:w-7 text-center">{["🥇", "🥈", "🥉"][index]}</span>
-      ) : (
-        <span className="text-xs md:text-sm text-muted-foreground w-6 md:w-7 text-center font-medium">#{index + 1}</span>
-      )}
-      <Avatar className="h-8 w-8 md:h-10 md:w-10 shrink-0">
+    <div className={cn("flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors", !isLast && "border-b border-border/50")}>
+      <Avatar className="h-9 w-9 md:h-10 md:w-10 shrink-0">
         <AvatarImage src={collab.avatar} />
-        <AvatarFallback className="bg-muted text-foreground text-xs md:text-sm">{collab.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        <AvatarFallback className="text-xs bg-primary/10 text-primary">
+          {collab.name.slice(0, 2).toUpperCase()}
+        </AvatarFallback>
       </Avatar>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 md:gap-2">
           <span className="font-semibold text-sm truncate">{collab.name}</span>
-          {collab.role === "owner" && <Crown className="h-3.5 w-3.5 text-warning shrink-0" />}
+          {collab.role === "owner" ? (
+            <Badge variant="outline" className="text-[10px] md:text-xs text-warning border-warning/30 bg-warning/10 shrink-0 hidden sm:flex gap-1">
+              <Crown className="h-3 w-3" />
+              Propriétaire
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-[10px] md:text-xs text-emerald-600 border-emerald-500/30 bg-emerald-500/10 shrink-0 hidden sm:flex gap-1">
+              <UserCheck className="h-3 w-3" />
+              Actif
+            </Badge>
+          )}
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>{collab.productsCreated} prod.</span>
-          <span className="hidden sm:inline">· {collab.ordersManaged} cmd.</span>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          <span className="text-xs text-muted-foreground">Rejoint {collab.joinedAt}</span>
+          <span className="text-xs text-muted-foreground hidden sm:inline">· {collab.activityScore}% activité</span>
         </div>
       </div>
       <div className="hidden md:flex gap-1 shrink-0">
-        {collab.permissions.slice(0, 2).map(perm => (
-          <Badge key={perm} variant="secondary" className="text-[10px] px-2 py-0 lowercase">{perm}</Badge>
-        ))}
-        {collab.permissions.length > 2 && (
-          <Badge variant="secondary" className="text-[10px] px-2 py-0 lowercase">+{collab.permissions.length - 2}</Badge>
+        {collab.role === "owner" ? (
+          <Badge variant="outline" className="text-[10px] px-2 py-0.5">accès complet</Badge>
+        ) : (
+          collab.permissions.slice(0, 2).map((perm) => {
+            const config = permissionLabels[perm];
+            if (!config) return <Badge key={perm} variant="outline" className="text-[10px] px-2 py-0.5 lowercase">{perm}</Badge>;
+            const Icon = config.icon;
+            return (
+              <Badge key={perm} variant="outline" className="text-[10px] px-2 py-0.5 gap-1">
+                <Icon className="w-3 h-3" />
+                {config.label}
+              </Badge>
+            );
+          })
         )}
-      </div>
-      <div className="flex items-center gap-1.5 text-sm shrink-0">
-        <TrendingUp className="h-3.5 w-3.5 text-primary" />
-        <span className="font-semibold">{collab.activityScore}%</span>
       </div>
       {isOwner && collab.role !== "owner" && (
         <DropdownMenu>
@@ -146,7 +187,7 @@ function CollabListView({ collab, index, isOwner }: { collab: Collaborator; inde
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Modifier</DropdownMenuItem>
+            <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
             <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -169,53 +210,60 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
 
   return (
     <div className="space-y-4">
-      {/* Section Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborateurs</h3>
+          <Badge variant="outline" className="text-primary border-primary/30 bg-primary/10">
+            {collaborators.length}
+          </Badge>
+        </div>
+        {isOwner && (
+          <AddEmployeeDialog onAddEmployee={(userId, roles) => console.log("Adding:", userId, roles)} />
+        )}
+      </div>
+
       <div className="flex items-center gap-3">
-        <h3 className="text-lg font-semibold">Collaborateurs</h3>
-        <Badge variant="secondary">{collaborators.length}</Badge>
-      </div>
-
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-xs">
+        <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Rechercher un membre..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="pl-9 h-9 bg-background" />
+          <Input
+            placeholder="Rechercher un membre..."
+            value={search}
+            onChange={e => { setSearch(e.target.value); setPage(1); }}
+            className="pl-9 h-9 bg-background"
+          />
         </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <div className="flex rounded-md bg-muted p-0.5">
-            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
-              <LayoutGrid className="h-3.5 w-3.5" />
-            </Button>
-            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
-              <List className="h-3.5 w-3.5" />
-            </Button>
-          </div>
-          {isOwner && (
-            <AddEmployeeDialog onAddEmployee={(userId, roles) => console.log("Adding:", userId, roles)} />
-          )}
+        <div className="flex rounded-md bg-muted p-0.5 ml-auto">
+          <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
+            <LayoutGrid className="h-3.5 w-3.5" />
+          </Button>
+          <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
+            <List className="h-3.5 w-3.5" />
+          </Button>
         </div>
       </div>
 
-      {/* Content */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
-            {paginated.map((c, i) => <CollabCardView key={c.id} collab={c} index={(page - 1) * ITEMS_PER_PAGE + i} isOwner={isOwner} />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            {paginated.map(c => <CollabCardView key={c.id} collab={c} isOwner={isOwner} />)}
           </div>
         ) : (
-          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map((c, i) => <CollabListView key={c.id} collab={c} index={(page - 1) * ITEMS_PER_PAGE + i} isOwner={isOwner} />)}
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden">
+            {paginated.map((c, i) => <CollabListView key={c.id} collab={c} isOwner={isOwner} isLast={i === paginated.length - 1} />)}
           </div>
         )
       ) : (
-        <div className="py-12 text-center text-muted-foreground text-sm">Aucun membre trouvé</div>
+        <div className="py-8 text-center text-muted-foreground text-sm">
+          <Search className="h-8 w-8 mx-auto mb-2 opacity-30" />
+          <p>Aucun membre trouvé</p>
+        </div>
       )}
 
       <AdaptivePagination
         currentPage={page}
         totalPages={totalPages}
         onPageChange={setPage}
-        variant={sorted.length > 16 ? "full" : "compact"}
+        variant={sorted.length > 12 ? "full" : "compact"}
       />
     </div>
   );
