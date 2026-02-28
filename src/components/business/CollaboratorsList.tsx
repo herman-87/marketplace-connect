@@ -8,14 +8,17 @@ import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import {
   Crown,
   TrendingUp,
-  MoreHorizontal,
+  MoreVertical,
   Search,
   LayoutGrid,
   List,
   UserCheck,
+  UserPlus,
   Package,
   ClipboardList,
   Store,
+  Users,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -54,39 +57,74 @@ const ITEMS_PER_PAGE = 6;
 function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: boolean }) {
   return (
     <Card className="overflow-hidden hover:bg-muted/30 transition-colors group">
-      <div className="h-14 bg-muted/50 relative flex items-center justify-center">
+      {/* Header — identique à /collaborations */}
+      <div className="h-16 bg-muted/50 relative flex items-center justify-center">
         <Avatar className="h-8 w-8">
           <AvatarImage src={collab.avatar} />
           <AvatarFallback className="text-xs bg-primary/10 text-primary">
             {collab.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
+
+        {/* Status Badge */}
         {collab.role === "owner" ? (
-          <Badge variant="outline" className="absolute top-2 right-2 text-xs gap-1 text-warning border-warning/30 bg-warning/10">
+          <Badge
+            variant="outline"
+            className="absolute top-2 right-10 text-xs gap-1 text-warning border-warning/30 bg-warning/10"
+          >
             <Crown className="h-3 w-3" />
             Propriétaire
           </Badge>
         ) : (
-          <Badge variant="outline" className="absolute top-2 right-2 text-xs gap-1 text-emerald-600 border-emerald-500/30 bg-emerald-500/10">
+          <Badge
+            variant="outline"
+            className="absolute top-2 right-10 text-xs gap-1 bg-success/10 text-success border-success/30"
+          >
             <UserCheck className="h-3 w-3" />
             Actif
           </Badge>
         )}
+
+        {/* Menu — identique à /collaborations */}
+        {isOwner && collab.role !== "owner" && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-1 right-1 h-8 w-8 hover:bg-background/50"
+              >
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive">
+                Retirer de l'équipe
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
-      <CardContent className="p-4 space-y-3">
-        <div>
-          <h4 className="font-semibold text-foreground text-base">{collab.name}</h4>
-          <p className="text-xs text-muted-foreground mt-0.5">Rejoint {collab.joinedAt}</p>
+
+      <CardContent className="p-4">
+        {/* Title & Role — identique à /collaborations */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+            {collab.name}
+          </h3>
+          <Badge variant="secondary" className="text-xs shrink-0">
+            {collab.role === "owner" ? "Propriétaire" : "Collaborateur"}
+          </Badge>
         </div>
 
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-          <span className="text-xs text-muted-foreground">Activité</span>
-          <span className="text-xs font-medium text-foreground">{collab.activityScore}%</span>
-          <span className="text-xs text-muted-foreground ml-auto">{collab.productsCreated} prod. · {collab.ordersManaged} cmd.</span>
-        </div>
+        {/* Description / Joined */}
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+          Rejoint {collab.joinedAt} · Activité {collab.activityScore}%
+        </p>
 
-        <div className="flex flex-wrap gap-1.5">
+        {/* Permissions — identique à /collaborations */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
           {collab.role === "owner" ? (
             <Badge variant="outline" className="gap-1 text-xs py-0.5 px-2">
               accès complet
@@ -112,22 +150,21 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
           )}
         </div>
 
-        {isOwner && collab.role !== "owner" && (
-          <div className="flex gap-2 pt-2 border-t border-border/40">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="outline" className="flex-1 h-8 text-xs gap-1.5">
-                  <MoreHorizontal className="h-3.5 w-3.5" />
-                  Gérer
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        {/* Stats Row — identique à /collaborations */}
+        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border/50">
+          <div className="flex items-center gap-1.5">
+            <Package className="h-4 w-4 text-primary/70" />
+            <span>{collab.productsCreated}</span>
           </div>
-        )}
+          <div className="flex items-center gap-1.5">
+            <ClipboardList className="h-4 w-4 text-primary/70" />
+            <span>{collab.ordersManaged}</span>
+          </div>
+          <div className="flex items-center gap-1.5 ml-auto">
+            <TrendingUp className="h-4 w-4 text-primary/70" />
+            <span>{collab.activityScore}%</span>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
@@ -151,7 +188,7 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
               Propriétaire
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-[10px] md:text-xs text-emerald-600 border-emerald-500/30 bg-emerald-500/10 shrink-0 hidden sm:flex gap-1">
+            <Badge variant="outline" className="text-[10px] md:text-xs bg-success/10 text-success border-success/30 shrink-0 hidden sm:flex gap-1">
               <UserCheck className="h-3 w-3" />
               Actif
             </Badge>
@@ -183,12 +220,12 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 shrink-0">
-              <MoreHorizontal className="h-3.5 w-3.5 md:h-4 md:w-4" />
+              <MoreVertical className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Modifier les permissions</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">Retirer</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive">Retirer de l'équipe</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )}
@@ -210,6 +247,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
 
   return (
     <div className="space-y-4">
+      {/* Section Header — identique à ReceivedInvitations */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborateurs</h3>
@@ -222,6 +260,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
         )}
       </div>
 
+      {/* Toolbar — identique à ReceivedInvitations */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -242,6 +281,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
         </div>
       </div>
 
+      {/* Content — identique à /collaborations grid */}
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
