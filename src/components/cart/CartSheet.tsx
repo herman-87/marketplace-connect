@@ -13,7 +13,6 @@ import { useCart } from "@/contexts/CartContext";
 import { CheckoutProgress } from "./checkout/CheckoutProgress";
 import { CartStep } from "./checkout/CartStep";
 import { DeliveryStep } from "./checkout/DeliveryStep";
-import { PaymentStep } from "./checkout/PaymentStep";
 import { ConfirmationStep } from "./checkout/ConfirmationStep";
 import { TrackingStep } from "./checkout/TrackingStep";
 import type { CheckoutStep } from "@/types/order";
@@ -53,7 +52,6 @@ export function CartSheet({ trigger }: CartSheetProps) {
 
   const handleClose = () => {
     setOpen(false);
-    // Reset to cart step when closing
     setTimeout(() => {
       setCurrentStep('cart');
     }, 300);
@@ -73,15 +71,7 @@ export function CartSheet({ trigger }: CartSheetProps) {
         return (
           <DeliveryStep
             onBack={() => setCurrentStep('cart')}
-            onContinue={() => setCurrentStep('payment')}
-          />
-        );
-      case 'payment':
-        return (
-          <PaymentStep
-            selectedBusinessId={selectedBusinessId}
-            onBack={() => setCurrentStep('delivery')}
-            onConfirm={() => setCurrentStep('confirmation')}
+            onContinue={() => setCurrentStep('confirmation')}
           />
         );
       case 'confirmation':
@@ -108,7 +98,6 @@ export function CartSheet({ trigger }: CartSheetProps) {
     switch (currentStep) {
       case 'cart': return 'Mon Panier';
       case 'delivery': return 'Livraison';
-      case 'payment': return 'Paiement';
       case 'confirmation': return 'Confirmation';
       case 'tracking': return 'Suivi de commande';
       default: return 'Mon Panier';

@@ -22,8 +22,7 @@ export type OrderStatus =
 export type CheckoutStep = 
   | 'cart'           // Review cart items
   | 'delivery'       // Delivery address & options
-  | 'payment'        // Payment method
-  | 'confirmation'   // Order confirmation
+  | 'confirmation'   // Order confirmation (CREATED - waiting for business)
   | 'tracking';      // Order tracking
 
 export type UserRole = 'client' | 'business';

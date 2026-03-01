@@ -16,7 +16,8 @@ import {
   PackageCheck,
   XCircle,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  Ban
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { OrderStatus } from "@/types/order";
@@ -27,11 +28,11 @@ interface TrackingStepProps {
   onClose: () => void;
 }
 
-// Mock order data - in real app, this comes from the backend
+// Mock order - starts at CREATED (just placed from cart)
 const mockOrder = {
   id: 'ORD-ABC123',
-  status: 'PENDING_DELIVERY' as OrderStatus,
-  createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+  status: 'CREATED' as OrderStatus,
+  createdAt: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
   businessName: 'Chez Mama',
   items: [
     { name: 'Poulet Yassa', quantity: 2, price: 15.99 },
@@ -39,30 +40,28 @@ const mockOrder = {
   ],
   total: 44.48,
   deliveryAddress: '123 Rue de la Paix, Paris 75001',
-  estimatedDelivery: '14:30 - 15:00',
-  driver: {
-    name: 'Kouassi Serge',
-    phone: '+225 07 12 34 56 78',
-  }
+  estimatedDelivery: 'Après acceptation et paiement',
 };
 
-const statusTimeline: { status: OrderStatus; label: string }[] = [
-  { status: 'CREATED', label: 'Commande créée' },
-  { status: 'ACCEPTED', label: 'Acceptée' },
-  { status: 'PAID', label: 'Payée' },
-  { status: 'PENDING_DELIVERY', label: 'En préparation' },
-  { status: 'IN_DELIVERY', label: 'En livraison' },
-  { status: 'DELIVERED', label: 'Livrée' },
+// Full lifecycle timeline
+const statusTimeline: { status: OrderStatus; label: string; description: string }[] = [
+  { status: 'CREATED', label: 'Commande envoyée', description: 'En attente de validation par le vendeur' },
+  { status: 'ACCEPTED', label: 'Acceptée par le vendeur', description: 'Le vendeur peut satisfaire votre commande' },
+  { status: 'PENDING_PAYMENT', label: 'En attente de paiement', description: 'Procédez au paiement pour confirmer' },
+  { status: 'PAID', label: 'Paiement confirmé', description: 'Votre paiement a été reçu' },
+  { status: 'PENDING_DELIVERY', label: 'En préparation', description: 'Le vendeur prépare votre commande' },
+  { status: 'IN_DELIVERY', label: 'En livraison', description: 'Un livreur est en route' },
+  { status: 'DELIVERED', label: 'Livrée', description: 'Votre commande a été livrée' },
 ];
 
 const statusToProgress: Record<OrderStatus, number> = {
-  CREATED: 10,
-  ACCEPTED: 25,
+  CREATED: 8,
+  ACCEPTED: 18,
   REJECTED: 0,
-  PENDING_PAYMENT: 20,
-  PAID: 40,
-  PENDING_DELIVERY: 55,
-  IN_DELIVERY: 75,
+  PENDING_PAYMENT: 28,
+  PAID: 42,
+  PENDING_DELIVERY: 56,
+  IN_DELIVERY: 72,
   DELIVERED: 90,
   COMPLETED: 100,
   CANCELLED_BY_CLIENT: 0,
@@ -83,7 +82,7 @@ const getStatusIcon = (status: OrderStatus) => {
     IN_DELIVERY: Truck,
     DELIVERED: PackageCheck,
     COMPLETED: CheckCircle2,
-    CANCELLED_BY_CLIENT: XCircle,
+    CANCELLED_BY_CLIENT: Ban,
     PAYMENT_FAILED: AlertTriangle,
     DELIVERY_FAILED: AlertTriangle,
     ACCEPTANCE_TIMEOUT: Clock,
@@ -156,13 +155,25 @@ export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
               </div>
             </div>
 
+            {/* What's next card for CREATED status */}
+            {mockOrder.status === 'CREATED' && (
+              <div className="p-4 rounded-xl border border-warning/30 bg-warning/5 mb-6">
+                <p className="text-sm font-medium text-foreground mb-1">⏳ En attente du vendeur</p>
+                <p className="text-xs text-muted-foreground">
+                  Le vendeur vérifie la disponibilité de vos produits. 
+                  Vous serez notifié dès qu'il aura accepté votre commande pour procéder au paiement.
+                </p>
+              </div>
+            )}
+
             {/* Timeline */}
             <div className="p-6 rounded-xl border border-border bg-card">
-              <h3 className="font-semibold mb-4">Historique de la commande</h3>
+              <h3 className="font-semibold mb-4">Cycle de la commande</h3>
               <div className="space-y-4">
                 {statusTimeline.map((step, index) => {
                   const isCompleted = index <= currentStatusIndex;
                   const isCurrent = index === currentStatusIndex;
+                  const StepIcon = getStatusIcon(step.status);
 
                   return (
                     <div key={step.status} className="flex gap-4">
@@ -171,10 +182,11 @@ export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
                           "w-8 h-8 rounded-full flex items-center justify-center border-2",
                           isCompleted 
                             ? "bg-primary border-primary text-primary-foreground" 
-                            : "bg-muted border-border text-muted-foreground"
+                            : "bg-muted border-border text-muted-foreground",
+                          isCurrent && "ring-2 ring-offset-2 ring-offset-background ring-primary/30"
                         )}>
                           {isCompleted ? (
-                            <CheckCircle2 className="w-4 h-4" />
+                            <StepIcon className="w-4 h-4" />
                           ) : (
                             <span className="text-xs">{index + 1}</span>
                           )}
@@ -188,16 +200,17 @@ export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
                       </div>
                       <div className="flex-1 pb-4">
                         <p className={cn(
-                          "font-medium",
+                          "font-medium text-sm",
                           isCurrent ? "text-primary" : isCompleted ? "text-foreground" : "text-muted-foreground"
                         )}>
                           {step.label}
                         </p>
-                        {isCompleted && (
-                          <p className="text-xs text-muted-foreground">
-                            {isCurrent ? 'Maintenant' : 'Il y a 30 min'}
-                          </p>
-                        )}
+                        <p className={cn(
+                          "text-xs mt-0.5",
+                          isCurrent ? "text-muted-foreground" : isCompleted ? "text-muted-foreground/80" : "text-muted-foreground/50"
+                        )}>
+                          {isCurrent ? step.description : isCompleted ? 'Terminé' : 'À venir'}
+                        </p>
                       </div>
                     </div>
                   );
@@ -255,34 +268,9 @@ export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span>Estimée : {mockOrder.estimatedDelivery}</span>
+                  <span>{mockOrder.estimatedDelivery}</span>
                 </div>
               </div>
-
-              {mockOrder.driver && (
-                <>
-                  <Separator className="my-4" />
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                        <Truck className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm">{mockOrder.driver.name}</p>
-                        <p className="text-xs text-muted-foreground">Livreur</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="icon" className="h-9 w-9">
-                        <Phone className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="icon" className="h-9 w-9">
-                        <MessageCircle className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              )}
             </div>
           </div>
         </div>
