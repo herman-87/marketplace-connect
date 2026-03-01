@@ -1,26 +1,32 @@
-import { Clock, CheckCircle2, XCircle, Truck } from "lucide-react";
+import { Clock, CheckCircle2, XCircle, Truck, CreditCard, Package, PackageCheck, Ban, AlertTriangle, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { OrderStatus, ORDER_STATUS_CONFIG } from "@/types/order";
 
-interface Order {
+interface RecentOrder {
   id: string;
   customerName: string;
   businessName: string;
   amount: number;
-  status: "pending" | "accepted" | "rejected" | "delivered";
+  status: OrderStatus;
   createdAt: string;
   itemsCount: number;
 }
 
-const mockOrders: Order[] = [
+const iconMap: Record<string, React.ElementType> = {
+  Clock, CheckCircle: CheckCircle2, XCircle, CreditCard, CheckCircle2,
+  Package, Truck, PackageCheck, Ban, AlertTriangle, AlertCircle,
+};
+
+const mockOrders: RecentOrder[] = [
   {
     id: "ORD-001",
     customerName: "Marie Martin",
     businessName: "RestauFast",
     amount: 45.90,
-    status: "pending",
+    status: "CREATED",
     createdAt: "Il y a 5 min",
     itemsCount: 3,
   },
@@ -29,7 +35,7 @@ const mockOrders: Order[] = [
     customerName: "Pierre Dubois",
     businessName: "TechStore",
     amount: 129.00,
-    status: "accepted",
+    status: "PENDING_PAYMENT",
     createdAt: "Il y a 15 min",
     itemsCount: 2,
   },
@@ -38,7 +44,7 @@ const mockOrders: Order[] = [
     customerName: "Sophie Leroy",
     businessName: "RestauFast",
     amount: 32.50,
-    status: "delivered",
+    status: "DELIVERED",
     createdAt: "Il y a 1h",
     itemsCount: 4,
   },
@@ -47,33 +53,18 @@ const mockOrders: Order[] = [
     customerName: "Lucas Bernard",
     businessName: "ModeBoutique",
     amount: 89.99,
-    status: "rejected",
+    status: "REJECTED",
     createdAt: "Il y a 2h",
     itemsCount: 1,
   },
 ];
 
-const statusConfig = {
-  pending: {
-    label: "En attente",
-    icon: Clock,
-    className: "bg-warning/10 text-warning border-warning/30",
-  },
-  accepted: {
-    label: "Acceptée",
-    icon: CheckCircle2,
-    className: "bg-success/10 text-success border-success/30",
-  },
-  rejected: {
-    label: "Refusée",
-    icon: XCircle,
-    className: "bg-destructive/10 text-destructive border-destructive/30",
-  },
-  delivered: {
-    label: "Livrée",
-    icon: Truck,
-    className: "bg-primary/10 text-primary border-primary/30",
-  },
+const colorMap: Record<string, string> = {
+  success: "bg-green-500/10 text-green-600 border-green-500/30",
+  warning: "bg-warning/10 text-warning border-warning/30",
+  destructive: "bg-destructive/10 text-destructive border-destructive/30",
+  secondary: "bg-muted text-muted-foreground border-border",
+  default: "bg-primary/10 text-primary border-primary/30",
 };
 
 export function RecentOrders() {
@@ -82,7 +73,10 @@ export function RecentOrders() {
       <CardContent className="p-0">
         <div className="divide-y divide-border">
           {mockOrders.map((order) => {
-            const StatusIcon = statusConfig[order.status].icon;
+            const config = ORDER_STATUS_CONFIG[order.status];
+            const StatusIcon = iconMap[config.icon] || Clock;
+            const statusClass = colorMap[config.color] || colorMap.default;
+
             return (
               <div
                 key={order.id}
@@ -92,7 +86,7 @@ export function RecentOrders() {
                 <div
                   className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center shrink-0 border",
-                    statusConfig[order.status].className
+                    statusClass
                   )}
                 >
                   <StatusIcon className="h-5 w-5" />
@@ -119,13 +113,13 @@ export function RecentOrders() {
                   <p className="font-semibold text-foreground">
                     {order.amount.toFixed(2)} €
                   </p>
-                  <Badge variant="outline" className={cn("hidden sm:flex", statusConfig[order.status].className)}>
-                    {statusConfig[order.status].label}
+                  <Badge variant="outline" className={cn("hidden sm:flex", statusClass)}>
+                    {config.label}
                   </Badge>
                 </div>
 
-                {/* Actions for pending */}
-                {order.status === "pending" && (
+                {/* Actions for CREATED status (business perspective) */}
+                {order.status === "CREATED" && (
                   <div className="flex items-center gap-2 shrink-0">
                     <Button size="sm" variant="outline" className="h-8">
                       Refuser

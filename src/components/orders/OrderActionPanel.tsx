@@ -67,8 +67,12 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
           <Button
             className="w-full h-12 text-sm font-semibold gap-2"
             onClick={() => {
+              // ACCEPTED then immediately transitions to PENDING_PAYMENT
               onStatusChange("ACCEPTED");
-              toast.success("Commande acceptée !");
+              setTimeout(() => {
+                onStatusChange("PENDING_PAYMENT");
+              }, 100);
+              toast.success("Commande acceptée ! Le client peut maintenant payer.");
             }}
           >
             <Check className="h-4 w-4" />
@@ -277,7 +281,7 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
 
   // Waiting states
   const waitingMessages: Partial<Record<OrderStatus, string>> = {
-    ACCEPTED: "Le vendeur a accepté, paiement en cours de traitement...",
+    ACCEPTED: "Le vendeur a accepté votre commande. Procédez au paiement.",
     PAID: "Paiement confirmé, le vendeur prépare votre commande",
     PENDING_DELIVERY: "Votre commande est en cours de préparation",
     IN_DELIVERY: "Votre commande est en route 🚚",

@@ -1,4 +1,4 @@
-import { Check, ShoppingCart, MapPin, CreditCard, PackageCheck } from "lucide-react";
+import { Check, ShoppingCart, MapPin, PackageCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CheckoutStep } from "@/types/order";
 
@@ -10,11 +10,10 @@ interface CheckoutProgressProps {
 const steps: { id: CheckoutStep; label: string; icon: React.ElementType }[] = [
   { id: 'cart', label: 'Panier', icon: ShoppingCart },
   { id: 'delivery', label: 'Livraison', icon: MapPin },
-  { id: 'payment', label: 'Paiement', icon: CreditCard },
   { id: 'confirmation', label: 'Confirmation', icon: PackageCheck },
 ];
 
-const stepOrder: CheckoutStep[] = ['cart', 'delivery', 'payment', 'confirmation', 'tracking'];
+const stepOrder: CheckoutStep[] = ['cart', 'delivery', 'confirmation', 'tracking'];
 
 export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressProps) {
   const currentIndex = stepOrder.indexOf(currentStep);
