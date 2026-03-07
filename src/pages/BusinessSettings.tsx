@@ -28,6 +28,8 @@ export default function BusinessSettings() {
   const { id } = useParams();
   const navigate = useNavigate();
   
+  const [businessName, setBusinessName] = useState("Ma Boutique");
+  const [businessDescription, setBusinessDescription] = useState("Une boutique en ligne proposant des produits variés et de qualité.");
   const [logo, setLogo] = useState<string | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
   const [currency, setCurrency] = useState("XOF");
