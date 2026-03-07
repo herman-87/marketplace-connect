@@ -5,9 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Upload, Image as ImageIcon, Coins, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Upload, Image as ImageIcon, Coins, Save, Trash2, Store } from "lucide-react";
 import { BusinessMobileNav } from "@/components/business/BusinessMobileNav";
 import { toast } from "sonner";
 
@@ -28,6 +29,8 @@ export default function BusinessSettings() {
   const { id } = useParams();
   const navigate = useNavigate();
   
+  const [businessName, setBusinessName] = useState("Ma Boutique");
+  const [businessDescription, setBusinessDescription] = useState("Une boutique en ligne proposant des produits variés et de qualité.");
   const [logo, setLogo] = useState<string | null>(null);
   const [banner, setBanner] = useState<string | null>(null);
   const [currency, setCurrency] = useState("XOF");
@@ -85,6 +88,43 @@ export default function BusinessSettings() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
+          {/* Business Info Section */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <Store className="h-5 w-5 text-primary" />
+                </div>
+                Informations générales
+              </CardTitle>
+              <CardDescription>
+                Le nom et la description de votre boutique visibles par vos clients.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="business-name">Nom du business</Label>
+                <Input 
+                  id="business-name"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Nom de votre boutique"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="business-description">Description</Label>
+                <Textarea
+                  id="business-description"
+                  value={businessDescription}
+                  onChange={(e) => setBusinessDescription(e.target.value)}
+                  placeholder="Décrivez votre boutique en quelques mots..."
+                  rows={4}
+                />
+                <p className="text-xs text-muted-foreground">{businessDescription.length}/500 caractères</p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Logo Section */}
           <Card>
             <CardHeader>
