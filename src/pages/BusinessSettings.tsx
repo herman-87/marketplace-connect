@@ -5,9 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Upload, Image as ImageIcon, Coins, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Upload, Image as ImageIcon, Coins, Save, Trash2, Store } from "lucide-react";
 import { BusinessMobileNav } from "@/components/business/BusinessMobileNav";
 import { toast } from "sonner";
 
