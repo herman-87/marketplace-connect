@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingCart, Users, Heart, Settings } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Heart, Settings, Percent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
