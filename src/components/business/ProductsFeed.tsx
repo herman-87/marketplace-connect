@@ -259,11 +259,6 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
     setPublishTarget(null);
   };
 
-  const handleStatusChange = (productId: string, newStatus: Product["status"]) => {
-    setProducts(prev =>
-      prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
-    );
-  };
 
   const filtered = products
     .filter(p => statusFilter === "all" || p.status === statusFilter)
