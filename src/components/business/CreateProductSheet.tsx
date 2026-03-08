@@ -70,11 +70,12 @@ const currencies = [
 
 const MAX_IMAGES = 10;
 
-export function CreateProductSheet({ trigger, product, open: controlledOpen, onOpenChange }: CreateProductSheetProps) {
+export function CreateProductSheet({ trigger, product, open: controlledOpen, onOpenChange, onStatusChange }: CreateProductSheetProps) {
   const isEditMode = !!product;
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const setOpen = onOpenChange || setInternalOpen;
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
