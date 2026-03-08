@@ -21,6 +21,7 @@ import {
   Search,
   LayoutGrid,
   List,
+  Percent,
 } from "lucide-react";
 import {
   DropdownMenu,
