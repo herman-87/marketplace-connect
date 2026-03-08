@@ -313,6 +313,16 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
           if (!open) setEditProduct(null);
         }}
       />
+
+      {/* Create Promotion Sheet from product */}
+      <CreatePromotionSheet
+        preselectedProductId={promoProductId || undefined}
+        open={promoOpen}
+        onOpenChange={(open) => {
+          setPromoOpen(open);
+          if (!open) setPromoProductId(null);
+        }}
+      />
     </div>
   );
 }
