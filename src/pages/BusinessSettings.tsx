@@ -137,14 +137,6 @@ export default function BusinessSettings() {
             <h1 className="text-2xl font-bold text-foreground">Paramètres du business</h1>
             <p className="text-muted-foreground">Personnalisez l'apparence et les préférences de votre boutique</p>
           </div>
-          {/* Active toggle in header */}
-          <div className="flex items-center gap-3 px-4 py-2 rounded-lg border border-border bg-card">
-            <Power className={`h-4 w-4 ${isActive ? 'text-green-500' : 'text-muted-foreground'}`} />
-            <span className="text-sm font-medium hidden sm:inline">
-              {isActive ? "Actif" : "Inactif"}
-            </span>
-            <Switch checked={isActive} onCheckedChange={setIsActive} />
-          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -412,8 +404,19 @@ export default function BusinessSettings() {
             </CardContent>
           </Card>
 
-          {/* Banner Section - Full Width */}
-          <Card className="lg:col-span-2">
+           {/* Active Status Section */}
+           <div className="flex items-center justify-between p-4 rounded-lg border border-border/60 bg-card lg:col-span-2">
+             <div>
+               <p className="font-medium text-sm">Activer le business</p>
+               <p className="text-xs text-muted-foreground">
+                 Rendre le business visible sur la marketplace
+               </p>
+             </div>
+             <Switch checked={isActive} onCheckedChange={setIsActive} />
+           </div>
+
+           {/* Banner Section - Full Width */}
+           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-secondary">
