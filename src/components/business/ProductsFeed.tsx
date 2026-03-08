@@ -337,11 +337,11 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         )
       ) : (
