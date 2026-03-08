@@ -29,9 +29,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { CreateProductSheet } from "./CreateProductSheet";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
