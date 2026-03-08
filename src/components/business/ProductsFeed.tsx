@@ -108,9 +108,6 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                   </DropdownMenuItem>
                 )}
-                {product.status === "draft" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Publier</DropdownMenuItem>}
-                {product.status === "published" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Retirer</DropdownMenuItem>}
-                {product.status === "removed" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Republier</DropdownMenuItem>}
                 <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -128,6 +125,22 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
           <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{product.views}</span>
           <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
         </div>
+        {isOwner && (
+          <div className="mt-3 pt-3 border-t border-border/50" onClick={e => e.stopPropagation()}>
+            <Button
+              variant={product.status === "published" ? "outline" : "default"}
+              size="sm"
+              className="w-full gap-1.5 h-8 text-xs"
+              onClick={() => onPublishRequest(product)}
+            >
+              {product.status === "published" ? (
+                <><Archive className="h-3.5 w-3.5" />Retirer de la publication</>
+              ) : (
+                <><Send className="h-3.5 w-3.5" />Publier</>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -163,7 +176,19 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
       </div>
       <span className="font-bold text-sm md:text-base shrink-0">{product.price}€</span>
       {isOwner && (
-        <div className="hidden sm:block" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
+          <Button
+            variant={product.status === "published" ? "outline" : "default"}
+            size="sm"
+            className="gap-1 h-7 text-[11px] px-2.5 shrink-0"
+            onClick={() => onPublishRequest(product)}
+          >
+            {product.status === "published" ? (
+              <><Archive className="h-3 w-3" />Retirer</>
+            ) : (
+              <><Send className="h-3 w-3" />Publier</>
+            )}
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0">
@@ -175,16 +200,6 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
               {product.status === "published" && (
                 <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
                   <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
-                </DropdownMenuItem>
-              )}
-              {product.status !== "published" && (
-                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
-                  <Send className="h-3.5 w-3.5 mr-1.5" />{product.status === "removed" ? "Republier" : "Publier"}
-                </DropdownMenuItem>
-              )}
-              {product.status === "published" && (
-                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
-                  <Archive className="h-3.5 w-3.5 mr-1.5" />Retirer
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
@@ -244,11 +259,6 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
     setPublishTarget(null);
   };
 
-  const handleStatusChange = (productId: string, newStatus: Product["status"]) => {
-    setProducts(prev =>
-      prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
-    );
-  };
 
   const filtered = products
     .filter(p => statusFilter === "all" || p.status === statusFilter)
@@ -366,7 +376,6 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           setEditOpen(open);
           if (!open) setEditProduct(null);
         }}
-        onStatusChange={handleStatusChange}
       />
 
       {/* Create Promotion Sheet from product */}

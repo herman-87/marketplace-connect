@@ -15,17 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { X, Save, ImagePlus, Package, RefreshCw, Send, Archive } from "lucide-react";
+import { X, Save, ImagePlus, Package, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProductData {
@@ -49,7 +39,7 @@ interface CreateProductSheetProps {
   product?: ProductData | null;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onStatusChange?: (productId: string, newStatus: string) => void;
+  
 }
 
 const productCategories = [
@@ -70,12 +60,11 @@ const currencies = [
 
 const MAX_IMAGES = 10;
 
-export function CreateProductSheet({ trigger, product, open: controlledOpen, onOpenChange, onStatusChange }: CreateProductSheetProps) {
+export function CreateProductSheet({ trigger, product, open: controlledOpen, onOpenChange }: CreateProductSheetProps) {
   const isEditMode = !!product;
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const setOpen = onOpenChange || setInternalOpen;
-  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -206,34 +195,6 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
         {/* Form Content */}
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-2xl mx-auto space-y-6">
-            {/* Publish/Unpublish action - shown in edit mode */}
-            {isEditMode && product?.status && (
-              <div className="flex items-center justify-between p-4 rounded-lg border border-border bg-muted/30">
-                <div>
-                  <p className="text-sm font-medium">
-                    {product.status === "published" ? "Ce produit est publié" : "Ce produit n'est pas publié"}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {product.status === "published" 
-                      ? "Visible par les clients sur le marketplace" 
-                      : "Non visible par les clients"}
-                  </p>
-                </div>
-                <Button
-                  variant={product.status === "published" ? "outline" : "default"}
-                  size="sm"
-                  className="gap-1.5 shrink-0"
-                  onClick={() => setPublishDialogOpen(true)}
-                >
-                  {product.status === "published" ? (
-                    <><Archive className="w-4 h-4" />Retirer</>
-                  ) : (
-                    <><Send className="w-4 h-4" />Publier</>
-                  )}
-                </Button>
-              </div>
-            )}
-
             {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="prod-name">Nom du produit *</Label>
@@ -359,49 +320,6 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
         </div>
       </SheetContent>
 
-      {/* Publish/Unpublish Confirmation Dialog */}
-      {isEditMode && product && (
-        <AlertDialog open={publishDialogOpen} onOpenChange={setPublishDialogOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {product.status === "published"
-                  ? "Retirer des publications ?"
-                  : "Publier cet article ?"}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {product.status === "published" ? (
-                  <>
-                    <strong>"{product.name}"</strong> ne sera plus visible par les clients sur le marketplace. 
-                    Les commandes en cours ne seront pas affectées. Vous pourrez le republier à tout moment.
-                  </>
-                ) : (
-                  <>
-                    <strong>"{product.name}"</strong> sera immédiatement visible par tous les clients sur le marketplace. 
-                    Assurez-vous que les informations du produit (prix, description, images) sont complètes avant de publier.
-                  </>
-                )}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction onClick={() => {
-                const newStatus = product.status === "published" ? "removed" : "published";
-                onStatusChange?.(product.id!, newStatus);
-                toast.success(
-                  newStatus === "published"
-                    ? `"${product.name}" est maintenant publié !`
-                    : `"${product.name}" a été retiré des publications.`
-                );
-                setPublishDialogOpen(false);
-                handleClose();
-              }}>
-                {product.status === "published" ? "Retirer" : "Publier"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
     </Sheet>
   );
 }
