@@ -177,6 +177,16 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
                   <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                 </DropdownMenuItem>
               )}
+              {product.status !== "published" && (
+                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
+                  <Send className="h-3.5 w-3.5 mr-1.5" />{product.status === "removed" ? "Republier" : "Publier"}
+                </DropdownMenuItem>
+              )}
+              {product.status === "published" && (
+                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
+                  <Archive className="h-3.5 w-3.5 mr-1.5" />Retirer
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
