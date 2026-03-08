@@ -126,15 +126,15 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
           <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
         </div>
         {isOwner && (
-          <div className="mt-3 pt-3 border-t border-border/50" onClick={e => e.stopPropagation()}>
+          <div className="mt-3 pt-3 border-t border-border/50 flex justify-end" onClick={e => e.stopPropagation()}>
             <Button
               variant={product.status === "published" ? "outline" : "default"}
               size="sm"
-              className="w-full gap-1.5 h-8 text-xs"
+              className="gap-1.5 h-8 text-xs px-3"
               onClick={() => onPublishRequest(product)}
             >
               {product.status === "published" ? (
-                <><Archive className="h-3.5 w-3.5" />Retirer de la publication</>
+                <><Archive className="h-3.5 w-3.5" />Retirer</>
               ) : (
                 <><Send className="h-3.5 w-3.5" />Publier</>
               )}
