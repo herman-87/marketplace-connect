@@ -366,7 +366,6 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           setEditOpen(open);
           if (!open) setEditProduct(null);
         }}
-        onStatusChange={handleStatusChange}
       />
 
       {/* Create Promotion Sheet from product */}
