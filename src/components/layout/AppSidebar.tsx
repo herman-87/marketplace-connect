@@ -19,6 +19,9 @@ import {
   PackageCheck,
   Package,
   ShoppingCart,
+  UserCog,
+  TrendingUp,
+  Gauge,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
