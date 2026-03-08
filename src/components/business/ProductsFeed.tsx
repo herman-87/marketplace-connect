@@ -72,7 +72,7 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
 };
 
-function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
+function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
