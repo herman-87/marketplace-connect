@@ -108,9 +108,9 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                   </DropdownMenuItem>
                 )}
-                {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
-                {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
-                {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
+                {product.status === "draft" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Publier</DropdownMenuItem>}
+                {product.status === "published" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Retirer</DropdownMenuItem>}
+                {product.status === "removed" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Republier</DropdownMenuItem>}
                 <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
