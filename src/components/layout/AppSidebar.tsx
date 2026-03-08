@@ -19,6 +19,9 @@ import {
   PackageCheck,
   Package,
   ShoppingCart,
+  UserCog,
+  TrendingUp,
+  Gauge,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,7 +53,7 @@ const compteItems: NavItem[] = [
 ];
 
 const gestionItems: NavItem[] = [
-  { title: "Vue d'ensemble", href: "/dashboard", icon: LayoutDashboard },
+  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
   { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
   { title: "Commandes reçues", href: "/commandes", icon: ClipboardList, badge: 5 },
@@ -62,11 +65,11 @@ const bottomNavItems: NavItem[] = [
 
 function getBusinessItems(businessId: string): NavItem[] {
   return [
-    { title: "Vue d'ensemble", href: `/business/${businessId}`, icon: LayoutDashboard },
+    { title: "Tableau de bord", href: `/business/${businessId}`, icon: Gauge },
     { title: "Produits", href: `/business/${businessId}/products`, icon: Package },
-    { title: "Commandes", href: `/business/${businessId}/orders`, icon: ShoppingCart, badge: 2 },
-    { title: "Équipes", href: `/business/${businessId}/team`, icon: Users },
-    { title: "Engagement", href: `/business/${businessId}/engagement`, icon: Heart },
+    { title: "Commandes boutique", href: `/business/${businessId}/orders`, icon: ShoppingCart, badge: 2 },
+    { title: "Équipe", href: `/business/${businessId}/team`, icon: UserCog },
+    { title: "Engagement", href: `/business/${businessId}/engagement`, icon: TrendingUp },
   ];
 }
 
