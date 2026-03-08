@@ -404,8 +404,19 @@ export default function BusinessSettings() {
             </CardContent>
           </Card>
 
-          {/* Banner Section - Full Width */}
-          <Card className="lg:col-span-2">
+           {/* Active Status Section */}
+           <div className="flex items-center justify-between p-4 rounded-lg border border-border/60 bg-card lg:col-span-2">
+             <div>
+               <p className="font-medium text-sm">Activer le business</p>
+               <p className="text-xs text-muted-foreground">
+                 Rendre le business visible sur la marketplace
+               </p>
+             </div>
+             <Switch checked={isActive} onCheckedChange={setIsActive} />
+           </div>
+
+           {/* Banner Section - Full Width */}
+           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-secondary">
