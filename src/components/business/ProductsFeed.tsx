@@ -366,6 +366,7 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           setEditOpen(open);
           if (!open) setEditProduct(null);
         }}
+        onStatusChange={handleStatusChange}
       />
 
       {/* Create Promotion Sheet from product */}
@@ -377,6 +378,38 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           if (!open) setPromoProductId(null);
         }}
       />
+
+      {/* Publish/Unpublish Confirmation Dialog */}
+      <AlertDialog open={publishDialogOpen} onOpenChange={setPublishDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {publishTarget?.status === "published"
+                ? "Retirer des publications ?"
+                : "Publier cet article ?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {publishTarget?.status === "published" ? (
+                <>
+                  <strong>"{publishTarget?.name}"</strong> ne sera plus visible par les clients sur le marketplace. 
+                  Les commandes en cours ne seront pas affectées. Vous pourrez le republier à tout moment.
+                </>
+              ) : (
+                <>
+                  <strong>"{publishTarget?.name}"</strong> sera immédiatement visible par tous les clients sur le marketplace. 
+                  Assurez-vous que les informations du produit (prix, description, images) sont complètes avant de publier.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmPublish}>
+              {publishTarget?.status === "published" ? "Retirer" : "Publier"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
