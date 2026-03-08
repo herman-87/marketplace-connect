@@ -122,7 +122,7 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { 
   );
 }
 
-function ProductListView({ product, isOwner, onProductClick }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void }) {
+function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
