@@ -15,6 +15,7 @@ import Index from "./pages/Index";
 import MesBusiness from "./pages/MesBusiness";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessProducts from "./pages/BusinessProducts";
+import BusinessPromotions from "./pages/BusinessPromotions";
 import BusinessOrders from "./pages/BusinessOrders";
 import BusinessTeam from "./pages/BusinessTeam";
 import BusinessEngagement from "./pages/BusinessEngagement";
