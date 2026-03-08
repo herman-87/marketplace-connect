@@ -15,17 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { X, Save, ImagePlus, Package, RefreshCw, Send, Archive } from "lucide-react";
+import { X, Save, ImagePlus, Package, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProductData {
