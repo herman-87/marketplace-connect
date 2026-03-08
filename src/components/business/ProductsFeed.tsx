@@ -30,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CreateProductSheet } from "./CreateProductSheet";
+import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 
 interface Product {
