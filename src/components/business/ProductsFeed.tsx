@@ -186,7 +186,8 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { 
   );
 }
 
-export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
+export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFeedProps) {
+  const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("sales");
@@ -196,6 +197,8 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [promoProductId, setPromoProductId] = useState<string | null>(null);
   const [promoOpen, setPromoOpen] = useState(false);
+  const [publishTarget, setPublishTarget] = useState<Product | null>(null);
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
   const handleProductClick = (product: Product) => {
     setEditProduct(product);
@@ -205,6 +208,36 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const handleCreatePromo = (productId: string) => {
     setPromoProductId(productId);
     setPromoOpen(true);
+  };
+
+  const handlePublishRequest = (product: Product) => {
+    setPublishTarget(product);
+    setPublishDialogOpen(true);
+  };
+
+  const handleConfirmPublish = () => {
+    if (!publishTarget) return;
+    const isPublishing = publishTarget.status !== "published";
+    setProducts(prev =>
+      prev.map(p =>
+        p.id === publishTarget.id
+          ? { ...p, status: isPublishing ? "published" : "removed" as const }
+          : p
+      )
+    );
+    toast.success(
+      isPublishing
+        ? `"${publishTarget.name}" est maintenant publié et visible par les clients !`
+        : `"${publishTarget.name}" a été retiré des publications.`
+    );
+    setPublishDialogOpen(false);
+    setPublishTarget(null);
+  };
+
+  const handleStatusChange = (productId: string, newStatus: Product["status"]) => {
+    setProducts(prev =>
+      prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
+    );
   };
 
   const filtered = products
