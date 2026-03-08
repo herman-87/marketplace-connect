@@ -137,14 +137,6 @@ export default function BusinessSettings() {
             <h1 className="text-2xl font-bold text-foreground">Paramètres du business</h1>
             <p className="text-muted-foreground">Personnalisez l'apparence et les préférences de votre boutique</p>
           </div>
-          {/* Active toggle in header */}
-          <div className="flex items-center gap-3 px-4 py-2 rounded-lg border border-border bg-card">
-            <Power className={`h-4 w-4 ${isActive ? 'text-green-500' : 'text-muted-foreground'}`} />
-            <span className="text-sm font-medium hidden sm:inline">
-              {isActive ? "Actif" : "Inactif"}
-            </span>
-            <Switch checked={isActive} onCheckedChange={setIsActive} />
-          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
