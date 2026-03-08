@@ -92,6 +92,11 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { 
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+                {product.status === "published" && (
+                  <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
+                    <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
+                  </DropdownMenuItem>
+                )}
                 {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
                 {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
                 {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
