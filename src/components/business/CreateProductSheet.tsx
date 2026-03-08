@@ -320,49 +320,6 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
         </div>
       </SheetContent>
 
-      {/* Publish/Unpublish Confirmation Dialog */}
-      {isEditMode && product && (
-        <AlertDialog open={publishDialogOpen} onOpenChange={setPublishDialogOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {product.status === "published"
-                  ? "Retirer des publications ?"
-                  : "Publier cet article ?"}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {product.status === "published" ? (
-                  <>
-                    <strong>"{product.name}"</strong> ne sera plus visible par les clients sur le marketplace. 
-                    Les commandes en cours ne seront pas affectées. Vous pourrez le republier à tout moment.
-                  </>
-                ) : (
-                  <>
-                    <strong>"{product.name}"</strong> sera immédiatement visible par tous les clients sur le marketplace. 
-                    Assurez-vous que les informations du produit (prix, description, images) sont complètes avant de publier.
-                  </>
-                )}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Annuler</AlertDialogCancel>
-              <AlertDialogAction onClick={() => {
-                const newStatus = product.status === "published" ? "removed" : "published";
-                onStatusChange?.(product.id!, newStatus);
-                toast.success(
-                  newStatus === "published"
-                    ? `"${product.name}" est maintenant publié !`
-                    : `"${product.name}" a été retiré des publications.`
-                );
-                setPublishDialogOpen(false);
-                handleClose();
-              }}>
-                {product.status === "published" ? "Retirer" : "Publier"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
     </Sheet>
   );
 }
