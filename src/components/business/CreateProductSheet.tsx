@@ -39,7 +39,7 @@ interface CreateProductSheetProps {
   product?: ProductData | null;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onStatusChange?: (productId: string, newStatus: string) => void;
+  
 }
 
 const productCategories = [
