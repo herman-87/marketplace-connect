@@ -1,11 +1,12 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingCart, Users, Heart, Settings } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Heart, Settings, Percent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const getNavItems = (businessId: string) => [
   { title: "Vue d'ensemble", href: `/business/${businessId}`, icon: LayoutDashboard, exact: true },
   { title: "Produits", href: `/business/${businessId}/products`, icon: Package },
+  { title: "Promotions", href: `/business/${businessId}/promotions`, icon: Percent },
   { title: "Commandes", href: `/business/${businessId}/orders`, icon: ShoppingCart },
   { title: "Équipe", href: `/business/${businessId}/team`, icon: Users },
   { title: "Engagement", href: `/business/${businessId}/engagement`, icon: Heart },

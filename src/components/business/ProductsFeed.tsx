@@ -21,6 +21,7 @@ import {
   Search,
   LayoutGrid,
   List,
+  Percent,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -29,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CreateProductSheet } from "./CreateProductSheet";
+import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 
 interface Product {
@@ -59,7 +61,7 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
 };
 
-function ProductCardView({ product, isOwner, onProductClick }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void }) {
+function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
@@ -90,6 +92,11 @@ function ProductCardView({ product, isOwner, onProductClick }: { product: Produc
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+                {product.status === "published" && (
+                  <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
+                    <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
+                  </DropdownMenuItem>
+                )}
                 {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
                 {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
                 {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
@@ -115,7 +122,7 @@ function ProductCardView({ product, isOwner, onProductClick }: { product: Produc
   );
 }
 
-function ProductListView({ product, isOwner, onProductClick }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void }) {
+function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
@@ -154,6 +161,11 @@ function ProductListView({ product, isOwner, onProductClick }: { product: Produc
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+              {product.status === "published" && (
+                <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
+                  <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -171,10 +183,17 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const [page, setPage] = useState(1);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [promoProductId, setPromoProductId] = useState<string | null>(null);
+  const [promoOpen, setPromoOpen] = useState(false);
 
   const handleProductClick = (product: Product) => {
     setEditProduct(product);
     setEditOpen(true);
+  };
+
+  const handleCreatePromo = (productId: string) => {
+    setPromoProductId(productId);
+    setPromoOpen(true);
   };
 
   const filtered = products
@@ -264,11 +283,11 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} />)}
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} />)}
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
           </div>
         )
       ) : (
@@ -292,6 +311,16 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
         onOpenChange={(open) => {
           setEditOpen(open);
           if (!open) setEditProduct(null);
+        }}
+      />
+
+      {/* Create Promotion Sheet from product */}
+      <CreatePromotionSheet
+        preselectedProductId={promoProductId || undefined}
+        open={promoOpen}
+        onOpenChange={(open) => {
+          setPromoOpen(open);
+          if (!open) setPromoProductId(null);
         }}
       />
     </div>

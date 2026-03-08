@@ -15,6 +15,7 @@ import Index from "./pages/Index";
 import MesBusiness from "./pages/MesBusiness";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessProducts from "./pages/BusinessProducts";
+import BusinessPromotions from "./pages/BusinessPromotions";
 import BusinessOrders from "./pages/BusinessOrders";
 import BusinessTeam from "./pages/BusinessTeam";
 import BusinessEngagement from "./pages/BusinessEngagement";
@@ -55,6 +56,7 @@ const App = () => (
                   <Route path="/mes-business" element={<MesBusiness />} />
                   <Route path="/business/:id" element={<BusinessDetail />} />
                   <Route path="/business/:id/products" element={<BusinessProducts />} />
+                  <Route path="/business/:id/promotions" element={<BusinessPromotions />} />
                   <Route path="/business/:id/orders" element={<BusinessOrders />} />
                   <Route path="/business/:id/team" element={<BusinessTeam />} />
                   <Route path="/business/:id/engagement" element={<BusinessEngagement />} />
