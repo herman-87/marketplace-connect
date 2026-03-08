@@ -29,9 +29,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { CreateProductSheet } from "./CreateProductSheet";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -61,7 +72,7 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
 };
 
-function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
+function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
@@ -97,9 +108,9 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { 
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                   </DropdownMenuItem>
                 )}
-                {product.status === "draft" && <DropdownMenuItem>Publier</DropdownMenuItem>}
-                {product.status === "published" && <DropdownMenuItem>Retirer</DropdownMenuItem>}
-                {product.status === "removed" && <DropdownMenuItem>Republier</DropdownMenuItem>}
+                {product.status === "draft" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Publier</DropdownMenuItem>}
+                {product.status === "published" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Retirer</DropdownMenuItem>}
+                {product.status === "removed" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Republier</DropdownMenuItem>}
                 <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -122,7 +133,7 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo }: { 
   );
 }
 
-function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void }) {
+function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
   const StatusIcon = status.icon;
 
@@ -166,6 +177,16 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { 
                   <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                 </DropdownMenuItem>
               )}
+              {product.status !== "published" && (
+                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
+                  <Send className="h-3.5 w-3.5 mr-1.5" />{product.status === "removed" ? "Republier" : "Publier"}
+                </DropdownMenuItem>
+              )}
+              {product.status === "published" && (
+                <DropdownMenuItem onClick={() => onPublishRequest(product)}>
+                  <Archive className="h-3.5 w-3.5 mr-1.5" />Retirer
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -175,7 +196,8 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo }: { 
   );
 }
 
-export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
+export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFeedProps) {
+  const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("sales");
@@ -185,6 +207,8 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [promoProductId, setPromoProductId] = useState<string | null>(null);
   const [promoOpen, setPromoOpen] = useState(false);
+  const [publishTarget, setPublishTarget] = useState<Product | null>(null);
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
   const handleProductClick = (product: Product) => {
     setEditProduct(product);
@@ -194,6 +218,36 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const handleCreatePromo = (productId: string) => {
     setPromoProductId(productId);
     setPromoOpen(true);
+  };
+
+  const handlePublishRequest = (product: Product) => {
+    setPublishTarget(product);
+    setPublishDialogOpen(true);
+  };
+
+  const handleConfirmPublish = () => {
+    if (!publishTarget) return;
+    const isPublishing = publishTarget.status !== "published";
+    setProducts(prev =>
+      prev.map(p =>
+        p.id === publishTarget.id
+          ? { ...p, status: isPublishing ? "published" : "removed" as const }
+          : p
+      )
+    );
+    toast.success(
+      isPublishing
+        ? `"${publishTarget.name}" est maintenant publié et visible par les clients !`
+        : `"${publishTarget.name}" a été retiré des publications.`
+    );
+    setPublishDialogOpen(false);
+    setPublishTarget(null);
+  };
+
+  const handleStatusChange = (productId: string, newStatus: Product["status"]) => {
+    setProducts(prev =>
+      prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
+    );
   };
 
   const filtered = products
@@ -283,11 +337,11 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} />)}
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         )
       ) : (
@@ -312,6 +366,7 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
           setEditOpen(open);
           if (!open) setEditProduct(null);
         }}
+        onStatusChange={handleStatusChange}
       />
 
       {/* Create Promotion Sheet from product */}
@@ -323,6 +378,38 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
           if (!open) setPromoProductId(null);
         }}
       />
+
+      {/* Publish/Unpublish Confirmation Dialog */}
+      <AlertDialog open={publishDialogOpen} onOpenChange={setPublishDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {publishTarget?.status === "published"
+                ? "Retirer des publications ?"
+                : "Publier cet article ?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {publishTarget?.status === "published" ? (
+                <>
+                  <strong>"{publishTarget?.name}"</strong> ne sera plus visible par les clients sur le marketplace. 
+                  Les commandes en cours ne seront pas affectées. Vous pourrez le republier à tout moment.
+                </>
+              ) : (
+                <>
+                  <strong>"{publishTarget?.name}"</strong> sera immédiatement visible par tous les clients sur le marketplace. 
+                  Assurez-vous que les informations du produit (prix, description, images) sont complètes avant de publier.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmPublish}>
+              {publishTarget?.status === "published" ? "Retirer" : "Publier"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
