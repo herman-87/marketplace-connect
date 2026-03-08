@@ -68,7 +68,7 @@ const ITEMS_PER_PAGE = 6;
 
 const statusConfig = {
   draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
-  published: { label: "Publié", variant: "default" as const, icon: Send },
+  published: { label: "Publié", variant: "outline-primary" as const, icon: Send },
   removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
 };
 
