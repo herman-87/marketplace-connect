@@ -53,7 +53,7 @@ const compteItems: NavItem[] = [
 ];
 
 const gestionItems: NavItem[] = [
-  { title: "Vue d'ensemble", href: "/dashboard", icon: LayoutDashboard },
+  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Mes Business", href: "/mes-business", icon: Store, badge: 2 },
   { title: "Collaborations", href: "/collaborations", icon: Users, badge: 1 },
   { title: "Commandes reçues", href: "/commandes", icon: ClipboardList, badge: 5 },
