@@ -108,9 +108,6 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
                   </DropdownMenuItem>
                 )}
-                {product.status === "draft" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Publier</DropdownMenuItem>}
-                {product.status === "published" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Retirer</DropdownMenuItem>}
-                {product.status === "removed" && <DropdownMenuItem onClick={() => onPublishRequest(product)}>Republier</DropdownMenuItem>}
                 <DropdownMenuItem className="text-destructive">Supprimer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -128,6 +125,22 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
           <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{product.views}</span>
           <span className="flex items-center gap-1"><ShoppingCart className="h-3.5 w-3.5" />{product.sales}</span>
         </div>
+        {isOwner && (
+          <div className="mt-3 pt-3 border-t border-border/50" onClick={e => e.stopPropagation()}>
+            <Button
+              variant={product.status === "published" ? "outline" : "default"}
+              size="sm"
+              className="w-full gap-1.5 h-8 text-xs"
+              onClick={() => onPublishRequest(product)}
+            >
+              {product.status === "published" ? (
+                <><Archive className="h-3.5 w-3.5" />Retirer de la publication</>
+              ) : (
+                <><Send className="h-3.5 w-3.5" />Publier</>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
