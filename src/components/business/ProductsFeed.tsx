@@ -183,10 +183,17 @@ export function ProductsFeed({ products, isOwner }: ProductsFeedProps) {
   const [page, setPage] = useState(1);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [promoProductId, setPromoProductId] = useState<string | null>(null);
+  const [promoOpen, setPromoOpen] = useState(false);
 
   const handleProductClick = (product: Product) => {
     setEditProduct(product);
     setEditOpen(true);
+  };
+
+  const handleCreatePromo = (productId: string) => {
+    setPromoProductId(productId);
+    setPromoOpen(true);
   };
 
   const filtered = products
