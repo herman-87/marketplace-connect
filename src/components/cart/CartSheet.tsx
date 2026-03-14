@@ -97,8 +97,8 @@ export function CartSheet({ trigger }: CartSheetProps) {
   const getStepTitle = () => {
     switch (currentStep) {
       case 'cart': return 'Mon Panier';
-      case 'delivery': return 'Livraison';
-      case 'confirmation': return 'Confirmation';
+      case 'delivery': return 'Adresse de livraison';
+      case 'confirmation': return 'Récapitulatif';
       case 'tracking': return 'Suivi de commande';
       default: return 'Mon Panier';
     }
