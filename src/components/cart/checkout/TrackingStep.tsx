@@ -21,6 +21,7 @@ import {
   Ban
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 import type { OrderStatus } from "@/types/order";
 import { ORDER_STATUS_CONFIG } from "@/types/order";
 
