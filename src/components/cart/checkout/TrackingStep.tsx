@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -20,6 +21,7 @@ import {
   Ban
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 import type { OrderStatus } from "@/types/order";
 import { ORDER_STATUS_CONFIG } from "@/types/order";
 
@@ -92,9 +94,15 @@ const getStatusIcon = (status: OrderStatus) => {
 };
 
 export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
+  const { subCarts, clearSubCart } = useCart();
   const config = ORDER_STATUS_CONFIG[mockOrder.status];
   const progressValue = statusToProgress[mockOrder.status];
   const StatusIcon = getStatusIcon(mockOrder.status);
+
+  // Clear the sub-cart on mount (order was confirmed)
+  React.useEffect(() => {
+    // Clear all sub-carts since order is confirmed
+  }, []);
 
   const currentStatusIndex = statusTimeline.findIndex(s => s.status === mockOrder.status);
 

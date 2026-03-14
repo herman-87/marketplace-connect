@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Clock, Package, MapPin, ArrowRight, Home, Store, Info } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Store, ShoppingBag, Package } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 
 interface ConfirmationStepProps {
@@ -11,156 +11,115 @@ interface ConfirmationStepProps {
 }
 
 export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: ConfirmationStepProps) {
-  const { subCarts, clearSubCart } = useCart();
+  const { subCarts } = useCart();
   const selectedSubCart = subCarts.find(sc => sc.businessId === selectedBusinessId);
 
-  const orderId = `ORD-${Date.now().toString(36).toUpperCase()}`;
-
-  const handleFinish = () => {
-    if (selectedBusinessId) {
-      clearSubCart(selectedBusinessId);
-    }
-    onClose();
-  };
+  if (!selectedSubCart || selectedSubCart.items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center flex-1 text-center px-4">
+        <Package className="w-16 h-16 text-muted-foreground mb-4" />
+        <h3 className="text-lg font-semibold mb-2">Panier vide</h3>
+        <p className="text-sm text-muted-foreground">Aucun produit trouvé pour cette boutique.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex-1 overflow-auto min-h-0 flex flex-col items-center justify-center max-w-lg mx-auto text-center px-4">
-        {/* Status animation - Waiting for acceptance */}
-        <div className="relative mb-8">
-          <div className="w-24 h-24 rounded-full bg-warning/10 flex items-center justify-center animate-in zoom-in duration-500">
-            <div className="w-16 h-16 rounded-full bg-warning/20 flex items-center justify-center">
-              <Clock className="w-10 h-10 text-warning" />
-            </div>
+      <div className="flex-1 overflow-auto min-h-0 space-y-6 pb-4">
+        {/* Business header */}
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-border bg-card">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Store className="w-6 h-6 text-primary" />
           </div>
-          <div className="absolute inset-0 rounded-full animate-ping bg-warning/15" style={{ animationDuration: '2.5s' }} />
+          <div>
+            <h3 className="font-bold text-lg">{selectedSubCart.businessName}</h3>
+            <p className="text-sm text-muted-foreground">
+              {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''}
+            </p>
+          </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-foreground mb-2">
-          Commande envoyée !
-        </h2>
-        <p className="text-muted-foreground mb-2">
-          Votre commande a été transmise au vendeur
-        </p>
-
-        {/* Status badge */}
-        <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/30 mb-6">
-          <Clock className="w-3 h-3 mr-1" />
-          En attente d'acceptation
-        </Badge>
-
-        {/* Order ID */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted mb-6">
-          <Package className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium">N° de commande :</span>
-          <Badge variant="secondary" className="font-mono">{orderId}</Badge>
-        </div>
-
-        {/* What happens next info box */}
-        <div className="w-full p-4 rounded-xl border border-primary/20 bg-primary/5 mb-6 text-left">
-          <h4 className="font-semibold text-sm flex items-center gap-2 mb-3">
-            <Info className="w-4 h-4 text-primary" />
-            Prochaines étapes
+        {/* Products list */}
+        <div className="space-y-1">
+          <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1 mb-3">
+            Récapitulatif de la commande
           </h4>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-warning/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-xs font-bold text-warning">1</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Le vendeur examine votre commande</p>
-                <p className="text-xs text-muted-foreground">Il vérifie la disponibilité des produits</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-xs font-bold text-muted-foreground">2</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Acceptation → Paiement</p>
-                <p className="text-xs text-muted-foreground">Une fois acceptée, vous pourrez procéder au paiement</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-xs font-bold text-muted-foreground">3</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Préparation & Livraison</p>
-                <p className="text-xs text-muted-foreground">Après paiement, votre commande sera préparée et livrée</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Order summary card */}
-        {selectedSubCart && (
-          <div className="w-full p-6 rounded-xl border border-border bg-card mb-6 text-left">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Store className="w-5 h-5 text-primary" />
-              {selectedSubCart.businessName}
-            </h3>
-            
-            <div className="space-y-3 mb-4">
-              {selectedSubCart.items.slice(0, 2).map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="w-10 h-10 rounded-lg object-cover"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{item.name}</p>
-                    <p className="text-xs text-muted-foreground">Qté: {item.quantity}</p>
+          <div className="rounded-xl border border-border bg-card divide-y divide-border">
+            {selectedSubCart.items.map((item) => (
+              <div key={item.id} className="flex items-center gap-4 p-4">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-16 h-16 rounded-lg object-cover border border-border"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{item.name}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Badge variant="secondary" className="text-xs">
+                      Qté: {item.quantity}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {item.price.toLocaleString()} FCFA / unité
+                    </span>
                   </div>
                 </div>
-              ))}
-              {selectedSubCart.items.length > 2 && (
-                <p className="text-sm text-muted-foreground">
-                  +{selectedSubCart.items.length - 2} autre(s) article(s)
+                <p className="font-bold text-sm whitespace-nowrap">
+                  {(item.price * item.quantity).toLocaleString()} FCFA
                 </p>
-              )}
-            </div>
-
-            <Separator className="my-4" />
-
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <MapPin className="w-4 h-4" />
-                <span>123 Rue de la Paix, Paris 75001</span>
               </div>
-              <div className="flex justify-between font-semibold pt-2">
-                <span>Total</span>
-                <span className="text-primary">{selectedSubCart.total.toFixed(2)} €</span>
-              </div>
-            </div>
+            ))}
           </div>
-        )}
+        </div>
 
-        {/* Info note */}
-        <p className="text-xs text-muted-foreground">
-          Vous recevrez une notification dès que le vendeur aura accepté ou refusé votre commande
-        </p>
+        {/* Total */}
+        <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold">Total de la commande</span>
+            <span className="text-xl font-bold text-primary">
+              {selectedSubCart.total.toLocaleString()} FCFA
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            Le paiement sera demandé uniquement après acceptation par le vendeur.
+          </p>
+        </div>
+
+        {/* Info */}
+        <div className="p-4 rounded-xl border border-border bg-muted/50 text-sm text-muted-foreground space-y-2">
+          <p className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+            En confirmant, votre commande sera envoyée au vendeur pour validation.
+          </p>
+          <p className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+            Vous serez notifié dès que le vendeur aura accepté ou refusé.
+          </p>
+          <p className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+            Aucun paiement ne sera prélevé à cette étape.
+          </p>
+        </div>
       </div>
 
-      {/* Sticky bottom action */}
+      {/* Sticky bottom */}
       <div className="sticky bottom-0 pt-4 pb-2 bg-background border-t border-border mt-auto shrink-0">
-        <div className="w-full space-y-3 max-w-lg mx-auto">
-          <Button 
-            className="w-full h-12 gap-2" 
+        <div className="space-y-3">
+          <Button
+            className="w-full h-12 gap-2 text-base"
             size="lg"
             onClick={onTrackOrder}
           >
-            Suivre ma commande
-            <ArrowRight className="w-5 h-5" />
+            <ShoppingBag className="w-5 h-5" />
+            Confirmer la commande
           </Button>
-          <Button 
-            variant="outline" 
-            className="w-full gap-2"
-            onClick={handleFinish}
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={onClose}
           >
-            <Home className="w-4 h-4" />
-            Continuer mes achats
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour au panier
           </Button>
         </div>
       </div>
