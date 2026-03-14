@@ -9,8 +9,8 @@ interface CheckoutProgressProps {
 
 const steps: { id: CheckoutStep; label: string; icon: React.ElementType }[] = [
   { id: 'cart', label: 'Panier', icon: ShoppingCart },
-  { id: 'delivery', label: 'Livraison', icon: MapPin },
-  { id: 'confirmation', label: 'Confirmation', icon: PackageCheck },
+  { id: 'delivery', label: 'Adresse', icon: MapPin },
+  { id: 'confirmation', label: 'Récapitulatif', icon: PackageCheck },
 ];
 
 const stepOrder: CheckoutStep[] = ['cart', 'delivery', 'confirmation', 'tracking'];
