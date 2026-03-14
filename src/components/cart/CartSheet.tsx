@@ -79,7 +79,7 @@ export function CartSheet({ trigger }: CartSheetProps) {
           <ConfirmationStep
             selectedBusinessId={selectedBusinessId}
             onTrackOrder={() => setCurrentStep('tracking')}
-            onClose={handleClose}
+            onClose={() => setCurrentStep('delivery')}
           />
         );
       case 'tracking':
