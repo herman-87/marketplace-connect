@@ -92,9 +92,15 @@ const getStatusIcon = (status: OrderStatus) => {
 };
 
 export function TrackingStep({ onBack, onClose }: TrackingStepProps) {
+  const { subCarts, clearSubCart } = useCart();
   const config = ORDER_STATUS_CONFIG[mockOrder.status];
   const progressValue = statusToProgress[mockOrder.status];
   const StatusIcon = getStatusIcon(mockOrder.status);
+
+  // Clear the sub-cart on mount (order was confirmed)
+  React.useEffect(() => {
+    // Clear all sub-carts since order is confirmed
+  }, []);
 
   const currentStatusIndex = statusTimeline.findIndex(s => s.status === mockOrder.status);
 
