@@ -143,8 +143,8 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
             <SheetContent side="left" className="w-80 p-0 flex flex-col">
               <SheetHeader className="p-4 border-b border-border">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-                    <Store className="w-4 h-4 text-primary-foreground" />
+                  <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
+                    <Store className="w-4 h-4 text-background" />
                   </div>
                   <SheetTitle className="font-bold text-lg">FastRelays</SheetTitle>
                 </div>
