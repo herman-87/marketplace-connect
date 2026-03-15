@@ -100,30 +100,40 @@ export function AppSidebar() {
   const NavLink = ({ item }: { item: NavItem }) => {
     const active = isActive(item.href);
     const content = (
-      <Link
-        to={item.href}
-        className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
-          active
-            ? "bg-muted/60 border-l-[3px] border-foreground text-foreground font-bold rounded-l-none"
-            : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
-        )}
-      >
-        <item.icon className={cn("h-5 w-5 shrink-0", active ? "text-foreground" : "text-sidebar-foreground/70")} />
-        {!collapsed && (
+      <div className="relative">
+        {active && (
           <>
-            <span className="font-medium text-sm">{item.title}</span>
-            {item.badge && (
-              <Badge
-                variant="secondary"
-                className="ml-auto bg-muted text-foreground border-0 text-xs"
-              >
-                {item.badge}
-              </Badge>
-            )}
+            {/* Top-left corner bracket */}
+            <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-foreground/50 pointer-events-none z-10" />
+            {/* Bottom-right corner bracket */}
+            <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-foreground/50 pointer-events-none z-10" />
           </>
         )}
-      </Link>
+        <Link
+          to={item.href}
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
+            active
+              ? "bg-muted/60 text-foreground font-bold"
+              : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+          )}
+        >
+          <item.icon className={cn("h-5 w-5 shrink-0", active ? "text-foreground" : "text-sidebar-foreground/70")} />
+          {!collapsed && (
+            <>
+              <span className="font-medium text-sm">{item.title}</span>
+              {item.badge && (
+                <Badge
+                  variant="secondary"
+                  className="ml-auto bg-muted text-foreground border-0 text-xs"
+                >
+                  {item.badge}
+                </Badge>
+              )}
+            </>
+          )}
+        </Link>
+      </div>
     );
 
     if (collapsed) {
