@@ -63,7 +63,7 @@ export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressP
         })}
       </div>
 
-      <div className="hidden sm:flex items-center justify-between mt-2">
+      <div className="flex items-center justify-between mt-2">
         {steps.map((step, index) => {
           const stepIndex = stepOrder.indexOf(step.id);
           const isCompleted = stepIndex < currentIndex;
