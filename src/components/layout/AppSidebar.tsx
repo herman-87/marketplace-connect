@@ -101,9 +101,9 @@ export function AppSidebar() {
       <Link
         to={item.href}
         className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
+          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
           active
-            ? "bg-muted border-l-[3px] border-foreground text-foreground font-bold rounded-l-none"
+            ? "bg-muted/60 border-l-[3px] border-foreground text-foreground font-bold rounded-l-none"
             : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
         )}
       >
@@ -209,15 +209,15 @@ export function AppSidebar() {
       <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
         {!collapsed && (
           <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Store className="w-4 h-4 text-primary-foreground" />
+            <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
+              <Store className="w-4 h-4 text-background" />
             </div>
             <span className="font-bold text-lg text-sidebar-foreground">FastRelays</span>
           </Link>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center mx-auto">
-            <Store className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center mx-auto">
+            <Store className="w-4 h-4 text-background" />
           </div>
         )}
       </div>
@@ -254,12 +254,11 @@ export function AppSidebar() {
         {isBusinessContext && isPro ? (
           <>
             <div className="relative px-2 py-2 -mx-1
-              before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-foreground
-              after:absolute after:top-0 after:right-0 after:w-3 after:h-3 after:border-t-2 after:border-r-2 after:border-foreground
-              [&>*]:relative
+              before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-foreground/40
+              after:absolute after:top-0 after:right-0 after:w-3 after:h-3 after:border-t-2 after:border-r-2 after:border-foreground/40
             ">
-              <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-foreground pointer-events-none" />
-              <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-foreground pointer-events-none" />
+              <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-foreground/40 pointer-events-none" />
+              <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-foreground/40 pointer-events-none" />
               <CollapsibleGroup label={businessName || "Mon Business"} items={businessItems} defaultOpen={true} />
             </div>
             <Separator className="my-3 bg-sidebar-border" />
