@@ -107,10 +107,7 @@ export function AppSidebar() {
             : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
         )}
       >
-        {active && (
-          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-primary" />
-        )}
-        <item.icon className={cn("h-5 w-5 shrink-0", active ? "text-primary" : "")} />
+        <item.icon className="h-5 w-5 shrink-0" />
         {!collapsed && (
           <>
             <span className="font-medium text-sm">{item.title}</span>
