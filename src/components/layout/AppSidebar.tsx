@@ -256,7 +256,7 @@ export function AppSidebar() {
 
         {isBusinessContext && isPro ? (
           <>
-            <div className="border-l-2 border-primary pl-3 -mx-1">
+            <div className="border-l-[3px] border-primary bg-sidebar-primary/5 rounded-r-lg pl-3 py-1 -mx-1">
               <CollapsibleGroup label={businessName || "Mon Business"} items={businessItems} defaultOpen={true} />
             </div>
             <Separator className="my-3 bg-sidebar-border" />
