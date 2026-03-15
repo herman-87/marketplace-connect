@@ -45,8 +45,8 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
   const deliveryFee = 0;
   const totalWithDelivery = selectedSubCart.total + deliveryFee;
 
-  const panelLabels = ['Articles', 'Livraison', 'Infos'];
-  const totalPanels = deliveryData ? 3 : 2;
+  const panelLabels = ['Articles', 'Livraison'];
+  const totalPanels = 2;
 
   const ArticlesList = () => (
     <div className="relative">
