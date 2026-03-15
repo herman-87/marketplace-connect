@@ -51,37 +51,40 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
           <span className="text-xs text-muted-foreground">· {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''}</span>
         </div>
 
-        {/* Articles */}
-        <div className="space-y-1.5 mb-4">
-          {selectedSubCart.items.map((item) => (
-            <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg border border-border bg-card">
-              <img src={item.image} alt={item.name} className="w-11 h-11 rounded-md object-cover shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{item.name}</p>
-                <p className="text-xs text-muted-foreground">{item.price.toFixed(2)} € × {item.quantity}</p>
+        {/* Articles + Delivery side by side on desktop */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-4">
+          {/* Articles — left */}
+          <div className="flex-1 min-w-0 space-y-1.5">
+            {selectedSubCart.items.map((item) => (
+              <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg border border-border bg-card">
+                <img src={item.image} alt={item.name} className="w-11 h-11 rounded-md object-cover shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{item.name}</p>
+                  <p className="text-xs text-muted-foreground">{item.price.toFixed(2)} € × {item.quantity}</p>
+                </div>
+                <p className="text-sm font-bold shrink-0">{(item.price * item.quantity).toFixed(2)} €</p>
               </div>
-              <p className="text-sm font-bold shrink-0">{(item.price * item.quantity).toFixed(2)} €</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Delivery */}
-        {deliveryData && (
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Truck className="w-4 h-4 text-primary" />
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Livraison</span>
-            </div>
-            <div className="text-sm space-y-1 text-muted-foreground">
-              <p className="flex items-center gap-2"><User className="w-3.5 h-3.5 shrink-0" />{deliveryData.fullName}</p>
-              <p className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 shrink-0" />{deliveryData.phone}</p>
-              <p className="flex items-start gap-2"><MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />{deliveryData.address}, {deliveryData.city} {deliveryData.postalCode}</p>
-              {deliveryData.deliveryInstruction && (
-                <p className="flex items-start gap-2 italic"><FileText className="w-3.5 h-3.5 shrink-0 mt-0.5" />{deliveryData.deliveryInstruction}</p>
-              )}
-            </div>
+            ))}
           </div>
-        )}
+
+          {/* Delivery — right on desktop */}
+          {deliveryData && (
+            <div className="lg:w-[260px] shrink-0">
+              <div className="flex items-center gap-2 mb-2">
+                <Truck className="w-4 h-4 text-primary" />
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Livraison</span>
+              </div>
+              <div className="text-sm space-y-1 text-muted-foreground">
+                <p className="flex items-center gap-2"><User className="w-3.5 h-3.5 shrink-0" />{deliveryData.fullName}</p>
+                <p className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 shrink-0" />{deliveryData.phone}</p>
+                <p className="flex items-start gap-2"><MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />{deliveryData.address}, {deliveryData.city} {deliveryData.postalCode}</p>
+                {deliveryData.deliveryInstruction && (
+                  <p className="flex items-start gap-2 italic"><FileText className="w-3.5 h-3.5 shrink-0 mt-0.5" />{deliveryData.deliveryInstruction}</p>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Info */}
         <div className="flex items-start gap-2 text-xs text-muted-foreground">
