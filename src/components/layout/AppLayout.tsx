@@ -243,7 +243,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-5 w-5" />
                   {unreadCount > 0 && (
-                    <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] gradient-primary border-0">
+                    <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-muted text-foreground border-0">
                       {unreadCount}
                     </Badge>
                   )}
