@@ -164,20 +164,21 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                 className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-border transition-colors"
                 onClick={() => handlePromoClick(promo)}
               >
-                <div className="p-4 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                        <Percent className="w-5 h-5 text-foreground" />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="font-semibold text-sm truncate">{promo.productName}</h3>
-                        <Badge variant={status.variant} className="gap-1 text-[10px] mt-0.5">
-                          <StatusIcon className="h-3 w-3" />
-                          {status.label}
-                        </Badge>
-                      </div>
+                {/* Header: Nom + Status + Menu */}
+                <div className="flex items-center justify-between px-4 pt-4 pb-2">
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                      <Percent className="w-4 h-4 text-foreground" />
                     </div>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-sm truncate">{promo.productName}</h3>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <Badge variant={status.variant} className="gap-1 text-[10px]">
+                      <StatusIcon className="h-3 w-3" />
+                      {status.label}
+                    </Badge>
                     {isOwner && (
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
                         <DropdownMenu>
@@ -196,41 +197,48 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                       </div>
                     )}
                   </div>
+                </div>
 
-                  {/* Price */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-foreground">{promo.discountPrice.toFixed(2)} €</span>
-                    <span className="text-sm text-muted-foreground line-through">{promo.productPrice} €</span>
-                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
-                      -{promo.discountPercent}%
-                    </span>
-                  </div>
-
-                  {/* Dates + jours restants */}
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      <span>
-                        {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })} → {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
-                      </span>
+                {/* Prix: grille 3 colonnes */}
+                <div className="px-4 py-3 border-t border-border/40">
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <p className="text-[10px] text-muted-foreground mb-0.5">Original</p>
+                      <p className="text-sm text-muted-foreground line-through">{promo.productPrice.toFixed(2)} €</p>
                     </div>
-                    {promo.status === "active" && (() => {
-                      const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                      return (
-                        <span className={`text-xs font-medium ${remaining <= 3 ? "text-destructive" : "text-muted-foreground"}`}>
-                          {remaining > 0 ? `${remaining} jour${remaining > 1 ? "s" : ""} restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
-                        </span>
-                      );
-                    })()}
-                    {promo.status === "scheduled" && (() => {
-                      const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                      return (
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Commence dans {daysUntilStart} jour{daysUntilStart > 1 ? "s" : ""}
-                        </span>
-                      );
-                    })()}
+                    <div>
+                      <p className="text-[10px] text-muted-foreground mb-0.5">Réduction</p>
+                      <p className="text-sm font-semibold text-foreground">-{promo.discountPercent}%</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-muted-foreground mb-0.5">Prix final</p>
+                      <p className="text-sm font-bold text-foreground">{promo.discountPrice.toFixed(2)} €</p>
+                    </div>
                   </div>
+                </div>
+
+                {/* Dates */}
+                <div className="px-4 pb-4 pt-2 border-t border-border/40">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3 shrink-0" />
+                    <span>Du {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })} au {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>
+                  </div>
+                  {promo.status === "active" && (() => {
+                    const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                    return (
+                      <p className={`text-xs font-medium mt-1 ${remaining <= 3 ? "text-destructive" : "text-muted-foreground"}`}>
+                        {remaining > 0 ? `${remaining} jour${remaining > 1 ? "s" : ""} restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
+                      </p>
+                    );
+                  })()}
+                  {promo.status === "scheduled" && (() => {
+                    const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                    return (
+                      <p className="text-xs font-medium mt-1 text-muted-foreground">
+                        {daysUntilStart > 0 ? `Commence dans ${daysUntilStart} jour${daysUntilStart > 1 ? "s" : ""}` : "Commence aujourd'hui"}
+                      </p>
+                    );
+                  })()}
                 </div>
               </div>
             );
