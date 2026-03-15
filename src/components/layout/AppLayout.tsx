@@ -166,7 +166,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
                         {notification.title}
                       </p>
                       {!notification.read && (
-                        <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                        <span className="h-2 w-2 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">

@@ -221,8 +221,8 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
               <h1 className="text-base font-semibold text-foreground truncate">{title}</h1>
             ) : (
               <div className="flex items-center justify-center gap-2">
-                <div className="w-6 h-6 rounded-md gradient-primary flex items-center justify-center">
-                  <Store className="w-3.5 h-3.5 text-primary-foreground" />
+                <div className="w-6 h-6 rounded-md bg-foreground flex items-center justify-center">
+                  <Store className="w-3.5 h-3.5 text-background" />
                 </div>
                 <span className="font-bold text-foreground">FastRelays</span>
               </div>

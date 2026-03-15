@@ -68,6 +68,7 @@ function getBusinessItems(businessId: string): NavItem[] {
   return [
     { title: "Tableau de bord", href: `/business/${businessId}`, icon: Gauge },
     { title: "Produits", href: `/business/${businessId}/products`, icon: Package },
+    { title: "Promotions", href: `/business/${businessId}/promotions`, icon: Tag },
     { title: "Commandes boutique", href: `/business/${businessId}/orders`, icon: ShoppingCart, badge: 2 },
     { title: "Équipe", href: `/business/${businessId}/team`, icon: UserCog },
     { title: "Engagement", href: `/business/${businessId}/engagement`, icon: TrendingUp },

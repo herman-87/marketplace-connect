@@ -96,9 +96,9 @@ export function MarketplaceHeader() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="gap-2 px-2">
-                  <Avatar className="h-8 w-8 border-2 border-primary/20">
+                  <Avatar className="h-8 w-8 border-2 border-border">
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                    <AvatarFallback className="bg-muted text-foreground text-xs">
                       {user.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
