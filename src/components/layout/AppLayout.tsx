@@ -127,7 +127,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
               variant="ghost"
               size="sm"
               onClick={markAllAsRead}
-              className="text-xs text-primary hover:text-primary/80"
+              className="text-xs text-muted-foreground hover:text-foreground"
             >
               <Check className="h-3 w-3 mr-1" />
               Tout marquer comme lu
