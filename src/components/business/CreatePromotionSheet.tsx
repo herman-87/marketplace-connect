@@ -65,6 +65,7 @@ export function CreatePromotionSheet({
 
   const [productId, setProductId] = useState("");
   const [discountPercent, setDiscountPercent] = useState("");
+  const [discountAmount, setDiscountAmount] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
