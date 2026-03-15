@@ -158,10 +158,9 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 md:gap-2">
           <h3 className="font-semibold text-sm truncate">{product.name}</h3>
-          <Badge variant={status.variant} className="gap-1 text-[10px] md:text-xs shrink-0 hidden sm:flex">
-            <StatusIcon className="h-3 w-3 md:h-3.5 md:w-3.5" />
+          <span className="text-[10px] md:text-xs text-foreground/60 font-medium shrink-0 hidden sm:inline">
             {status.label}
-          </Badge>
+          </span>
         </div>
         <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
