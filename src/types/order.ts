@@ -21,9 +21,8 @@ export type OrderStatus =
 // Checkout Steps (client side)
 export type CheckoutStep = 
   | 'cart'           // Review cart items
-  | 'delivery'       // Delivery address & options
-  | 'confirmation'   // Order confirmation (CREATED - waiting for business)
-  | 'tracking';      // Order tracking
+  | 'delivery'       // Delivery address & info
+  | 'confirmation';  // Recap & confirm order
 
 export type UserRole = 'client' | 'business';
 
