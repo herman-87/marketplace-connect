@@ -219,20 +219,47 @@ export function CreatePromotionSheet({
 
             {/* Discount */}
             <div className="space-y-2">
-              <Label htmlFor="discount">Réduction (%) *</Label>
-              <div className="flex items-center gap-3">
-                <Input
-                  id="discount"
-                  type="number"
-                  min={1}
-                  max={99}
-                  placeholder="Ex: 25"
-                  value={discountPercent}
-                  onChange={(e) => setDiscountPercent(e.target.value)}
-                  className="w-28"
-                />
-                <span className="text-muted-foreground text-sm">%</span>
+              <Label>Réduction *</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="discount-percent" className="text-xs text-muted-foreground font-normal">Pourcentage</Label>
+                  <div className="relative">
+                    <Input
+                      id="discount-percent"
+                      type="number"
+                      min={1}
+                      max={99}
+                      placeholder="Ex: 25"
+                      value={discountPercent}
+                      onChange={(e) => handlePercentChange(e.target.value)}
+                      className="pr-8"
+                      disabled={!selectedProduct}
+                    />
+                    <Percent className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="discount-amount" className="text-xs text-muted-foreground font-normal">Montant</Label>
+                  <div className="relative">
+                    <Input
+                      id="discount-amount"
+                      type="number"
+                      min={0.01}
+                      max={selectedProduct ? selectedProduct.price - 0.01 : 99999}
+                      step="0.01"
+                      placeholder="Ex: 12.50"
+                      value={discountAmount}
+                      onChange={(e) => handleAmountChange(e.target.value)}
+                      className="pr-8"
+                      disabled={!selectedProduct}
+                    />
+                    <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">€</span>
+                  </div>
+                </div>
               </div>
+              {!selectedProduct && (
+                <p className="text-xs text-muted-foreground">Sélectionnez un produit pour activer les champs</p>
+              )}
             </div>
 
             {/* Price preview */}
