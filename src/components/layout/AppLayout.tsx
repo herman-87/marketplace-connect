@@ -84,13 +84,13 @@ const getNotificationIcon = (type: string) => {
 const getNotificationColor = (type: string) => {
   switch (type) {
     case "order":
-      return "bg-blue-500/10 text-blue-600";
+      return "bg-muted text-foreground/70";
     case "like":
-      return "bg-rose-500/10 text-rose-500";
+      return "bg-muted text-foreground/70";
     case "follower":
-      return "bg-emerald-500/10 text-emerald-600";
+      return "bg-muted text-foreground/70";
     case "product":
-      return "bg-violet-500/10 text-violet-600";
+      return "bg-muted text-foreground/70";
     default:
       return "bg-muted text-muted-foreground";
   }
