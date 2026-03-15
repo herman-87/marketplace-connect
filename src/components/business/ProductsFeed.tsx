@@ -14,6 +14,8 @@ import {
   ShoppingCart, 
   Eye, 
   MoreHorizontal, 
+  Send, 
+  Archive,
   Plus,
   Search,
   LayoutGrid,
