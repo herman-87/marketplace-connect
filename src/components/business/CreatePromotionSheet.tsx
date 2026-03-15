@@ -264,13 +264,16 @@ export function CreatePromotionSheet({
 
             {/* Price preview */}
             {selectedProduct && calculatedPrice !== null && (
-              <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 space-y-1">
+              <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-1">
                 <p className="text-xs text-muted-foreground">Aperçu du prix</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-primary">{calculatedPrice.toFixed(2)} €</span>
+                  <span className="text-lg font-bold text-foreground">{calculatedPrice.toFixed(2)} €</span>
                   <span className="text-sm text-muted-foreground line-through">{selectedProduct.price} €</span>
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
                     -{discountPercent}%
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    (-{discountAmount} €)
                   </span>
                 </div>
               </div>
