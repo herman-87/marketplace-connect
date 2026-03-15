@@ -15,7 +15,6 @@ import {
   Eye, 
   MoreHorizontal, 
   Send, 
-  FileEdit, 
   Archive,
   Plus,
   Search,
@@ -67,14 +66,13 @@ interface ProductsFeedProps {
 const ITEMS_PER_PAGE = 6;
 
 const statusConfig = {
-  draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
-  published: { label: "Publié", variant: "outline-primary" as const, icon: Send },
-  removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
+  draft: { label: "Brouillon", variant: "secondary" as const },
+  published: { label: "Publié", variant: "secondary" as const },
+  removed: { label: "Retiré", variant: "outline" as const },
 };
 
 function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
-  const StatusIcon = status.icon;
 
   return (
     <div 
@@ -89,10 +87,9 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
             🛍️
           </div>
         )}
-        <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-xs">
-          <StatusIcon className="h-3 w-3" />
+        <span className="absolute top-2 left-2 text-[10px] font-medium text-foreground/60 bg-background/80 backdrop-blur-sm px-2 py-0.5 rounded">
           {status.label}
-        </Badge>
+        </span>
         {isOwner && (
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
             <DropdownMenu>
@@ -148,7 +145,6 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
 
 function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
-  const StatusIcon = status.icon;
 
   return (
     <div 
@@ -161,10 +157,9 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 md:gap-2">
           <h3 className="font-semibold text-sm truncate">{product.name}</h3>
-          <Badge variant={status.variant} className="gap-1 text-[10px] md:text-xs shrink-0 hidden sm:flex">
-            <StatusIcon className="h-3 w-3 md:h-3.5 md:w-3.5" />
+          <span className="text-[10px] md:text-xs text-foreground/60 font-medium shrink-0 hidden sm:inline">
             {status.label}
-          </Badge>
+          </span>
         </div>
         <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Heart className="h-3 w-3" />{product.likes}</span>
