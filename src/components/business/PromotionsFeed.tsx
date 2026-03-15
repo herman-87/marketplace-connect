@@ -206,10 +206,30 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                     </span>
                   </div>
 
-                  {/* Dates */}
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    <span>{new Date(promo.startDate).toLocaleDateString("fr")} → {new Date(promo.endDate).toLocaleDateString("fr")}</span>
+                  {/* Dates + jours restants */}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      <span>
+                        {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })} → {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+                      </span>
+                    </div>
+                    {promo.status === "active" && (() => {
+                      const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                      return (
+                        <span className={`text-xs font-medium ${remaining <= 3 ? "text-destructive" : "text-muted-foreground"}`}>
+                          {remaining > 0 ? `${remaining} jour${remaining > 1 ? "s" : ""} restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
+                        </span>
+                      );
+                    })()}
+                    {promo.status === "scheduled" && (() => {
+                      const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                      return (
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Commence dans {daysUntilStart} jour{daysUntilStart > 1 ? "s" : ""}
+                        </span>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>
