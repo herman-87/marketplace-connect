@@ -168,14 +168,16 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
               <span>Total</span>
               <span className="text-primary text-xl">{selectedSubCart.total.toFixed(2)} €</span>
             </div>
-            <Button 
-              className="w-full h-11 text-sm gap-2" 
-              size="lg"
-              onClick={onContinue}
-            >
-              Continuer vers la livraison
-              <ArrowRight className="w-4 h-4" />
-            </Button>
+            <div className="flex justify-center">
+              <Button 
+                className="h-12 w-[220px] font-semibold gap-2 rounded-[10px] shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200" 
+                size="lg"
+                onClick={onContinue}
+              >
+                Continuer vers la livraison
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
       )}
