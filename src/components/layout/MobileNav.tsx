@@ -80,7 +80,7 @@ export function MobileNav() {
                 {locked ? (
                   <Lock className="absolute -top-1.5 -right-2 h-3 w-3 text-muted-foreground" />
                 ) : item.badge ? (
-                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-background text-foreground border-0">
+                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-muted text-foreground border-0">
                     {item.badge}
                   </Badge>
                 ) : null}
