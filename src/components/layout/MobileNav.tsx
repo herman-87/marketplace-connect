@@ -81,7 +81,7 @@ export function MobileNav() {
                 {item.title}
               </span>
               {active && !locked && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-foreground" />
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-background" />
               )}
             </Link>
           );
