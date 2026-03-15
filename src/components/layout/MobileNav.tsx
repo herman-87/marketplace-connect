@@ -85,7 +85,7 @@ export function MobileNav() {
                   </Badge>
                 ) : null}
               </div>
-              <span className={cn("text-[10px] font-medium", active && !locked && "text-background font-semibold")}>
+              <span className={cn("text-[10px] font-medium", active && !locked && "text-foreground font-semibold")}>
                 {item.title}
               </span>
             </Link>
