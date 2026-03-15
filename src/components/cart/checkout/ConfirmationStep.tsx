@@ -42,7 +42,7 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex-1 overflow-auto min-h-0">
+      <div className="flex-1 min-h-0">
 
         {/* Seller */}
         <div className="flex items-center gap-2 mb-3">
