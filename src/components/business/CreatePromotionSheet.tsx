@@ -159,6 +159,7 @@ export function CreatePromotionSheet({
     setTimeout(() => {
       setProductId("");
       setDiscountPercent("");
+      setDiscountAmount("");
       setStartDate("");
       setEndDate("");
     }, 300);
