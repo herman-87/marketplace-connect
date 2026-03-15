@@ -256,7 +256,13 @@ export function AppSidebar() {
 
         {isBusinessContext && isPro ? (
           <>
-            <div className="border-l-[3px] border-primary bg-sidebar-primary/5 rounded-r-lg pl-3 py-1 -mx-1">
+            <div className="relative px-2 py-2 -mx-1
+              before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-foreground
+              after:absolute after:top-0 after:right-0 after:w-3 after:h-3 after:border-t-2 after:border-r-2 after:border-foreground
+              [&>*]:relative
+            ">
+              <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-foreground pointer-events-none" />
+              <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-foreground pointer-events-none" />
               <CollapsibleGroup label={businessName || "Mon Business"} items={businessItems} defaultOpen={true} />
             </div>
             <Separator className="my-3 bg-sidebar-border" />
