@@ -365,7 +365,7 @@ export default function MesAchats() {
             <TabsTrigger value="active" className="gap-1 text-xs md:text-sm px-2 md:px-3 h-7 md:h-8">
               En cours
               {activeCount > 0 && (
-                <Badge className="ml-0.5 h-4 w-4 md:h-5 md:w-5 p-0 flex items-center justify-center text-[9px] md:text-[10px] gradient-primary border-0">
+                <Badge variant="outline" className="ml-0.5 h-4 w-4 md:h-5 md:w-5 p-0 flex items-center justify-center text-[9px] md:text-[10px] border-background/50 text-background">
                   {activeCount}
                 </Badge>
               )}
