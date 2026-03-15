@@ -120,18 +120,18 @@ export function DeliveryStep({ onBack, onContinue, initialData }: DeliveryStepPr
 
       {/* Sticky bottom action */}
       <div className="sticky bottom-0 pt-4 pb-2 bg-background border-t border-border mt-auto shrink-0">
-        <div className="flex gap-3 items-center">
-          <Button variant="outline" className="h-11 px-5" onClick={onBack}>
+        <div className="flex justify-center gap-6">
+          <Button variant="outline" className="h-12 w-[220px] font-medium" onClick={onBack}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour
           </Button>
           <Button 
-            className="flex-1 h-14 text-base font-semibold gap-2 rounded-[10px] shadow-md bg-primary hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200" 
+            className="h-12 w-[220px] font-semibold gap-2 rounded-[10px] shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200" 
             onClick={() => onContinue(form)}
             disabled={!isFormValid}
           >
             Continuer vers le récapitulatif
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </div>
