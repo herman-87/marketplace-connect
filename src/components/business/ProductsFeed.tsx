@@ -67,9 +67,9 @@ interface ProductsFeedProps {
 const ITEMS_PER_PAGE = 6;
 
 const statusConfig = {
-  draft: { label: "Brouillon", variant: "secondary" as const, icon: FileEdit },
-  published: { label: "Publié", variant: "outline-primary" as const, icon: Send },
-  removed: { label: "Retiré", variant: "outline" as const, icon: Archive },
+  draft: { label: "Brouillon", variant: "secondary" as const },
+  published: { label: "Publié", variant: "secondary" as const },
+  removed: { label: "Retiré", variant: "outline" as const },
 };
 
 function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
