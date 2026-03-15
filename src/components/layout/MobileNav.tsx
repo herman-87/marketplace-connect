@@ -63,7 +63,7 @@ export function MobileNav() {
                 locked
                   ? "text-muted-foreground/50"
                   : active
-                    ? "bg-foreground text-background"
+                    ? "bg-muted/60 text-foreground font-bold"
                     : "text-muted-foreground hover:text-foreground"
               )}
             >
