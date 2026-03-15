@@ -51,9 +51,9 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
           <span className="text-xs text-muted-foreground">· {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''}</span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 mb-4">
-          {/* Articles — left, scrollable, narrower */}
-          <div className="lg:max-w-[420px] min-w-0">
+        <div className="flex flex-col lg:flex-row lg:gap-8 gap-4 mb-4">
+          {/* Articles — left, takes remaining space, scrollable */}
+          <div className="flex-1 min-w-0">
             <div className="max-h-[300px] overflow-y-auto space-y-1.5 pr-1">
               {selectedSubCart.items.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg border border-border bg-card">
@@ -68,9 +68,9 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
             </div>
           </div>
 
-          {/* Delivery — right on desktop */}
+          {/* Delivery — right, fixed width */}
           {deliveryData && (
-            <div className="lg:w-[260px] shrink-0">
+            <div className="lg:w-[280px] shrink-0">
               <div className="flex items-center gap-2 mb-2">
                 <Truck className="w-4 h-4 text-primary" />
                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Livraison</span>
