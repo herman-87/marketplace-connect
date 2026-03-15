@@ -175,7 +175,7 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
     <div className={cn("flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors", !isLast && "border-b border-border/50")}>
       <Avatar className="h-9 w-9 md:h-10 md:w-10 shrink-0">
         <AvatarImage src={collab.avatar} />
-        <AvatarFallback className="text-xs bg-primary/10 text-primary">
+        <AvatarFallback className="text-xs bg-muted text-foreground">
           {collab.name.slice(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
