@@ -153,9 +153,9 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
               {/* User Profile */}
               <div className="p-4 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10 border-2 border-primary/20">
+                  <Avatar className="h-10 w-10 border-2 border-border">
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary/10 text-primary">
+                    <AvatarFallback className="bg-muted text-foreground">
                       {user?.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
