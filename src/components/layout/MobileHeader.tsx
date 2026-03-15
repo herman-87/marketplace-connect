@@ -78,19 +78,16 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
         className={cn(
           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 relative",
           active
-            ? "bg-primary/10 text-primary"
+            ? "bg-muted border-l-[3px] border-foreground text-foreground font-bold rounded-l-none"
             : "text-muted-foreground hover:text-foreground hover:bg-muted"
         )}
       >
-        {active && (
-          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-primary" />
-        )}
-        <item.icon className={cn("h-5 w-5 shrink-0", active && "text-primary")} />
+        <item.icon className={cn("h-5 w-5 shrink-0", active && "text-foreground")} />
         <span className="font-medium text-sm">{item.title}</span>
         {item.badge && (
           <Badge
             variant="secondary"
-            className="ml-auto bg-primary/20 text-primary border-0 text-xs"
+            className="ml-auto bg-muted text-foreground border-0 text-xs"
           >
             {item.badge}
           </Badge>
@@ -146,8 +143,8 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
             <SheetContent side="left" className="w-80 p-0 flex flex-col">
               <SheetHeader className="p-4 border-b border-border">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-                    <Store className="w-4 h-4 text-primary-foreground" />
+                  <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
+                    <Store className="w-4 h-4 text-background" />
                   </div>
                   <SheetTitle className="font-bold text-lg">FastRelays</SheetTitle>
                 </div>
@@ -156,9 +153,9 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
               {/* User Profile */}
               <div className="p-4 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10 border-2 border-primary/20">
+                  <Avatar className="h-10 w-10 border-2 border-border">
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary/10 text-primary">
+                    <AvatarFallback className="bg-muted text-foreground">
                       {user?.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
@@ -224,8 +221,8 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
               <h1 className="text-base font-semibold text-foreground truncate">{title}</h1>
             ) : (
               <div className="flex items-center justify-center gap-2">
-                <div className="w-6 h-6 rounded-md gradient-primary flex items-center justify-center">
-                  <Store className="w-3.5 h-3.5 text-primary-foreground" />
+                <div className="w-6 h-6 rounded-md bg-foreground flex items-center justify-center">
+                  <Store className="w-3.5 h-3.5 text-background" />
                 </div>
                 <span className="font-bold text-foreground">FastRelays</span>
               </div>

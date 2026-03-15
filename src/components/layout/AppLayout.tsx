@@ -84,13 +84,13 @@ const getNotificationIcon = (type: string) => {
 const getNotificationColor = (type: string) => {
   switch (type) {
     case "order":
-      return "bg-blue-500/10 text-blue-600";
+      return "bg-muted text-foreground/70";
     case "like":
-      return "bg-rose-500/10 text-rose-500";
+      return "bg-muted text-foreground/70";
     case "follower":
-      return "bg-emerald-500/10 text-emerald-600";
+      return "bg-muted text-foreground/70";
     case "product":
-      return "bg-violet-500/10 text-violet-600";
+      return "bg-muted text-foreground/70";
     default:
       return "bg-muted text-muted-foreground";
   }
@@ -127,7 +127,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
               variant="ghost"
               size="sm"
               onClick={markAllAsRead}
-              className="text-xs text-primary hover:text-primary/80"
+              className="text-xs text-muted-foreground hover:text-foreground"
             >
               <Check className="h-3 w-3 mr-1" />
               Tout marquer comme lu
@@ -147,9 +147,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-4 hover:bg-muted/50 transition-colors cursor-pointer relative group ${
-                  !notification.read ? "bg-primary/5" : ""
-                }`}
+                className={`p-4 hover:bg-muted/50 transition-colors cursor-pointer relative group ${!notification.read ? "bg-muted/30" : ""}`}
                 onClick={() => markAsRead(notification.id)}
               >
                 <div className="flex gap-3">
@@ -167,7 +165,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
                         {notification.title}
                       </p>
                       {!notification.read && (
-                        <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                        <span className="h-2 w-2 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">
@@ -243,7 +241,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-5 w-5" />
                   {unreadCount > 0 && (
-                    <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] gradient-primary border-0">
+                    <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px] bg-muted text-foreground border-0">
                       {unreadCount}
                     </Badge>
                   )}

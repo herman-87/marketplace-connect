@@ -46,8 +46,8 @@ export function MarketplaceHeader() {
       <div className="container mx-auto h-full flex items-center justify-between px-4 gap-4">
         {/* Logo */}
         <Link to="/marketplace" className="flex items-center gap-2 shrink-0">
-          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-            <Store className="h-5 w-5 text-primary-foreground" />
+          <div className="w-9 h-9 bg-foreground rounded-lg flex items-center justify-center">
+            <Store className="h-5 w-5 text-background" />
           </div>
           <span className="text-xl font-bold hidden sm:inline">FastRelays</span>
         </Link>
@@ -96,9 +96,9 @@ export function MarketplaceHeader() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="gap-2 px-2">
-                  <Avatar className="h-8 w-8 border-2 border-primary/20">
+                  <Avatar className="h-8 w-8 border-2 border-border">
                     <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                    <AvatarFallback className="bg-muted text-foreground text-xs">
                       {user.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
