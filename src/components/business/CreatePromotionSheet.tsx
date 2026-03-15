@@ -264,17 +264,26 @@ export function CreatePromotionSheet({
 
             {/* Price preview */}
             {selectedProduct && calculatedPrice !== null && (
-              <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-1">
-                <p className="text-xs text-muted-foreground">Aperçu du prix</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-foreground">{calculatedPrice.toFixed(2)} €</span>
-                  <span className="text-sm text-muted-foreground line-through">{selectedProduct.price} €</span>
-                  <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
-                    -{discountPercent}%
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    (-{discountAmount} €)
-                  </span>
+              <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-3">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Aperçu du prix</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-0.5">
+                    <p className="text-[10px] text-muted-foreground">Prix original</p>
+                    <p className="text-sm font-semibold text-muted-foreground line-through">{selectedProduct.price.toFixed(2)} €</p>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-[10px] text-muted-foreground">Réduction</p>
+                    <p className="text-sm font-semibold text-foreground">-{Number(discountAmount).toFixed(2)} € <span className="text-xs font-normal text-muted-foreground">({Number(discountPercent).toFixed(0)}%)</span></p>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-[10px] text-muted-foreground">Prix final</p>
+                    <p className="text-lg font-bold text-foreground">{calculatedPrice.toFixed(2)} €</p>
+                  </div>
+                </div>
+                <div className="h-px bg-border" />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Économie client</span>
+                  <span className="font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">-{Number(discountPercent).toFixed(0)}% soit {Number(discountAmount).toFixed(2)} €</span>
                 </div>
               </div>
             )}
