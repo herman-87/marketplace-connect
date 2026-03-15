@@ -164,9 +164,9 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
               <span className="text-muted-foreground">Calculé à l'étape suivante</span>
             </div>
             <Separator />
-            <div className="flex justify-between font-bold text-base">
+            <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span className="text-primary">{selectedSubCart.total.toFixed(2)} €</span>
+              <span className="text-primary text-xl">{selectedSubCart.total.toFixed(2)} €</span>
             </div>
             <Button 
               className="w-full h-11 text-sm gap-2" 
