@@ -130,7 +130,7 @@ export function DeliveryStep({ onBack, onContinue, initialData }: DeliveryStepPr
             onClick={() => onContinue(form)}
             disabled={!isFormValid}
           >
-            Continuer vers le récapitulatif
+            Continuer
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
