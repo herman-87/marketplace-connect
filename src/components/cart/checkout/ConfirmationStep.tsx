@@ -49,10 +49,8 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
   const totalPanels = 2;
 
   const ArticlesList = () => (
-    <div className="relative">
-      <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none rounded-t-lg" />
-      <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none rounded-b-lg" />
-      <div className="max-h-[480px] overflow-y-auto space-y-1.5 pr-1 py-2">
+    <div>
+      <div className="max-h-[480px] overflow-y-auto space-y-1.5 pr-1">
         {selectedSubCart.items.map((item) => (
           <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg border border-border bg-card">
             <img src={item.image} alt={item.name} className="w-11 h-11 rounded-md object-cover shrink-0" />
