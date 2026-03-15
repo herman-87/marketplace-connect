@@ -218,27 +218,34 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                 </div>
 
                 {/* Dates */}
-                <div className="px-4 pb-4 pt-2 border-t border-border/40">
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3 shrink-0" />
-                    <span>Du {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })} au {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>
+                <div className="px-4 pb-4 pt-2 border-t border-border/40 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3 shrink-0" />
+                      <span>Du {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })} au {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>
+                    </div>
+                    {promo.status === "active" && (() => {
+                      const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                      return (
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${remaining <= 3 ? "text-destructive bg-destructive/10" : "text-primary bg-primary/10"}`}>
+                          {remaining > 0 ? `${remaining}j restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
+                        </span>
+                      );
+                    })()}
+                    {promo.status === "scheduled" && (() => {
+                      const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                      return (
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 text-primary bg-primary/10">
+                          {daysUntilStart > 0 ? `Dans ${daysUntilStart}j` : "Aujourd'hui"}
+                        </span>
+                      );
+                    })()}
+                    {promo.status === "expired" && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 text-muted-foreground bg-muted">
+                        Terminée
+                      </span>
+                    )}
                   </div>
-                  {promo.status === "active" && (() => {
-                    const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                    return (
-                      <p className={`text-xs font-medium mt-1 ${remaining <= 3 ? "text-destructive" : "text-muted-foreground"}`}>
-                        {remaining > 0 ? `${remaining} jour${remaining > 1 ? "s" : ""} restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
-                      </p>
-                    );
-                  })()}
-                  {promo.status === "scheduled" && (() => {
-                    const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                    return (
-                      <p className="text-xs font-medium mt-1 text-muted-foreground">
-                        {daysUntilStart > 0 ? `Commence dans ${daysUntilStart} jour${daysUntilStart > 1 ? "s" : ""}` : "Commence aujourd'hui"}
-                      </p>
-                    );
-                  })()}
                 </div>
               </div>
             );
