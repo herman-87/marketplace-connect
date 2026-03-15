@@ -9,7 +9,7 @@ interface CheckoutProgressProps {
 
 const steps: { id: CheckoutStep; label: string; icon: React.ElementType }[] = [
   { id: 'cart', label: 'Panier', icon: ShoppingCart },
-  { id: 'delivery', label: 'Préparation', icon: ClipboardList },
+  { id: 'delivery', label: 'Commande', icon: ClipboardList },
   { id: 'summary', label: 'Récapitulatif', icon: PackageCheck },
   { id: 'confirmation', label: 'Confirmation', icon: CheckCircle2 },
 ];
