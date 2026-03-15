@@ -141,7 +141,7 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
               onClick={() => { setStatusFilter(s); setPage(1); }}
             >
               {s === "all" ? "Toutes" : statusConfig[s].label}
-              <Badge variant={statusFilter === s ? "outline" : "secondary"} className="ml-1.5 text-[10px] px-1.5 rounded-full">
+              <Badge variant={statusFilter === s ? "outline" : "secondary"} className={`ml-1.5 text-[10px] px-1.5 rounded-full ${statusFilter === s ? "border-background/50 text-background" : ""}`}>
                 {counts[s]}
               </Badge>
             </Button>
