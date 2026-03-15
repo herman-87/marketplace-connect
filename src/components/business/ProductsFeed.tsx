@@ -74,7 +74,6 @@ const statusConfig = {
 
 function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
-  const StatusIcon = status.icon;
 
   return (
     <div 
