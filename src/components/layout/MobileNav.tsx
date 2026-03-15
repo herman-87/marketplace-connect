@@ -67,6 +67,14 @@ export function MobileNav() {
                     : "text-muted-foreground hover:text-foreground"
               )}
             >
+              {active && !locked && (
+                <>
+                  <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-background/50 rounded-tl-md pointer-events-none z-10" />
+                  <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-background/50 rounded-tr-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-background/50 rounded-bl-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-background/50 rounded-br-md pointer-events-none z-10" />
+                </>
+              )}
               <div className="relative">
                 <item.icon className={cn("h-5 w-5", active && !locked && "text-background")} />
                 {locked ? (
@@ -80,9 +88,6 @@ export function MobileNav() {
               <span className={cn("text-[10px] font-medium", active && !locked && "text-background font-semibold")}>
                 {item.title}
               </span>
-              {active && !locked && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-background" />
-              )}
             </Link>
           );
         })}
