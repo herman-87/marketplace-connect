@@ -1,4 +1,4 @@
-import { Check, ShoppingCart, MapPin, PackageCheck } from "lucide-react";
+import { Check, ShoppingCart, ClipboardList, PackageCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CheckoutStep } from "@/types/order";
 
@@ -9,17 +9,14 @@ interface CheckoutProgressProps {
 
 const steps: { id: CheckoutStep; label: string; icon: React.ElementType }[] = [
   { id: 'cart', label: 'Panier', icon: ShoppingCart },
-  { id: 'delivery', label: 'Adresse', icon: MapPin },
+  { id: 'delivery', label: 'Commande', icon: ClipboardList },
   { id: 'confirmation', label: 'Récapitulatif', icon: PackageCheck },
 ];
 
-const stepOrder: CheckoutStep[] = ['cart', 'delivery', 'confirmation', 'tracking'];
+const stepOrder: CheckoutStep[] = ['cart', 'delivery', 'confirmation'];
 
 export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressProps) {
   const currentIndex = stepOrder.indexOf(currentStep);
-  
-  // Don't show progress for tracking step
-  if (currentStep === 'tracking') return null;
 
   return (
     <div className="w-full py-4">
@@ -33,7 +30,6 @@ export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressP
 
           return (
             <div key={step.id} className="flex items-center flex-1 last:flex-none">
-              {/* Step circle */}
               <button
                 onClick={() => isClickable && onStepClick(step.id)}
                 disabled={!isClickable}
@@ -52,7 +48,6 @@ export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressP
                 )}
               </button>
 
-              {/* Connector line */}
               {index < steps.length - 1 && (
                 <div className="flex-1 mx-2">
                   <div 
@@ -68,7 +63,6 @@ export function CheckoutProgress({ currentStep, onStepClick }: CheckoutProgressP
         })}
       </div>
 
-      {/* Step labels - visible on desktop */}
       <div className="hidden sm:flex items-center justify-between mt-2">
         {steps.map((step, index) => {
           const stepIndex = stepOrder.indexOf(step.id);

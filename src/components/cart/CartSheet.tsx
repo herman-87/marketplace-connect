@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Sheet, 
   SheetContent, 
@@ -12,9 +13,8 @@ import { ShoppingCart, X } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { CheckoutProgress } from "./checkout/CheckoutProgress";
 import { CartStep } from "./checkout/CartStep";
-import { DeliveryStep } from "./checkout/DeliveryStep";
+import { DeliveryStep, type DeliveryFormData } from "./checkout/DeliveryStep";
 import { ConfirmationStep } from "./checkout/ConfirmationStep";
-import { TrackingStep } from "./checkout/TrackingStep";
 import type { CheckoutStep } from "@/types/order";
 
 interface CartSheetProps {
@@ -23,11 +23,13 @@ interface CartSheetProps {
 
 export function CartSheet({ trigger }: CartSheetProps) {
   const { totalItems, subCarts } = useCart();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('cart');
   const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(
     subCarts.length > 0 ? subCarts[0].businessId : null
   );
+  const [deliveryData, setDeliveryData] = useState<DeliveryFormData | null>(null);
 
   const defaultTrigger = (
     <Button variant="outline" size="icon" className="relative">
@@ -54,7 +56,24 @@ export function CartSheet({ trigger }: CartSheetProps) {
     setOpen(false);
     setTimeout(() => {
       setCurrentStep('cart');
+      setDeliveryData(null);
     }, 300);
+  };
+
+  const handleConfirmOrder = () => {
+    // TODO: Create order in database, then navigate to order detail
+    const mockOrderId = 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    handleClose();
+    navigate(`/commandes`);
+  };
+
+  const getStepTitle = () => {
+    switch (currentStep) {
+      case 'cart': return 'Mon Panier';
+      case 'delivery': return 'Commande';
+      case 'confirmation': return 'Récapitulatif';
+      default: return 'Mon Panier';
+    }
   };
 
   const renderStep = () => {
@@ -71,36 +90,24 @@ export function CartSheet({ trigger }: CartSheetProps) {
         return (
           <DeliveryStep
             onBack={() => setCurrentStep('cart')}
-            onContinue={() => setCurrentStep('confirmation')}
+            onContinue={(data) => {
+              setDeliveryData(data);
+              setCurrentStep('confirmation');
+            }}
+            initialData={deliveryData || undefined}
           />
         );
       case 'confirmation':
         return (
           <ConfirmationStep
             selectedBusinessId={selectedBusinessId}
-            onTrackOrder={() => setCurrentStep('tracking')}
-            onClose={() => setCurrentStep('delivery')}
-          />
-        );
-      case 'tracking':
-        return (
-          <TrackingStep
-            onBack={() => setCurrentStep('confirmation')}
-            onClose={handleClose}
+            deliveryData={deliveryData}
+            onConfirm={handleConfirmOrder}
+            onBack={() => setCurrentStep('delivery')}
           />
         );
       default:
         return null;
-    }
-  };
-
-  const getStepTitle = () => {
-    switch (currentStep) {
-      case 'cart': return 'Mon Panier';
-      case 'delivery': return 'Adresse de livraison';
-      case 'confirmation': return 'Récapitulatif';
-      case 'tracking': return 'Suivi de commande';
-      default: return 'Mon Panier';
     }
   };
 

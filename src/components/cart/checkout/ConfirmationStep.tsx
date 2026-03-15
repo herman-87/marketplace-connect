@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, CheckCircle2, Store, ShoppingBag, Package } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Store, ShoppingBag, Package, MapPin, User, Phone, FileText } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import type { DeliveryFormData } from "./DeliveryStep";
 
 interface ConfirmationStepProps {
   selectedBusinessId: string | null;
-  onTrackOrder: () => void;
-  onClose: () => void;
+  deliveryData: DeliveryFormData | null;
+  onConfirm: () => void;
+  onBack: () => void;
 }
 
-export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: ConfirmationStepProps) {
+export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, onBack }: ConfirmationStepProps) {
   const { subCarts } = useCart();
   const selectedSubCart = subCarts.find(sc => sc.businessId === selectedBusinessId);
 
@@ -27,7 +29,7 @@ export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: 
   return (
     <div className="flex flex-col flex-1 min-h-0">
       <div className="flex-1 overflow-auto min-h-0 space-y-5 pb-4">
-        {/* Info messages - at the top */}
+        {/* Info banner */}
         <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-2.5">
           <h4 className="font-semibold text-sm flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
@@ -85,10 +87,40 @@ export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: 
           </div>
         </div>
 
+        {/* Delivery info */}
+        {deliveryData && (
+          <div className="p-4 rounded-xl border border-border bg-card space-y-3">
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Adresse de livraison
+            </h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-muted-foreground shrink-0" />
+                <span>{deliveryData.fullName}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
+                <span>{deliveryData.phone}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                <span>{deliveryData.address}, {deliveryData.city} {deliveryData.postalCode}</span>
+              </div>
+              {deliveryData.deliveryInstruction && (
+                <div className="flex items-start gap-2">
+                  <FileText className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground italic">{deliveryData.deliveryInstruction}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Total */}
         <div className="p-4 rounded-xl border border-border bg-card">
+          <Separator className="mb-3" />
           <div className="flex justify-between items-center">
-            <span className="font-semibold text-sm">Total</span>
+            <span className="font-semibold text-sm">Total de la commande</span>
             <span className="text-lg font-bold text-primary">
               {selectedSubCart.total.toLocaleString()} FCFA
             </span>
@@ -102,7 +134,7 @@ export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: 
           <Button
             className="w-full h-12 gap-2 text-base"
             size="lg"
-            onClick={onTrackOrder}
+            onClick={onConfirm}
           >
             <ShoppingBag className="w-5 h-5" />
             Confirmer la commande
@@ -110,7 +142,7 @@ export function ConfirmationStep({ selectedBusinessId, onTrackOrder, onClose }: 
           <Button
             variant="ghost"
             className="w-full"
-            onClick={onClose}
+            onClick={onBack}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour
