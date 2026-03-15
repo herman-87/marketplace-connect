@@ -28,14 +28,14 @@ const badgeColor: Record<string, string> = {
   warning: "bg-warning/10 text-warning border-warning/20",
   destructive: "bg-destructive/10 text-destructive border-destructive/20",
   secondary: "bg-muted text-muted-foreground border-border",
-  default: "bg-primary/10 text-primary border-primary/20",
+  default: "bg-muted text-foreground border-border",
 };
 
 function OrderCardView({ order, onClick }: { order: Order; onClick: () => void }) {
   const config = ORDER_STATUS_CONFIG[order.status];
 
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-4 md:p-5 space-y-3 hover:border-primary/30 transition-colors cursor-pointer" onClick={onClick}>
+    <div className="rounded-lg bg-card border border-border/60 p-4 md:p-5 space-y-3 hover:border-border transition-colors cursor-pointer" onClick={onClick}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
@@ -156,9 +156,9 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
           {statusFilters.map(f => {
             const count = f.key === "all" ? orders.length : orders.filter(o => f.statuses.includes(o.status)).length;
             return (
-              <Button key={f.key} variant={statusFilter === f.key ? "default" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(f.key); setPage(1); }}>
+              <Button key={f.key} variant={statusFilter === f.key ? "activeFilter" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(f.key); setPage(1); }}>
                 {f.label}
-                <Badge variant="secondary" className="ml-1 text-[10px] px-1.5">{count}</Badge>
+                <Badge variant={statusFilter === f.key ? "outline" : "secondary"} className={cn("ml-1 text-[10px] px-1.5", statusFilter === f.key && "border-background/50 text-background")}>{count}</Badge>
               </Button>
             );
           })}

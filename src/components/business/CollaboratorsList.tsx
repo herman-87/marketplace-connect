@@ -61,8 +61,8 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
       <div className="h-16 bg-muted/50 relative flex items-center justify-center">
         <Avatar className="h-8 w-8">
           <AvatarImage src={collab.avatar} />
-          <AvatarFallback className="text-xs bg-primary/10 text-primary">
-            {collab.name.slice(0, 2).toUpperCase()}
+        <AvatarFallback className="text-xs bg-muted text-foreground">
+          {collab.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
 
@@ -110,7 +110,7 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
       <CardContent className="p-4">
         {/* Title & Role — identique à /collaborations */}
         <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+          <h3 className="font-semibold text-foreground group-hover:text-foreground transition-colors">
             {collab.name}
           </h3>
           <Badge variant="secondary" className="text-xs shrink-0">
@@ -153,15 +153,15 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
         {/* Stats Row — identique à /collaborations */}
         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-3 border-t border-border/50">
           <div className="flex items-center gap-1.5">
-            <Package className="h-4 w-4 text-primary/70" />
+            <Package className="h-4 w-4 text-muted-foreground" />
             <span>{collab.productsCreated}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <ClipboardList className="h-4 w-4 text-primary/70" />
+            <ClipboardList className="h-4 w-4 text-muted-foreground" />
             <span>{collab.ordersManaged}</span>
           </div>
           <div className="flex items-center gap-1.5 ml-auto">
-            <TrendingUp className="h-4 w-4 text-primary/70" />
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
             <span>{collab.activityScore}%</span>
           </div>
         </div>
@@ -175,7 +175,7 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
     <div className={cn("flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-3.5 hover:bg-muted/30 transition-colors", !isLast && "border-b border-border/50")}>
       <Avatar className="h-9 w-9 md:h-10 md:w-10 shrink-0">
         <AvatarImage src={collab.avatar} />
-        <AvatarFallback className="text-xs bg-primary/10 text-primary">
+        <AvatarFallback className="text-xs bg-muted text-foreground">
           {collab.name.slice(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
@@ -251,7 +251,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborateurs</h3>
-          <Badge variant="outline" className="text-primary border-primary/30 bg-primary/10">
+          <Badge variant="outline" className="text-foreground border-border bg-muted">
             {collaborators.length}
           </Badge>
         </div>

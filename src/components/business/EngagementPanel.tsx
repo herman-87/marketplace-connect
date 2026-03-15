@@ -50,8 +50,8 @@ export function EngagementPanel({ stats }: EngagementPanelProps) {
           )}
         </div>
         <div className="bg-card rounded-xl border border-border p-4 md:p-5 flex items-center gap-3 md:gap-4">
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-            <Users className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
+            <Users className="h-5 w-5 md:h-6 md:w-6 text-foreground" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-2xl md:text-3xl font-bold text-foreground">{stats.totalFollowers}</p>
@@ -66,7 +66,7 @@ export function EngagementPanel({ stats }: EngagementPanelProps) {
       {/* Top Liked Products */}
       <div>
         <h4 className="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
           Produits les plus aimés
         </h4>
         <div className="rounded-xl border border-border bg-card overflow-hidden divide-y divide-border/50">
