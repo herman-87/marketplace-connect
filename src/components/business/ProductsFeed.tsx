@@ -325,7 +325,7 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           {(["all", "published", "draft", "removed"] as const).map(s => (
             <Button
               key={s}
-              variant={statusFilter === s ? "default" : "outline"}
+              variant={statusFilter === s ? "activeFilter" : "outline"}
               size="sm"
               className={`h-7 md:h-8 text-xs rounded-full whitespace-nowrap shrink-0 ${statusFilter !== s ? "bg-card" : ""}`}
               onClick={() => { setStatusFilter(s); setPage(1); }}
