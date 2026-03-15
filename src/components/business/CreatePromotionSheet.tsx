@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Save, Percent, RefreshCw, Trash2 } from "lucide-react";
+import { X, Save, Percent, RefreshCw, Trash2, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 import { mockProducts } from "@/data/businessMockData";
 import {
