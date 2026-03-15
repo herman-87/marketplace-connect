@@ -177,10 +177,10 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
         {/* ── Desktop: side by side ── */}
         <div className="hidden lg:block">
           <div className="flex lg:gap-14 mb-4">
-            <div className="lg:max-w-[50%] min-w-0">
+            <div className="flex-[3] min-w-0">
               <ArticlesList />
             </div>
-            <div className="flex-1 min-w-0 space-y-4">
+            <div className="flex-[2] min-w-0 space-y-4">
               <DeliveryCard />
               <InfoCard />
             </div>
