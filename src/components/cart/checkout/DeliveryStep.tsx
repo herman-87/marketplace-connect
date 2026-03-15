@@ -1,17 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, MapPin, ShoppingBag } from "lucide-react";
+import { ArrowLeft, MapPin, ArrowRight } from "lucide-react";
+
+export interface DeliveryFormData {
+  fullName: string;
+  phone: string;
+  city: string;
+  address: string;
+  postalCode: string;
+  deliveryInstruction: string;
+}
 
 interface DeliveryStepProps {
   onBack: () => void;
-  onContinue: () => void;
+  onContinue: (data: DeliveryFormData) => void;
+  initialData?: DeliveryFormData;
 }
 
-export function DeliveryStep({ onBack, onContinue }: DeliveryStepProps) {
-  const [form, setForm] = useState({
+export function DeliveryStep({ onBack, onContinue, initialData }: DeliveryStepProps) {
+  const [form, setForm] = useState<DeliveryFormData>(initialData || {
     fullName: '',
     phone: '',
     city: '',
@@ -117,11 +127,11 @@ export function DeliveryStep({ onBack, onContinue }: DeliveryStepProps) {
           </Button>
           <Button 
             className="flex-1 gap-2" 
-            onClick={onContinue}
+            onClick={() => onContinue(form)}
             disabled={!isFormValid}
           >
-            <ShoppingBag className="w-4 h-4" />
-            Commander
+            Continuer
+            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </div>
