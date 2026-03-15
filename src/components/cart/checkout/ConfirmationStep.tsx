@@ -1,7 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, CheckCircle2, Store, ShoppingBag, Package, MapPin, User, Phone, FileText, Info } from "lucide-react";
+import {
+  ArrowLeft,
+  Store,
+  ShoppingBag,
+  Package,
+  MapPin,
+  User,
+  Phone,
+  FileText,
+  Info,
+  Truck,
+  CreditCard,
+  ShieldCheck,
+  Clock,
+  Receipt,
+} from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import type { DeliveryFormData } from "./DeliveryStep";
 
@@ -33,91 +48,141 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
     <div className="flex flex-col flex-1 min-h-0">
       {/* Scrollable content */}
       <div className="flex-1 overflow-auto min-h-0 pb-24">
-        <div className="max-w-[1000px] mx-auto">
-          {/* Info banner - full width */}
-          <div className="w-full p-3.5 rounded-xl border border-primary/20 bg-primary/5 mb-5">
-            <h4 className="font-semibold text-sm flex items-center gap-2 mb-1.5">
-              <Info className="w-4 h-4 text-primary shrink-0" />
-              Vérifiez votre commande avant de confirmer
-            </h4>
-            <div className="text-xs text-muted-foreground space-y-0.5 pl-6">
-              <p>• Votre commande sera envoyée au vendeur pour validation. Aucun paiement ne sera prélevé à cette étape.</p>
-              <p>• Vous serez notifié dès que le vendeur aura accepté ou refusé votre commande.</p>
+        <div className="max-w-[960px] mx-auto space-y-5">
+
+          {/* Info banner */}
+          <div className="p-4 rounded-2xl border border-primary/15 bg-primary/5">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                <ShieldCheck className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-sm mb-1">Vérifiez votre commande</h4>
+                <ul className="text-xs text-muted-foreground space-y-0.5">
+                  <li className="flex items-center gap-1.5">
+                    <Clock className="w-3 h-3 text-primary shrink-0" />
+                    Commande envoyée au vendeur pour validation — aucun paiement maintenant.
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <Info className="w-3 h-3 text-primary shrink-0" />
+                    Vous serez notifié dès acceptation ou refus.
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
           {/* Two-column layout */}
           <div className="flex flex-col lg:flex-row gap-5">
-            {/* Left column */}
+
+            {/* ── Left column ── */}
             <div className="flex-1 space-y-5 min-w-0">
+
               {/* Seller card */}
-              <div className="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-card">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Store className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-base truncate">{selectedSubCart.businessName}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''}
-                  </p>
+              <div className="rounded-2xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center gap-3 p-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Store className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-[15px] truncate">{selectedSubCart.businessName}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {selectedSubCart.items.length} article{selectedSubCart.items.length > 1 ? 's' : ''} commandé{selectedSubCart.items.length > 1 ? 's' : ''}
+                    </p>
+                  </div>
+                  <Badge variant="secondary" className="text-[10px] shrink-0">
+                    <ShoppingBag className="w-3 h-3 mr-1" />
+                    Boutique
+                  </Badge>
                 </div>
               </div>
 
               {/* Articles commandés */}
-              <div>
-                <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest px-1 mb-3">
-                  Articles commandés
-                </h4>
-                <div className="max-h-[280px] overflow-y-auto space-y-2 pr-1">
-                  {selectedSubCart.items.map((item) => (
-                    <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-card">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-12 h-12 rounded-lg object-cover shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{item.name}</p>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                            x{item.quantity}
-                          </Badge>
-                          <span className="text-[10px] text-muted-foreground">
-                            {item.price.toFixed(2)} € / unité
-                          </span>
+              <div className="rounded-2xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center gap-2 px-4 pt-4 pb-2">
+                  <Receipt className="w-4 h-4 text-primary" />
+                  <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                    Articles commandés
+                  </h4>
+                </div>
+                <div className="max-h-[260px] overflow-y-auto px-4 pb-4">
+                  <div className="space-y-2">
+                    {selectedSubCart.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 border border-border/50"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-12 h-12 rounded-lg object-cover shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">{item.name}</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-semibold">
+                              x{item.quantity}
+                            </Badge>
+                            <span className="text-[10px] text-muted-foreground">
+                              {item.price.toFixed(2)} € / unité
+                            </span>
+                          </div>
                         </div>
+                        <p className="font-bold text-sm text-foreground shrink-0">
+                          {(item.price * item.quantity).toFixed(2)} €
+                        </p>
                       </div>
-                      <p className="font-bold text-sm text-foreground shrink-0">
-                        {(item.price * item.quantity).toFixed(2)} €
-                      </p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Adresse de livraison - outside scroll area */}
+              {/* Livraison */}
               {deliveryData && (
-                <div className="p-4 rounded-xl border border-border bg-card space-y-3">
-                  <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
-                    Adresse de livraison
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2.5">
-                      <User className="w-4 h-4 text-muted-foreground shrink-0" />
-                      <span>{deliveryData.fullName}</span>
+                <div className="rounded-2xl border border-border bg-card overflow-hidden">
+                  <div className="flex items-center gap-2 px-4 pt-4 pb-2">
+                    <Truck className="w-4 h-4 text-primary" />
+                    <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                      Adresse de livraison
+                    </h4>
+                  </div>
+                  <div className="px-4 pb-4 space-y-2.5">
+                    <div className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 border border-border/50">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <User className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Destinataire</p>
+                        <p className="text-sm font-medium truncate">{deliveryData.fullName}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
-                      <span>{deliveryData.phone}</span>
+                    <div className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 border border-border/50">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <Phone className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Téléphone</p>
+                        <p className="text-sm font-medium">{deliveryData.phone}</p>
+                      </div>
                     </div>
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
-                      <span>{deliveryData.address}, {deliveryData.city} {deliveryData.postalCode}</span>
+                    <div className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 border border-border/50">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <MapPin className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Adresse</p>
+                        <p className="text-sm font-medium">{deliveryData.address}, {deliveryData.city} {deliveryData.postalCode}</p>
+                      </div>
                     </div>
                     {deliveryData.deliveryInstruction && (
-                      <div className="flex items-start gap-2.5">
-                        <FileText className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
-                        <span className="text-muted-foreground italic">{deliveryData.deliveryInstruction}</span>
+                      <div className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 border border-border/50">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                          <FileText className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Instructions</p>
+                          <p className="text-sm text-muted-foreground italic">{deliveryData.deliveryInstruction}</p>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -125,28 +190,54 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
               )}
             </div>
 
-            {/* Right column - sticky summary */}
+            {/* ── Right column — sticky summary ── */}
             <div className="lg:w-[300px] shrink-0">
-              <div className="p-5 rounded-xl border border-border bg-card lg:sticky lg:top-0 space-y-4">
-                <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
-                  Résumé de la commande
-                </h4>
-                <div className="space-y-2.5 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Sous-total ({selectedSubCart.items.length} articles)</span>
-                    <span className="font-medium">{selectedSubCart.total.toFixed(2)} €</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Livraison</span>
-                    <span className="text-muted-foreground italic text-xs">Après acceptation</span>
-                  </div>
+              <div className="rounded-2xl border border-border bg-card lg:sticky lg:top-0 overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center gap-2 px-5 pt-5 pb-2">
+                  <CreditCard className="w-4 h-4 text-primary" />
+                  <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                    Résumé
+                  </h4>
                 </div>
-                <Separator />
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-base">Total</span>
-                  <span className="text-xl font-bold text-primary">
-                    {totalWithDelivery.toFixed(2)} €
-                  </span>
+
+                <div className="px-5 pb-5 space-y-4">
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        Sous-total
+                      </span>
+                      <span className="font-medium">{selectedSubCart.total.toFixed(2)} €</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        <Truck className="w-3.5 h-3.5" />
+                        Livraison
+                      </span>
+                      <Badge variant="secondary" className="text-[10px] font-medium">
+                        <Clock className="w-3 h-3 mr-1" />
+                        Après acceptation
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-base">Total</span>
+                    <span className="text-xl font-bold text-primary">
+                      {totalWithDelivery.toFixed(2)} €
+                    </span>
+                  </div>
+
+                  {/* Payment info */}
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-muted/60 border border-border/50">
+                    <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
+                    <p className="text-[10px] text-muted-foreground leading-tight">
+                      Paiement sécurisé après acceptation du vendeur
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
