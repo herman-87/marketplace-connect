@@ -51,7 +51,7 @@ interface PromotionsFeedProps {
 const ITEMS_PER_PAGE = 6;
 
 const statusConfig = {
-  active: { label: "Active", variant: "default" as const, icon: Zap },
+  active: { label: "Active", variant: "secondary" as const, icon: Zap },
   scheduled: { label: "Planifiée", variant: "secondary" as const, icon: Calendar },
   expired: { label: "Expirée", variant: "outline" as const, icon: AlertCircle },
 };
