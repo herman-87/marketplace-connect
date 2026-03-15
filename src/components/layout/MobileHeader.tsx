@@ -78,19 +78,16 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
         className={cn(
           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 relative",
           active
-            ? "bg-primary/10 text-primary"
+            ? "bg-muted border-l-[3px] border-foreground text-foreground font-bold rounded-l-none"
             : "text-muted-foreground hover:text-foreground hover:bg-muted"
         )}
       >
-        {active && (
-          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-primary" />
-        )}
-        <item.icon className={cn("h-5 w-5 shrink-0", active && "text-primary")} />
+        <item.icon className={cn("h-5 w-5 shrink-0", active && "text-foreground")} />
         <span className="font-medium text-sm">{item.title}</span>
         {item.badge && (
           <Badge
             variant="secondary"
-            className="ml-auto bg-primary/20 text-primary border-0 text-xs"
+            className="ml-auto bg-muted text-foreground border-0 text-xs"
           >
             {item.badge}
           </Badge>
