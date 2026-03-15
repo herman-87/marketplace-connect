@@ -46,7 +46,7 @@ export function MarketplaceHeader() {
       <div className="container mx-auto h-full flex items-center justify-between px-4 gap-4">
         {/* Logo */}
         <Link to="/marketplace" className="flex items-center gap-2 shrink-0">
-          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+          <div className="w-9 h-9 bg-foreground rounded-lg flex items-center justify-center">
             <Store className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="text-xl font-bold hidden sm:inline">FastRelays</span>
