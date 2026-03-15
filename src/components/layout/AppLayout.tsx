@@ -147,8 +147,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-4 hover:bg-muted/50 transition-colors cursor-pointer relative group ${
-                }`}
+                className={`p-4 hover:bg-muted/50 transition-colors cursor-pointer relative group ${!notification.read ? "bg-muted/30" : ""}`}
                 onClick={() => markAsRead(notification.id)}
               >
                 <div className="flex gap-3">
