@@ -51,7 +51,7 @@ interface PromotionsFeedProps {
 const ITEMS_PER_PAGE = 6;
 
 const statusConfig = {
-  active: { label: "Active", variant: "default" as const, icon: Zap },
+  active: { label: "Active", variant: "secondary" as const, icon: Zap },
   scheduled: { label: "Planifiée", variant: "secondary" as const, icon: Calendar },
   expired: { label: "Expirée", variant: "outline" as const, icon: AlertCircle },
 };
@@ -167,8 +167,8 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                 <div className="p-4 space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        <Percent className="w-5 h-5 text-primary" />
+                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                        <Percent className="w-5 h-5 text-foreground" />
                       </div>
                       <div className="min-w-0">
                         <h3 className="font-semibold text-sm truncate">{promo.productName}</h3>
@@ -199,9 +199,9 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
 
                   {/* Price */}
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-primary">{promo.discountPrice.toFixed(2)} €</span>
+                    <span className="text-lg font-bold text-foreground">{promo.discountPrice.toFixed(2)} €</span>
                     <span className="text-sm text-muted-foreground line-through">{promo.productPrice} €</span>
-                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
                       -{promo.discountPercent}%
                     </span>
                   </div>
