@@ -88,8 +88,8 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
         </div>
 
         {/* Info */}
-        <div className="flex items-start gap-2 text-xs text-muted-foreground">
-          <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-6">
+          <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
           <p>Aucun paiement maintenant. Commande envoyée au vendeur pour validation.</p>
         </div>
       </div>
