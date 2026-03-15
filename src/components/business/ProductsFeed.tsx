@@ -88,10 +88,9 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
             🛍️
           </div>
         )}
-        <Badge variant={status.variant} className="absolute top-2 left-2 gap-1 text-xs">
-          <StatusIcon className="h-3 w-3" />
+        <span className="absolute top-2 left-2 text-[10px] font-medium text-foreground/60 bg-background/80 backdrop-blur-sm px-2 py-0.5 rounded">
           {status.label}
-        </Badge>
+        </span>
         {isOwner && (
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
             <DropdownMenu>
