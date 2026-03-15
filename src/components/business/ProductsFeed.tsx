@@ -331,7 +331,7 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
               onClick={() => { setStatusFilter(s); setPage(1); }}
             >
               {s === "all" ? "Tous" : s === "published" ? "Publiés" : s === "draft" ? "Brouillons" : "Retirés"}
-              <Badge variant={statusFilter === s ? "outline" : "secondary"} className="ml-1.5 text-[10px] px-1.5 rounded-full">{counts[s]}</Badge>
+              <Badge variant={statusFilter === s ? "outline" : "secondary"} className={`ml-1.5 text-[10px] px-1.5 rounded-full ${statusFilter === s ? "border-background/50 text-background" : ""}`}>{counts[s]}</Badge>
             </Button>
           ))}
           <span className="ml-auto text-xs text-muted-foreground whitespace-nowrap shrink-0">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
