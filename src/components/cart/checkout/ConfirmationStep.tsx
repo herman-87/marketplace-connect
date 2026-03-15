@@ -54,7 +54,7 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
         <div className="flex flex-col lg:flex-row lg:gap-14 gap-4 mb-4">
           {/* Articles — left, takes remaining space, scrollable */}
           <div className="flex-1 min-w-0">
-            <div className="max-h-[360px] overflow-y-auto space-y-1.5 pr-1">
+            <div className="max-h-[420px] overflow-y-auto space-y-1.5 pr-1">
               {selectedSubCart.items.map((item) => (
                 <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg border border-border bg-card">
                   <img src={item.image} alt={item.name} className="w-11 h-11 rounded-md object-cover shrink-0" />
