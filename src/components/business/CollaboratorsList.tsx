@@ -61,8 +61,8 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
       <div className="h-16 bg-muted/50 relative flex items-center justify-center">
         <Avatar className="h-8 w-8">
           <AvatarImage src={collab.avatar} />
-          <AvatarFallback className="text-xs bg-primary/10 text-primary">
-            {collab.name.slice(0, 2).toUpperCase()}
+        <AvatarFallback className="text-xs bg-muted text-foreground">
+          {collab.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
 
