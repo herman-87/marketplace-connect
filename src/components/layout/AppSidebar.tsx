@@ -209,15 +209,15 @@ export function AppSidebar() {
       <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
         {!collapsed && (
           <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Store className="w-4 h-4 text-primary-foreground" />
+            <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
+              <Store className="w-4 h-4 text-background" />
             </div>
             <span className="font-bold text-lg text-sidebar-foreground">FastRelays</span>
           </Link>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center mx-auto">
-            <Store className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center mx-auto">
+            <Store className="w-4 h-4 text-background" />
           </div>
         )}
       </div>
