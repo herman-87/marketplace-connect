@@ -157,7 +157,7 @@ function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: bo
             <span>{collab.productsCreated}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <ClipboardList className="h-4 w-4 text-primary/70" />
+            <ClipboardList className="h-4 w-4 text-muted-foreground" />
             <span>{collab.ordersManaged}</span>
           </div>
           <div className="flex items-center gap-1.5 ml-auto">
