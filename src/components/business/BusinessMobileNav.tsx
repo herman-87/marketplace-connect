@@ -39,7 +39,7 @@ export function BusinessMobileNav() {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-colors shrink-0",
                   active
-                    ? "bg-primary text-primary-foreground shadow-sm"
+                    ? "bg-foreground text-background shadow-sm"
                     : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
