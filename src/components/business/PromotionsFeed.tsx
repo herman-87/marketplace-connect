@@ -199,9 +199,9 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
 
                   {/* Price */}
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-primary">{promo.discountPrice.toFixed(2)} €</span>
+                    <span className="text-lg font-bold text-foreground">{promo.discountPrice.toFixed(2)} €</span>
                     <span className="text-sm text-muted-foreground line-through">{promo.productPrice} €</span>
-                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
                       -{promo.discountPercent}%
                     </span>
                   </div>
