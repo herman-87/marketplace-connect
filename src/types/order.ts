@@ -22,7 +22,8 @@ export type OrderStatus =
 export type CheckoutStep = 
   | 'cart'           // Review cart items
   | 'delivery'       // Delivery address & info
-  | 'confirmation';  // Recap & confirm order
+  | 'summary'        // Recap of order
+  | 'confirmation';  // Final confirmation
 
 export type UserRole = 'client' | 'business';
 
