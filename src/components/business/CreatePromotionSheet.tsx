@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Save, Percent, RefreshCw, Trash2 } from "lucide-react";
+import { X, Save, Percent, RefreshCw, Trash2, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 import { mockProducts } from "@/data/businessMockData";
 import {
@@ -65,6 +65,7 @@ export function CreatePromotionSheet({
 
   const [productId, setProductId] = useState("");
   const [discountPercent, setDiscountPercent] = useState("");
+  const [discountAmount, setDiscountAmount] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -74,16 +75,39 @@ export function CreatePromotionSheet({
     ? Math.round(selectedProduct.price * (1 - Number(discountPercent) / 100) * 100) / 100
     : null;
 
+  const handlePercentChange = (value: string) => {
+    setDiscountPercent(value);
+    if (selectedProduct && value && Number(value) > 0 && Number(value) < 100) {
+      const amount = Math.round(selectedProduct.price * Number(value) / 100 * 100) / 100;
+      setDiscountAmount(amount.toString());
+    } else {
+      setDiscountAmount("");
+    }
+  };
+
+  const handleAmountChange = (value: string) => {
+    setDiscountAmount(value);
+    if (selectedProduct && value && Number(value) > 0 && Number(value) < selectedProduct.price) {
+      const percent = Math.round(Number(value) / selectedProduct.price * 100 * 100) / 100;
+      setDiscountPercent(percent.toString());
+    } else {
+      setDiscountPercent("");
+    }
+  };
+
   useEffect(() => {
     if (open) {
       if (promotion) {
         setProductId(promotion.productId);
         setDiscountPercent(promotion.discountPercent.toString());
+        const amt = Math.round(promotion.productPrice * promotion.discountPercent / 100 * 100) / 100;
+        setDiscountAmount(amt.toString());
         setStartDate(promotion.startDate);
         setEndDate(promotion.endDate);
       } else if (preselectedProductId) {
         setProductId(preselectedProductId);
         setDiscountPercent("");
+        setDiscountAmount("");
         setStartDate(new Date().toISOString().split("T")[0]);
         setEndDate("");
       }
@@ -135,6 +159,7 @@ export function CreatePromotionSheet({
     setTimeout(() => {
       setProductId("");
       setDiscountPercent("");
+      setDiscountAmount("");
       setStartDate("");
       setEndDate("");
     }, 300);
@@ -194,31 +219,61 @@ export function CreatePromotionSheet({
 
             {/* Discount */}
             <div className="space-y-2">
-              <Label htmlFor="discount">Réduction (%) *</Label>
-              <div className="flex items-center gap-3">
-                <Input
-                  id="discount"
-                  type="number"
-                  min={1}
-                  max={99}
-                  placeholder="Ex: 25"
-                  value={discountPercent}
-                  onChange={(e) => setDiscountPercent(e.target.value)}
-                  className="w-28"
-                />
-                <span className="text-muted-foreground text-sm">%</span>
+              <Label>Réduction *</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="discount-percent" className="text-xs text-muted-foreground font-normal">Pourcentage</Label>
+                  <div className="relative">
+                    <Input
+                      id="discount-percent"
+                      type="number"
+                      min={1}
+                      max={99}
+                      placeholder="Ex: 25"
+                      value={discountPercent}
+                      onChange={(e) => handlePercentChange(e.target.value)}
+                      className="pr-8"
+                      disabled={!selectedProduct}
+                    />
+                    <Percent className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="discount-amount" className="text-xs text-muted-foreground font-normal">Montant</Label>
+                  <div className="relative">
+                    <Input
+                      id="discount-amount"
+                      type="number"
+                      min={0.01}
+                      max={selectedProduct ? selectedProduct.price - 0.01 : 99999}
+                      step="0.01"
+                      placeholder="Ex: 12.50"
+                      value={discountAmount}
+                      onChange={(e) => handleAmountChange(e.target.value)}
+                      className="pr-8"
+                      disabled={!selectedProduct}
+                    />
+                    <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">€</span>
+                  </div>
+                </div>
               </div>
+              {!selectedProduct && (
+                <p className="text-xs text-muted-foreground">Sélectionnez un produit pour activer les champs</p>
+              )}
             </div>
 
             {/* Price preview */}
             {selectedProduct && calculatedPrice !== null && (
-              <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 space-y-1">
+              <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-1">
                 <p className="text-xs text-muted-foreground">Aperçu du prix</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-primary">{calculatedPrice.toFixed(2)} €</span>
+                  <span className="text-lg font-bold text-foreground">{calculatedPrice.toFixed(2)} €</span>
                   <span className="text-sm text-muted-foreground line-through">{selectedProduct.price} €</span>
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-semibold text-foreground bg-muted px-2 py-0.5 rounded-full">
                     -{discountPercent}%
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    (-{discountAmount} €)
                   </span>
                 </div>
               </div>
