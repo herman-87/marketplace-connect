@@ -89,7 +89,7 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
         </div>
 
         {/* Info */}
-        <div className="mt-6 p-3.5 rounded-lg bg-primary/5 border border-primary/15 text-xs text-muted-foreground space-y-1 max-w-md">
+        <div className="mt-6 p-3.5 rounded-lg bg-primary/5 border border-primary/15 text-xs text-muted-foreground space-y-1 max-w-lg">
           <p className="flex items-center gap-2">
             <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
             Aucun paiement ne sera prélevé à cette étape.
