@@ -151,9 +151,9 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
             <Clock className="h-3.5 w-3.5 text-warning" />
             <span className="text-warning">Invitation envoyée</span>
           </div>
-          <ArrowRight className="h-4 w-4 text-primary" />
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-primary/10 border border-primary/20">
-            <span className="text-primary font-medium">Acceptée → Collaborateur</span>
+          <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-muted border border-border">
+            <span className="text-foreground font-medium">Acceptée → Collaborateur</span>
           </div>
         </div>
       </div>

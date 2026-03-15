@@ -66,7 +66,7 @@ export function EngagementPanel({ stats }: EngagementPanelProps) {
       {/* Top Liked Products */}
       <div>
         <h4 className="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+          <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
           Produits les plus aimés
         </h4>
         <div className="rounded-xl border border-border bg-card overflow-hidden divide-y divide-border/50">

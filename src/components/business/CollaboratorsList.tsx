@@ -251,7 +251,7 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborateurs</h3>
-          <Badge variant="outline" className="text-primary border-primary/30 bg-primary/10">
+          <Badge variant="outline" className="text-foreground border-border bg-muted">
             {collaborators.length}
           </Badge>
         </div>

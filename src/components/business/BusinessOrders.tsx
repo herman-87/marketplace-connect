@@ -156,9 +156,9 @@ export function BusinessOrders({ orders }: BusinessOrdersProps) {
           {statusFilters.map(f => {
             const count = f.key === "all" ? orders.length : orders.filter(o => f.statuses.includes(o.status)).length;
             return (
-              <Button key={f.key} variant={statusFilter === f.key ? "default" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(f.key); setPage(1); }}>
+              <Button key={f.key} variant={statusFilter === f.key ? "activeFilter" : "ghost"} size="sm" className="h-7 md:h-8 text-xs whitespace-nowrap shrink-0" onClick={() => { setStatusFilter(f.key); setPage(1); }}>
                 {f.label}
-                <Badge variant="secondary" className="ml-1 text-[10px] px-1.5">{count}</Badge>
+                <Badge variant={statusFilter === f.key ? "outline" : "secondary"} className={cn("ml-1 text-[10px] px-1.5", statusFilter === f.key && "border-background/50 text-background")}>{count}</Badge>
               </Button>
             );
           })}
