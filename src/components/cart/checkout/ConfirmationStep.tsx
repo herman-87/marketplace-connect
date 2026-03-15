@@ -12,6 +12,7 @@ import {
   FileText,
   Truck,
   ShieldCheck,
+  Clock,
 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import type { DeliveryFormData } from "./DeliveryStep";
