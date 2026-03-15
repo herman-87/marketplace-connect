@@ -63,25 +63,25 @@ export function MobileNav() {
                 locked
                   ? "text-muted-foreground/50"
                   : active
-                    ? "text-foreground"
+                    ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground"
               )}
             >
               <div className="relative">
-                <item.icon className={cn("h-5 w-5", active && !locked && "text-foreground")} />
+                <item.icon className={cn("h-5 w-5", active && !locked && "text-background")} />
                 {locked ? (
                   <Lock className="absolute -top-1.5 -right-2 h-3 w-3 text-muted-foreground" />
                 ) : item.badge ? (
-                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-muted text-foreground border-0">
+                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-background text-foreground border-0">
                     {item.badge}
                   </Badge>
                 ) : null}
               </div>
-              <span className={cn("text-[10px] font-medium", active && !locked && "text-foreground font-semibold")}>
+              <span className={cn("text-[10px] font-medium", active && !locked && "text-background font-semibold")}>
                 {item.title}
               </span>
               {active && !locked && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-foreground" />
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-background" />
               )}
             </Link>
           );
