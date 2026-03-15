@@ -30,7 +30,7 @@ interface ConfirmationStepProps {
 export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, onBack }: ConfirmationStepProps) {
   const { subCarts } = useCart();
   const selectedSubCart = subCarts.find(sc => sc.businessId === selectedBusinessId);
-  const [mobilePanel, setMobilePanel] = useState<0 | 1 | 2>(0);
+  const [mobilePanel, setMobilePanel] = useState<0 | 1>(0);
 
   if (!selectedSubCart || selectedSubCart.items.length === 0) {
     return (
