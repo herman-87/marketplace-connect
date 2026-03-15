@@ -148,7 +148,6 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
               <div
                 key={notification.id}
                 className={`p-4 hover:bg-muted/50 transition-colors cursor-pointer relative group ${
-                  !notification.read ? "bg-primary/5" : ""
                 }`}
                 onClick={() => markAsRead(notification.id)}
               >
