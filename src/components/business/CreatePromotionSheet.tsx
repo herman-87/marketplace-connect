@@ -100,11 +100,14 @@ export function CreatePromotionSheet({
       if (promotion) {
         setProductId(promotion.productId);
         setDiscountPercent(promotion.discountPercent.toString());
+        const amt = Math.round(promotion.productPrice * promotion.discountPercent / 100 * 100) / 100;
+        setDiscountAmount(amt.toString());
         setStartDate(promotion.startDate);
         setEndDate(promotion.endDate);
       } else if (preselectedProductId) {
         setProductId(preselectedProductId);
         setDiscountPercent("");
+        setDiscountAmount("");
         setStartDate(new Date().toISOString().split("T")[0]);
         setEndDate("");
       }
