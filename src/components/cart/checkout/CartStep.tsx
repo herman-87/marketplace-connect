@@ -95,7 +95,7 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
                       <h5 className="text-sm font-medium truncate">{item.name}</h5>
-                      <p className="text-sm font-bold shrink-0">
+                      <p className="text-base font-bold text-foreground shrink-0">
                         {(item.price * item.quantity).toFixed(2)} €
                       </p>
                     </div>
@@ -164,9 +164,9 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
               <span className="text-muted-foreground">Calculé à l'étape suivante</span>
             </div>
             <Separator />
-            <div className="flex justify-between font-bold text-base">
+            <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span className="text-primary">{selectedSubCart.total.toFixed(2)} €</span>
+              <span className="text-primary text-xl">{selectedSubCart.total.toFixed(2)} €</span>
             </div>
             <Button 
               className="w-full h-11 text-sm gap-2" 
