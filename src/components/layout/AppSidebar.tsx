@@ -103,9 +103,9 @@ export function AppSidebar() {
       <div className="relative">
         {active && (
           <>
-            {/* Top-left corner bracket */}
             <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-foreground/50 pointer-events-none z-10" />
-            {/* Bottom-right corner bracket */}
+            <span className="absolute top-0 right-0 w-3 h-3 border-t-[3px] border-r-[3px] border-foreground/50 pointer-events-none z-10" />
+            <span className="absolute bottom-0 left-0 w-3 h-3 border-b-[3px] border-l-[3px] border-foreground/50 pointer-events-none z-10" />
             <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-foreground/50 pointer-events-none z-10" />
           </>
         )}
