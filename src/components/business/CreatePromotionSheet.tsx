@@ -75,6 +75,26 @@ export function CreatePromotionSheet({
     ? Math.round(selectedProduct.price * (1 - Number(discountPercent) / 100) * 100) / 100
     : null;
 
+  const handlePercentChange = (value: string) => {
+    setDiscountPercent(value);
+    if (selectedProduct && value && Number(value) > 0 && Number(value) < 100) {
+      const amount = Math.round(selectedProduct.price * Number(value) / 100 * 100) / 100;
+      setDiscountAmount(amount.toString());
+    } else {
+      setDiscountAmount("");
+    }
+  };
+
+  const handleAmountChange = (value: string) => {
+    setDiscountAmount(value);
+    if (selectedProduct && value && Number(value) > 0 && Number(value) < selectedProduct.price) {
+      const percent = Math.round(Number(value) / selectedProduct.price * 100 * 100) / 100;
+      setDiscountPercent(percent.toString());
+    } else {
+      setDiscountPercent("");
+    }
+  };
+
   useEffect(() => {
     if (open) {
       if (promotion) {
