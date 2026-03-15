@@ -30,7 +30,7 @@ interface ConfirmationStepProps {
 export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, onBack }: ConfirmationStepProps) {
   const { subCarts } = useCart();
   const selectedSubCart = subCarts.find(sc => sc.businessId === selectedBusinessId);
-  const [mobilePanel, setMobilePanel] = useState<0 | 1 | 2>(0);
+  const [mobilePanel, setMobilePanel] = useState<0 | 1>(0);
 
   if (!selectedSubCart || selectedSubCart.items.length === 0) {
     return (
@@ -45,8 +45,8 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
   const deliveryFee = 0;
   const totalWithDelivery = selectedSubCart.total + deliveryFee;
 
-  const panelLabels = ['Articles', 'Livraison', 'Infos'];
-  const totalPanels = deliveryData ? 3 : 2;
+  const panelLabels = ['Articles', 'Livraison'];
+  const totalPanels = 2;
 
   const ArticlesList = () => (
     <div className="relative">
@@ -135,15 +135,15 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
               size="icon"
               className="h-8 w-8 rounded-full"
               disabled={mobilePanel === 0}
-              onClick={() => setMobilePanel((mobilePanel - 1) as 0 | 1 | 2)}
+              onClick={() => setMobilePanel(0)}
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-1.5">
-              {Array.from({ length: totalPanels }).map((_, i) => (
+              {[0, 1].map((i) => (
                 <button
                   key={i}
-                  onClick={() => setMobilePanel(i as 0 | 1 | 2)}
+                  onClick={() => setMobilePanel(i as 0 | 1)}
                   className={`h-1.5 rounded-full transition-all ${
                     mobilePanel === i ? 'w-5 bg-primary' : 'w-1.5 bg-border'
                   }`}
@@ -154,22 +154,24 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
               variant="outline"
               size="icon"
               className="h-8 w-8 rounded-full"
-              disabled={mobilePanel === totalPanels - 1}
-              onClick={() => setMobilePanel((mobilePanel + 1) as 0 | 1 | 2)}
+              disabled={mobilePanel === 1}
+              onClick={() => setMobilePanel(1)}
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
 
-          {/* Panel label */}
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-2">
             {panelLabels[mobilePanel]}
           </p>
 
-          {/* Active panel */}
           {mobilePanel === 0 && <ArticlesList />}
-          {mobilePanel === 1 && <DeliveryCard />}
-          {mobilePanel === 2 && <InfoCard />}
+          {mobilePanel === 1 && (
+            <div className="space-y-4">
+              <DeliveryCard />
+              <InfoCard />
+            </div>
+          )}
         </div>
 
         {/* ── Desktop: side by side ── */}
