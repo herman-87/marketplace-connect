@@ -76,7 +76,7 @@ export function MobileNav() {
                 </>
               )}
               <div className="relative">
-                <item.icon className={cn("h-5 w-5", active && !locked && "text-background")} />
+                <item.icon className={cn("h-5 w-5", active && !locked && "text-foreground")} />
                 {locked ? (
                   <Lock className="absolute -top-1.5 -right-2 h-3 w-3 text-muted-foreground" />
                 ) : item.badge ? (
