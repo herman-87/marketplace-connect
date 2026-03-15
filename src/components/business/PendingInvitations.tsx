@@ -56,7 +56,7 @@ function InvitationCard({ inv, onCancel, onResend }: { inv: PendingInvitation; o
           <UserPlus className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
           <span className="text-xs text-muted-foreground">Invité par</span>
           <Avatar className="w-5 h-5">
-            <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
+            <AvatarFallback className="text-[10px] bg-muted text-foreground">
               {inv.invitedBy.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
