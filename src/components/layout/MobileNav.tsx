@@ -63,29 +63,29 @@ export function MobileNav() {
                 locked
                   ? "text-muted-foreground/50"
                   : active
-                    ? "bg-foreground text-background"
+                    ? "bg-muted/60 text-foreground font-bold"
                     : "text-muted-foreground hover:text-foreground"
               )}
             >
               {active && !locked && (
                 <>
-                  <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-background rounded-tl-md pointer-events-none z-10" />
-                  <span className="absolute top-0 right-0 w-3 h-3 border-t-[3px] border-r-[3px] border-background rounded-tr-md pointer-events-none z-10" />
-                  <span className="absolute bottom-0 left-0 w-3 h-3 border-b-[3px] border-l-[3px] border-background rounded-bl-md pointer-events-none z-10" />
-                  <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-background rounded-br-md pointer-events-none z-10" />
+                  <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-foreground/50 rounded-tl-md pointer-events-none z-10" />
+                  <span className="absolute top-0 right-0 w-3 h-3 border-t-[3px] border-r-[3px] border-foreground/50 rounded-tr-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 left-0 w-3 h-3 border-b-[3px] border-l-[3px] border-foreground/50 rounded-bl-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-foreground/50 rounded-br-md pointer-events-none z-10" />
                 </>
               )}
               <div className="relative">
-                <item.icon className={cn("h-5 w-5", active && !locked && "text-background")} />
+                <item.icon className={cn("h-5 w-5", active && !locked && "text-foreground")} />
                 {locked ? (
                   <Lock className="absolute -top-1.5 -right-2 h-3 w-3 text-muted-foreground" />
                 ) : item.badge ? (
-                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-background text-foreground border-0">
+                  <Badge className="absolute -top-1.5 -right-2 h-4 min-w-[16px] p-0 flex items-center justify-center text-[9px] bg-muted text-foreground border-0">
                     {item.badge}
                   </Badge>
                 ) : null}
               </div>
-              <span className={cn("text-[10px] font-medium", active && !locked && "text-background font-semibold")}>
+              <span className={cn("text-[10px] font-medium", active && !locked && "text-foreground font-semibold")}>
                 {item.title}
               </span>
             </Link>
