@@ -12,6 +12,7 @@ import {
   FileText,
   Truck,
   ShieldCheck,
+  Clock,
 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import type { DeliveryFormData } from "./DeliveryStep";
@@ -88,9 +89,19 @@ export function ConfirmationStep({ selectedBusinessId, deliveryData, onConfirm, 
         </div>
 
         {/* Info */}
-        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-6">
-          <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
-          <p>Aucun paiement maintenant. Commande envoyée au vendeur pour validation.</p>
+        <div className="mt-6 p-3.5 rounded-lg bg-primary/5 border border-primary/15 text-xs text-muted-foreground space-y-1">
+          <p className="flex items-center gap-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
+            Aucun paiement ne sera prélevé à cette étape.
+          </p>
+          <p className="flex items-center gap-2">
+            <Truck className="w-3.5 h-3.5 text-primary shrink-0" />
+            Votre commande sera envoyée au vendeur pour validation.
+          </p>
+          <p className="flex items-center gap-2">
+            <Clock className="w-3.5 h-3.5 text-primary shrink-0" />
+            Vous serez notifié dès que le vendeur aura accepté ou refusé votre commande.
+          </p>
         </div>
       </div>
 
