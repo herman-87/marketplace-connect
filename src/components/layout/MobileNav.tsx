@@ -69,10 +69,10 @@ export function MobileNav() {
             >
               {active && !locked && (
                 <>
-                  <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-background rounded-tl-md pointer-events-none z-10" />
-                  <span className="absolute top-0 right-0 w-3 h-3 border-t-[3px] border-r-[3px] border-background rounded-tr-md pointer-events-none z-10" />
-                  <span className="absolute bottom-0 left-0 w-3 h-3 border-b-[3px] border-l-[3px] border-background rounded-bl-md pointer-events-none z-10" />
-                  <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-background rounded-br-md pointer-events-none z-10" />
+                  <span className="absolute top-0 left-0 w-3 h-3 border-t-[3px] border-l-[3px] border-foreground/50 rounded-tl-md pointer-events-none z-10" />
+                  <span className="absolute top-0 right-0 w-3 h-3 border-t-[3px] border-r-[3px] border-foreground/50 rounded-tr-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 left-0 w-3 h-3 border-b-[3px] border-l-[3px] border-foreground/50 rounded-bl-md pointer-events-none z-10" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 border-b-[3px] border-r-[3px] border-foreground/50 rounded-br-md pointer-events-none z-10" />
                 </>
               )}
               <div className="relative">
