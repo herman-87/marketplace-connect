@@ -61,8 +61,12 @@ export function CartSheet({ trigger }: CartSheetProps) {
   };
 
   const handleConfirmOrder = () => {
-    // TODO: Create order in database, then navigate to order detail
-    const mockOrderId = 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Move to confirmation step (order created, waiting for business)
+    setCurrentStep('confirmation');
+  };
+
+  const handleFinalClose = () => {
+    // TODO: Create order in database
     handleClose();
     navigate(`/commandes`);
   };
@@ -70,8 +74,9 @@ export function CartSheet({ trigger }: CartSheetProps) {
   const getStepTitle = () => {
     switch (currentStep) {
       case 'cart': return 'Mon Panier';
-      case 'delivery': return 'Commande';
-      case 'confirmation': return 'Récapitulatif';
+      case 'delivery': return 'Préparation de la commande';
+      case 'summary': return 'Récapitulatif';
+      case 'confirmation': return 'Confirmation de la commande';
       default: return 'Mon Panier';
     }
   };
@@ -92,12 +97,12 @@ export function CartSheet({ trigger }: CartSheetProps) {
             onBack={() => setCurrentStep('cart')}
             onContinue={(data) => {
               setDeliveryData(data);
-              setCurrentStep('confirmation');
+              setCurrentStep('summary');
             }}
             initialData={deliveryData || undefined}
           />
         );
-      case 'confirmation':
+      case 'summary':
         return (
           <ConfirmationStep
             selectedBusinessId={selectedBusinessId}
@@ -105,6 +110,26 @@ export function CartSheet({ trigger }: CartSheetProps) {
             onConfirm={handleConfirmOrder}
             onBack={() => setCurrentStep('delivery')}
           />
+        );
+      case 'confirmation':
+        return (
+          <div className="flex flex-col items-center justify-center flex-1 text-center px-4 space-y-6">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+              <ShoppingCart className="w-10 h-10 text-primary" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold">Commande envoyée !</h3>
+              <p className="text-sm text-muted-foreground max-w-sm">
+                Votre commande a été envoyée au vendeur. Vous serez notifié dès qu'il aura accepté ou refusé votre commande.
+              </p>
+            </div>
+            <Badge variant="secondary" className="text-sm px-4 py-1.5">
+              ⏳ En attente de confirmation du vendeur
+            </Badge>
+            <Button className="w-full max-w-xs h-12" onClick={handleFinalClose}>
+              Suivre ma commande
+            </Button>
+          </div>
         );
       default:
         return null;
@@ -141,12 +166,14 @@ export function CartSheet({ trigger }: CartSheetProps) {
           </div>
 
           {/* Progress indicator */}
-          <div className="px-4">
-            <CheckoutProgress 
-              currentStep={currentStep} 
-              onStepClick={handleStepClick}
-            />
-          </div>
+          {currentStep !== 'confirmation' && (
+            <div className="px-4">
+              <CheckoutProgress 
+                currentStep={currentStep} 
+                onStepClick={handleStepClick}
+              />
+            </div>
+          )}
         </SheetHeader>
 
         {/* Content */}
