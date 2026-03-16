@@ -111,6 +111,16 @@ export default function Collaborations() {
         </section>
 
         {/* Header Actions - Collaborations actives */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborations actives</h3>
+          {mockCollaborations.length > 0 && (
+            <Button variant="ghost" size="sm" className="gap-1 text-xs text-muted-foreground hover:text-foreground">
+              {t("collaborations.seeMore")}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          )}
+        </div>
+        
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
