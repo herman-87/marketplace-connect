@@ -35,7 +35,7 @@ interface PendingInvitationsProps {
   onResend?: (id: string) => void;
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 2;
 
 function InvitationCard({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
