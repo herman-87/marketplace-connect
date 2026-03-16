@@ -25,7 +25,7 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    --accent: 24 95% 53%;
+    --accent: 222 47% 11%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -33,7 +33,7 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 24 95% 53%;
+    --ring: 222 47% 11%;
 
     --radius: 0.75rem;
 
@@ -92,7 +92,7 @@
     --muted: 0 0% 16%;
     --muted-foreground: 0 0% 55%;
 
-    --accent: 24 95% 53%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 60% 48%;
@@ -100,7 +100,7 @@
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 24 95% 53%;
+    --ring: 0 0% 40%;
 
     /* Simple shadows for dark */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.25);
