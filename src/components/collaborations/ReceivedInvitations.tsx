@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import {
   LayoutGrid,
   List,
   UserPlus,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -138,6 +140,7 @@ function InvitationRow({ inv, onAccept, onDecline, isLast }: { inv: ReceivedInvi
 }
 
 export function ReceivedInvitations({ invitations: initialInvitations }: ReceivedInvitationsProps) {
+  const { t } = useLanguage();
   const [invitations, setInvitations] = useState(initialInvitations);
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -175,6 +178,12 @@ export function ReceivedInvitations({ invitations: initialInvitations }: Receive
             </Badge>
           )}
         </div>
+        {pendingInvitations.length > 0 && (
+          <Button variant="ghost" size="sm" className="gap-1 text-xs text-muted-foreground hover:text-foreground">
+            {t("collaborations.seeMore")}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+        )}
       </div>
 
       {pendingInvitations.length > 0 ? (

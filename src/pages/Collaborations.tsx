@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { Link } from "react-router-dom";
 import { 
   Search, 
@@ -97,6 +98,7 @@ const permissionLabels: Record<string, { label: string; icon: React.ComponentTyp
 
 export default function Collaborations() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const { t } = useLanguage();
   return (
     <AppLayout
       title="Mes Collaborations"
@@ -109,6 +111,16 @@ export default function Collaborations() {
         </section>
 
         {/* Header Actions - Collaborations actives */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base md:text-lg font-semibold text-foreground">Collaborations actives</h3>
+          {mockCollaborations.length > 0 && (
+            <Button variant="ghost" size="sm" className="gap-1 text-xs text-muted-foreground hover:text-foreground">
+              {t("collaborations.seeMore")}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          )}
+        </div>
+        
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
