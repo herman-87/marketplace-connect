@@ -254,6 +254,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
           status={order.status}
           role={role}
           total={order.total}
+          deliveryFee={order.deliveryFee}
           onStatusChange={handleStatusChange}
         />
       </div>
