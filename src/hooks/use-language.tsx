@@ -45,6 +45,7 @@ const translations: Record<Language, Record<string, string>> = {
     "landing.shop.stats": "12 produits • 3 collaborateurs",
     "landing.shop.revenue": "Revenus du mois",
     "landing.shop.growth": "vs mois dernier",
+    "collaborations.seeMore": "Voir plus",
   },
   en: {
     "landing.explore": "Explore",
