@@ -186,7 +186,7 @@ export default function Collaborations() {
         >
           {mockCollaborations.map((collab) => (
             <Link key={collab.id} to={`/business/${collab.id}`} className="block group">
-              <Card className="overflow-hidden hover:bg-muted/30 transition-colors">
+              <Card className="overflow-hidden border-[1.5px] hover:border-primary transition-colors">
                 {/* Header */}
                 <div className="h-16 bg-muted/50 relative flex items-center justify-center">
                   <Store className="w-6 h-6 text-muted-foreground" />
@@ -227,7 +227,7 @@ export default function Collaborations() {
                 <CardContent className="p-4">
                   {/* Title & Role */}
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold text-foreground transition-colors">
                       {collab.name}
                     </h3>
                     <Badge variant="secondary" className="text-xs shrink-0">
