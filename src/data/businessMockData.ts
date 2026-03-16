@@ -307,6 +307,93 @@ export const mockOrders = [
       { status: "COMPLETED" as const, timestamp: "2025-02-10T18:00:00Z", note: "Réception confirmée par le client" },
     ],
   },
+  {
+    id: "ord-006",
+    customer: { name: "Jean Kouadio", phone: "+33 6 11 22 33 44" },
+    products: [
+      { name: "Lunettes de Soleil Aviator", quantity: 1, price: 79.99, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=80&h=80&fit=crop" },
+    ],
+    total: 79.99,
+    status: "CREATED" as const,
+    createdAt: "2025-02-16T08:00:00Z",
+    deliveryAddress: "15 Rue du Commerce, 75015 Paris",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-16T08:00:00Z", note: "Commande passée" },
+    ],
+  },
+  {
+    id: "ord-007",
+    customer: { name: "Fatima Bamba" },
+    products: [
+      { name: "Bracelet en Cuir Artisanal", quantity: 2, price: 49.98, image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=80&h=80&fit=crop" },
+      { name: "Boucles d'Oreilles Dorées", quantity: 1, price: 34.99, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=80&h=80&fit=crop" },
+    ],
+    total: 84.97,
+    status: "ACCEPTED" as const,
+    createdAt: "2025-02-15T14:20:00Z",
+    deliveryAddress: "22 Rue de Belleville, 75020 Paris",
+    deliveryMethod: "express" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-15T14:20:00Z", note: "Commande passée" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-15T14:45:00Z", note: "Acceptée" },
+    ],
+  },
+  {
+    id: "ord-008",
+    customer: { name: "Ibrahim Diop", phone: "+33 6 55 66 77 88" },
+    products: [
+      { name: "T-shirt Premium Coton Bio", quantity: 3, price: 104.97, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop" },
+    ],
+    total: 104.97,
+    status: "PAID" as const,
+    createdAt: "2025-02-14T11:30:00Z",
+    deliveryAddress: "5 Place de la République, 75003 Paris",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-14T11:30:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-14T12:00:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-14T12:00:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-14T12:30:00Z", note: "Paiement reçu" },
+    ],
+  },
+  {
+    id: "ord-009",
+    customer: { name: "Nadia Touré" },
+    products: [
+      { name: "Parfum Élégance", quantity: 1, price: 89.99, image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=80&h=80&fit=crop" },
+    ],
+    total: 89.99,
+    status: "CANCELLED_BY_CLIENT" as const,
+    createdAt: "2025-02-12T15:00:00Z",
+    deliveryAddress: "10 Rue Oberkampf, 75011 Paris",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-12T15:00:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-12T15:30:00Z" },
+      { status: "CANCELLED_BY_CLIENT" as const, timestamp: "2025-02-12T16:00:00Z", note: "Annulée par le client" },
+    ],
+  },
+  {
+    id: "ord-010",
+    customer: { name: "Moussa Keita", phone: "+33 6 99 88 77 66" },
+    products: [
+      { name: "Enceinte Bluetooth Nomade", quantity: 1, price: 129.99, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=80&h=80&fit=crop" },
+      { name: "Câble USB-C Premium", quantity: 2, price: 19.98, image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=80&h=80&fit=crop" },
+    ],
+    total: 149.97,
+    status: "PENDING_DELIVERY" as const,
+    createdAt: "2025-02-14T09:00:00Z",
+    deliveryAddress: "30 Rue de Ménilmontant, 75020 Paris",
+    deliveryMethod: "express" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-14T09:00:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-14T09:30:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-14T09:30:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-14T10:00:00Z" },
+      { status: "PENDING_DELIVERY" as const, timestamp: "2025-02-14T12:00:00Z", note: "Colis prêt" },
+    ],
+  },
 ];
 export const mockPendingInvitations = [
   {
