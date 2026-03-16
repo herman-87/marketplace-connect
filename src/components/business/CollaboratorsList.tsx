@@ -58,7 +58,7 @@ const ITEMS_PER_PAGE = 6;
 
 function CollabCardView({ collab, isOwner }: { collab: Collaborator; isOwner: boolean }) {
   return (
-    <Card className="overflow-hidden hover:bg-muted/30 transition-colors group">
+    <Card className="overflow-hidden hover:border-foreground transition-colors group">
       {/* Header — identique à /collaborations */}
       <div className="h-16 bg-muted/50 relative flex items-center justify-center">
         <Avatar className="h-8 w-8">
