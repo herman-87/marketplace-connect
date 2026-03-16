@@ -231,7 +231,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
           </div>
 
           {/* Action Panel - sticky on desktop */}
-          <div className="hidden lg:block sticky top-4">
+          <div className="hidden md:block sticky top-4">
             <div className="p-4 rounded-xl bg-card border border-border/60">
               <h3 className="text-sm font-semibold mb-3">Action</h3>
               <OrderActionPanel
