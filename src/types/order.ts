@@ -52,6 +52,7 @@ export interface Order {
   statusHistory: StatusHistoryEntry[];
   rejectionReason?: string;
   paymentMethod?: string;
+  deliveryFee?: number;
 }
 
 export interface OrderStatusInfo {

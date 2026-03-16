@@ -16,14 +16,19 @@ interface OrderActionPanelProps {
   status: OrderStatus;
   role: UserRole;
   total: number;
+  deliveryFee?: number;
   onStatusChange: (newStatus: OrderStatus, data?: Record<string, string>) => void;
 }
 
-export function OrderActionPanel({ orderId, status, role, total, onStatusChange }: OrderActionPanelProps) {
+export function OrderActionPanel({ orderId, status, role, total, deliveryFee, onStatusChange }: OrderActionPanelProps) {
   const [rejectReason, setRejectReason] = useState("");
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [deliveryFeeInput, setDeliveryFeeInput] = useState("");
+  const [showAcceptForm, setShowAcceptForm] = useState(false);
+
+  const totalWithDelivery = total + (deliveryFee || 0);
 
   const config = ORDER_STATUS_CONFIG[status];
 
