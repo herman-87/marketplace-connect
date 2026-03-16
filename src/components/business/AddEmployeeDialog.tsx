@@ -239,17 +239,17 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
                         )}
                       >
                         {isSelected && (
-                          <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                            <Check className="h-3 w-3 text-primary-foreground" />
+                          <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-foreground flex items-center justify-center">
+                            <Check className="h-3 w-3 text-background" />
                           </div>
                         )}
                         <div className={cn(
                           "h-10 w-10 rounded-full flex items-center justify-center",
-                          isSelected ? "bg-primary/20" : "bg-muted"
+                          isSelected ? "bg-foreground/10" : "bg-muted"
                         )}>
                           <Icon className={cn(
                             "h-5 w-5",
-                            isSelected ? "text-primary" : "text-muted-foreground"
+                            isSelected ? "text-foreground" : "text-muted-foreground"
                           )} />
                         </div>
                         <div className="text-center">
