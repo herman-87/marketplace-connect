@@ -255,7 +255,7 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
                         <div className="text-center">
                           <p className={cn(
                             "font-medium text-sm",
-                            isSelected && "text-primary"
+                            isSelected && "text-foreground"
                           )}>
                             {role.label}
                           </p>
