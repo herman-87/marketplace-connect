@@ -100,7 +100,7 @@
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 24 95% 53%;
+    --ring: 0 0% 40%;
 
     /* Simple shadows for dark */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.25);
