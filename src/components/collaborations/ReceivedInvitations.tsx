@@ -178,6 +178,12 @@ export function ReceivedInvitations({ invitations: initialInvitations }: Receive
             </Badge>
           )}
         </div>
+        {pendingInvitations.length > 0 && (
+          <Button variant="ghost" size="sm" className="gap-1 text-xs text-muted-foreground hover:text-foreground">
+            {t("collaborations.seeMore")}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+        )}
       </div>
 
       {pendingInvitations.length > 0 ? (
