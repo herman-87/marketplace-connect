@@ -12,7 +12,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  Heart, Store, Search, LayoutGrid, List, Star, ShoppingCart, Trash2, Eye,
+  Heart, Store, Search, LayoutGrid, List, Star, ShoppingCart, Trash2, Eye, MapPin, Verified, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PaginationControls } from "@/components/marketplace/PaginationControls";
