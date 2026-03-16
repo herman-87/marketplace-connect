@@ -49,11 +49,11 @@ const favoriteProducts = [
 ];
 
 const favoriteShops = [
-  { id: "1", name: "TechStore", category: "High-Tech", rating: 4.6, productsCount: 156, avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=80&h=80&fit=crop" },
-  { id: "2", name: "ModeBoutique", category: "Mode", rating: 4.7, productsCount: 89, avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=80&h=80&fit=crop" },
-  { id: "3", name: "MaisonDeco", category: "Maison", rating: 4.5, productsCount: 64, avatar: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=80&fit=crop" },
-  { id: "4", name: "BeautéShop", category: "Beauté", rating: 4.8, productsCount: 120, avatar: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=80&h=80&fit=crop" },
-  { id: "5", name: "AccessoiresPlus", category: "Accessoires", rating: 4.4, productsCount: 45, avatar: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=80&fit=crop" },
+  { id: "1", name: "TechStore", category: "High-Tech", description: "Les meilleurs gadgets au meilleur prix", rating: 4.6, reviewsCount: 189, location: "Paris 8ème", productsCount: 156, isVerified: true, followers: 890, coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop" },
+  { id: "2", name: "ModeBoutique", category: "Mode", description: "Tendances et styles uniques", rating: 4.7, reviewsCount: 256, location: "Paris 3ème", productsCount: 89, isVerified: true, followers: 2100, coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=100&h=100&fit=crop" },
+  { id: "3", name: "MaisonDeco", category: "Maison", description: "Décoration et ameublement tendance", rating: 4.5, reviewsCount: 145, location: "Paris 5ème", productsCount: 64, isVerified: false, followers: 380, coverImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop" },
+  { id: "4", name: "BeautéShop", category: "Beauté", description: "Cosmétiques naturels et bio", rating: 4.8, reviewsCount: 267, location: "Paris 6ème", productsCount: 120, isVerified: true, followers: 950, coverImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=100&h=100&fit=crop" },
+  { id: "5", name: "AccessoiresPlus", category: "Accessoires", description: "Bijoux, montres et accessoires", rating: 4.4, reviewsCount: 234, location: "Paris 2ème", productsCount: 45, isVerified: true, followers: 560, coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100&h=100&fit=crop" },
 ];
 
 type TabFilter = "products" | "shops";
