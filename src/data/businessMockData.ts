@@ -307,6 +307,75 @@ export const mockOrders = [
       { status: "COMPLETED" as const, timestamp: "2025-02-10T18:00:00Z", note: "Réception confirmée par le client" },
     ],
   },
+  {
+    id: "ord-006",
+    customer: { name: "Fatou Ndiaye" },
+    products: [
+      { name: "Sneakers Urban Limited", quantity: 2, price: 179.98, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&h=80&fit=crop" },
+    ],
+    total: 179.98,
+    status: "CREATED" as const,
+    createdAt: "2025-02-15T11:00:00Z",
+    deliveryAddress: "15 Rue Faidherbe, Dakar",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-15T11:00:00Z", note: "Commande passée" },
+    ],
+  },
+  {
+    id: "ord-007",
+    customer: { name: "Thomas Leroy" },
+    products: [
+      { name: "Casque Audio Premium", quantity: 1, price: 199.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" },
+      { name: "Enceinte Bluetooth Mini", quantity: 1, price: 49.99 },
+    ],
+    total: 249.98,
+    status: "PAID" as const,
+    createdAt: "2025-02-14T14:30:00Z",
+    deliveryAddress: "7 Quai de la Tournelle, 75005 Paris",
+    deliveryMethod: "express" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-14T14:30:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-14T14:45:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-14T14:45:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-14T15:00:00Z", note: "Paiement par carte" },
+    ],
+  },
+  {
+    id: "ord-008",
+    customer: { name: "Ibrahima Fall" },
+    products: [
+      { name: "Lunettes de soleil Aviator", quantity: 1, price: 79.99, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=80&h=80&fit=crop" },
+    ],
+    total: 79.99,
+    status: "REJECTED" as const,
+    createdAt: "2025-02-12T08:00:00Z",
+    deliveryAddress: "22 Avenue Bourguiba, Dakar",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-12T08:00:00Z" },
+      { status: "REJECTED" as const, timestamp: "2025-02-12T09:00:00Z", note: "Produit en rupture de stock" },
+    ],
+  },
+  {
+    id: "ord-009",
+    customer: { name: "Julie Dupont" },
+    products: [
+      { name: "Sac à dos Urban Pro", quantity: 1, price: 59.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
+    ],
+    total: 59.99,
+    status: "PENDING_DELIVERY" as const,
+    createdAt: "2025-02-14T10:00:00Z",
+    deliveryAddress: "5 Rue du Commerce, 75015 Paris",
+    deliveryMethod: "standard" as const,
+    statusHistory: [
+      { status: "CREATED" as const, timestamp: "2025-02-14T10:00:00Z" },
+      { status: "ACCEPTED" as const, timestamp: "2025-02-14T10:15:00Z" },
+      { status: "PENDING_PAYMENT" as const, timestamp: "2025-02-14T10:15:00Z" },
+      { status: "PAID" as const, timestamp: "2025-02-14T10:30:00Z" },
+      { status: "PENDING_DELIVERY" as const, timestamp: "2025-02-14T12:00:00Z", note: "Colis prêt" },
+    ],
+  },
 ];
 export const mockPendingInvitations = [
   {
