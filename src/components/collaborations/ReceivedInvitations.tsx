@@ -91,12 +91,12 @@ function InvitationCard({ inv, onAccept, onDecline }: { inv: ReceivedInvitation;
         <p className="text-xs text-muted-foreground">Reçue {inv.receivedAt}</p>
 
         <div className="flex gap-2 pt-2 border-t border-border/40">
-          <Button size="sm" className="flex-1 h-8 text-xs gap-1.5" onClick={() => onAccept(inv.id)}>
-            <Check className="h-3.5 w-3.5" />
+          <Button size="sm" className="flex-1 h-7 text-[11px] gap-1" onClick={() => onAccept(inv.id)}>
+            <Check className="h-3 w-3" />
             Accepter
           </Button>
-          <Button size="sm" variant="outline" className="flex-1 h-8 text-xs gap-1.5 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
-            <X className="h-3.5 w-3.5" />
+          <Button size="sm" variant="outline" className="flex-1 h-7 text-[11px] gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
+            <X className="h-3 w-3" />
             Refuser
           </Button>
         </div>
