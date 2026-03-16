@@ -67,18 +67,67 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
         );
       }
 
+      if (showAcceptForm) {
+        return (
+          <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
+            <p className="text-sm font-medium">Frais de livraison</p>
+            <p className="text-xs text-muted-foreground">Indiquez le montant des frais de livraison pour cette commande avant de l'accepter.</p>
+            <div className="relative">
+              <Input
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+                value={deliveryFeeInput}
+                onChange={(e) => setDeliveryFeeInput(e.target.value)}
+                className="pr-8"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
+            </div>
+            {deliveryFeeInput && parseFloat(deliveryFeeInput) > 0 && (
+              <div className="p-3 rounded-lg bg-muted/50 space-y-1.5 text-sm">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Sous-total produits</span>
+                  <span>{total.toFixed(2)} €</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Frais de livraison</span>
+                  <span>{parseFloat(deliveryFeeInput).toFixed(2)} €</span>
+                </div>
+                <div className="flex justify-between font-semibold border-t border-border/50 pt-1.5">
+                  <span>Total client</span>
+                  <span>{(total + parseFloat(deliveryFeeInput)).toFixed(2)} €</span>
+                </div>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button
+                className="flex-1 h-10 text-sm font-semibold gap-2"
+                onClick={() => {
+                  const fee = deliveryFeeInput ? deliveryFeeInput : "0";
+                  onStatusChange("ACCEPTED", { deliveryFee: fee });
+                  setTimeout(() => {
+                    onStatusChange("PENDING_PAYMENT");
+                  }, 100);
+                  toast.success("Commande acceptée ! Le client peut maintenant payer.");
+                }}
+              >
+                <Check className="h-4 w-4" />
+                Accepter
+              </Button>
+              <Button size="sm" variant="outline" className="h-10" onClick={() => setShowAcceptForm(false)}>
+                Annuler
+              </Button>
+            </div>
+          </div>
+        );
+      }
+
       return (
         <div className="space-y-2">
           <Button
             className="w-full h-12 text-sm font-semibold gap-2"
-            onClick={() => {
-              // ACCEPTED then immediately transitions to PENDING_PAYMENT
-              onStatusChange("ACCEPTED");
-              setTimeout(() => {
-                onStatusChange("PENDING_PAYMENT");
-              }, 100);
-              toast.success("Commande acceptée ! Le client peut maintenant payer.");
-            }}
+            onClick={() => setShowAcceptForm(true)}
           >
             <Check className="h-4 w-4" />
             Accepter la commande
