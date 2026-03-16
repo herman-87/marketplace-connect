@@ -18,6 +18,8 @@ import {
   Zap,
   Clock,
   AlertCircle,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import {
   DropdownMenu,
