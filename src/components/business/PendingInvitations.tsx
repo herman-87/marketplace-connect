@@ -202,12 +202,33 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
         </div>
       )}
 
-      <AdaptivePagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-        variant={filtered.length > 12 ? "full" : "compact"}
-      />
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs gap-1"
+            disabled={page === 1}
+            onClick={() => setPage(p => p - 1)}
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+            Précédent
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            {page} / {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs gap-1"
+            disabled={page === totalPages}
+            onClick={() => setPage(p => p + 1)}
+          >
+            Suivant
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
