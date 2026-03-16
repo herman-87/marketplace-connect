@@ -30,7 +30,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
     const newEntry = {
       status: newStatus,
       timestamp: new Date().toISOString(),
-      note: data?.reason || data?.method ? `Via ${data.method}` : undefined,
+      note: data?.reason || data?.method ? `Via ${data.method}` : data?.deliveryFee ? `Frais de livraison: ${parseFloat(data.deliveryFee).toFixed(2)} €` : undefined,
     };
     setOrder(prev => ({
       ...prev,
@@ -38,6 +38,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
       statusHistory: [...prev.statusHistory, newEntry],
       rejectionReason: data?.reason || prev.rejectionReason,
       paymentMethod: data?.method || prev.paymentMethod,
+      deliveryFee: data?.deliveryFee ? parseFloat(data.deliveryFee) : prev.deliveryFee,
     }));
   };
 
