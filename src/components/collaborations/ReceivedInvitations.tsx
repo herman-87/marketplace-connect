@@ -91,12 +91,12 @@ function InvitationCard({ inv, onAccept, onDecline }: { inv: ReceivedInvitation;
         <p className="text-xs text-muted-foreground">Reçue {inv.receivedAt}</p>
 
         <div className="flex justify-center gap-1.5 pt-2 border-t border-border/40">
-          <Button size="sm" className="h-7 px-3 text-[11px] gap-1" onClick={() => onAccept(inv.id)}>
-            <Check className="h-3 w-3" />
+          <Button size="sm" className="h-6 px-2.5 text-[10px] gap-0.5" onClick={() => onAccept(inv.id)}>
+            <Check className="h-2.5 w-2.5" />
             Accepter
           </Button>
-          <Button size="sm" variant="outline" className="h-7 px-3 text-[11px] gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
-            <X className="h-3 w-3" />
+          <Button size="sm" variant="outline" className="h-6 px-2.5 text-[10px] gap-0.5 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
+            <X className="h-2.5 w-2.5" />
             Refuser
           </Button>
         </div>
@@ -123,13 +123,13 @@ function InvitationRow({ inv, onAccept, onDecline, isLast }: { inv: ReceivedInvi
           <span className="text-xs text-muted-foreground truncate">{inv.invitedBy.name}</span>
         </div>
       </div>
-      <div className="flex justify-center gap-1.5 shrink-0">
-        <Button size="sm" className="h-7 text-[11px] px-2.5 gap-1" onClick={() => onAccept(inv.id)}>
-          <Check className="h-3 w-3" />
+      <div className="flex justify-center gap-1 md:gap-1.5 shrink-0">
+        <Button size="sm" className="h-6 text-[10px] px-2 gap-0.5" onClick={() => onAccept(inv.id)}>
+          <Check className="h-2.5 w-2.5" />
           <span className="hidden sm:inline">Accepter</span>
         </Button>
-        <Button size="sm" variant="outline" className="h-7 text-[11px] px-2.5 gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
-          <X className="h-3 w-3" />
+        <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 gap-0.5 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
+          <X className="h-2.5 w-2.5" />
           <span className="hidden sm:inline">Refuser</span>
         </Button>
       </div>
