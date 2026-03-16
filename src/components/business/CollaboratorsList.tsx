@@ -236,9 +236,12 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
 }
 
 export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListProps) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
+  const INITIAL_VISIBLE = 3;
+  const [showAll, setShowAll] = useState(false);
 
   const sorted = [...collaborators]
     .sort((a, b) => b.activityScore - a.activityScore)
