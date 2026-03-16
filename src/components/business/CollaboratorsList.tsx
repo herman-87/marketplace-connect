@@ -249,6 +249,8 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
 
   const totalPages = Math.ceil(sorted.length / ITEMS_PER_PAGE);
   const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const displayed = showAll ? paginated : paginated.slice(0, INITIAL_VISIBLE);
+  const hasMore = paginated.length > INITIAL_VISIBLE && !showAll;
 
   return (
     <div className="space-y-4">
