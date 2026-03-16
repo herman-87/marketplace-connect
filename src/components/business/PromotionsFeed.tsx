@@ -63,6 +63,7 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("discount");
   const [page, setPage] = useState(1);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [editPromo, setEditPromo] = useState<Promotion | null>(null);
   const [editOpen, setEditOpen] = useState(false);
 
