@@ -253,9 +253,21 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
               </button>
             ))}
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-            <span className="text-sm text-muted-foreground">Montant à payer</span>
-            <span className="text-lg font-bold">{total.toFixed(2)} €</span>
+          <div className="p-3 rounded-lg bg-muted/50 space-y-1.5">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Sous-total produits</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
+            {deliveryFee != null && deliveryFee > 0 && (
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Frais de livraison</span>
+                <span>{deliveryFee.toFixed(2)} €</span>
+              </div>
+            )}
+            <div className="flex justify-between font-semibold border-t border-border/50 pt-1.5">
+              <span className="text-sm">Total à payer</span>
+              <span className="text-lg">{totalWithDelivery.toFixed(2)} €</span>
+            </div>
           </div>
           <Button
             className="w-full h-12 text-sm font-semibold gap-2"
@@ -266,7 +278,7 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
             }}
           >
             <CreditCard className="h-4 w-4" />
-            Payer {total.toFixed(2)} €
+            Payer {totalWithDelivery.toFixed(2)} €
           </Button>
           <Button
             variant="ghost"
@@ -280,13 +292,31 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
     }
 
     return (
-      <Button
-        className="w-full h-12 text-sm font-semibold gap-2"
-        onClick={() => setShowPaymentForm(true)}
-      >
-        <CreditCard className="h-4 w-4" />
-        Procéder au paiement — {total.toFixed(2)} €
-      </Button>
+      <div className="space-y-3">
+        {deliveryFee != null && deliveryFee > 0 && (
+          <div className="p-3 rounded-lg bg-muted/30 border border-border/40 space-y-1.5">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Sous-total produits</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Frais de livraison (ajoutés par le vendeur)</span>
+              <span>{deliveryFee.toFixed(2)} €</span>
+            </div>
+            <div className="flex justify-between text-sm font-semibold border-t border-border/50 pt-1.5">
+              <span>Total à payer</span>
+              <span>{totalWithDelivery.toFixed(2)} €</span>
+            </div>
+          </div>
+        )}
+        <Button
+          className="w-full h-12 text-sm font-semibold gap-2"
+          onClick={() => setShowPaymentForm(true)}
+        >
+          <CreditCard className="h-4 w-4" />
+          Procéder au paiement — {totalWithDelivery.toFixed(2)} €
+        </Button>
+      </div>
     );
   }
 
