@@ -262,7 +262,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
         </Sheet>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 xl:p-8 pb-20 lg:pb-8">
+        <main className="flex-1 p-4 md:p-6 xl:p-8 pb-20 md:pb-8">
           {children}
         </main>
 

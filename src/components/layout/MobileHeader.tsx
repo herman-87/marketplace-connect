@@ -131,7 +131,7 @@ export function MobileHeader({ title, subtitle, unreadCount, onNotificationsClic
 
   return (
     <>
-      <header className="h-14 bg-card/95 backdrop-blur-md border-b border-border sticky top-0 z-40 lg:hidden">
+      <header className="h-14 bg-card/95 backdrop-blur-md border-b border-border sticky top-0 z-40 md:hidden">
         <div className="flex items-center justify-between h-full px-4">
           {/* Left - Logo/Menu */}
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
