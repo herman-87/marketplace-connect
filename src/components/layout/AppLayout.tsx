@@ -199,7 +199,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
   return (
     <div className="flex min-h-screen w-full bg-background">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <AppSidebar />
       </div>
       
@@ -213,7 +213,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
         />
 
         {/* Desktop Header */}
-        <header className="h-16 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10 hidden lg:flex items-center justify-between px-4 lg:px-8">
+        <header className="h-16 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10 hidden md:flex items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-4">
             {title && (
               <div>
@@ -256,13 +256,13 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
 
         {/* Mobile Notifications Sheet */}
         <Sheet open={notificationsOpen} onOpenChange={setNotificationsOpen}>
-          <SheetContent side="right" className="w-full sm:w-[400px] p-0 lg:hidden">
+          <SheetContent side="right" className="w-full sm:w-[400px] p-0 md:hidden">
             <NotificationsContent />
           </SheetContent>
         </Sheet>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 xl:p-8 pb-20 lg:pb-8">
+        <main className="flex-1 p-4 md:p-6 xl:p-8 pb-20 md:pb-8">
           {children}
         </main>
 
