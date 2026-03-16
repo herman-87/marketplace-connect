@@ -16,14 +16,19 @@ interface OrderActionPanelProps {
   status: OrderStatus;
   role: UserRole;
   total: number;
+  deliveryFee?: number;
   onStatusChange: (newStatus: OrderStatus, data?: Record<string, string>) => void;
 }
 
-export function OrderActionPanel({ orderId, status, role, total, onStatusChange }: OrderActionPanelProps) {
+export function OrderActionPanel({ orderId, status, role, total, deliveryFee, onStatusChange }: OrderActionPanelProps) {
   const [rejectReason, setRejectReason] = useState("");
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [deliveryFeeInput, setDeliveryFeeInput] = useState("");
+  const [showAcceptForm, setShowAcceptForm] = useState(false);
+
+  const totalWithDelivery = total + (deliveryFee || 0);
 
   const config = ORDER_STATUS_CONFIG[status];
 
@@ -62,18 +67,67 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
         );
       }
 
+      if (showAcceptForm) {
+        return (
+          <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
+            <p className="text-sm font-medium">Frais de livraison</p>
+            <p className="text-xs text-muted-foreground">Indiquez le montant des frais de livraison pour cette commande avant de l'accepter.</p>
+            <div className="relative">
+              <Input
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+                value={deliveryFeeInput}
+                onChange={(e) => setDeliveryFeeInput(e.target.value)}
+                className="pr-8"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
+            </div>
+            {deliveryFeeInput && parseFloat(deliveryFeeInput) > 0 && (
+              <div className="p-3 rounded-lg bg-muted/50 space-y-1.5 text-sm">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Sous-total produits</span>
+                  <span>{total.toFixed(2)} €</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Frais de livraison</span>
+                  <span>{parseFloat(deliveryFeeInput).toFixed(2)} €</span>
+                </div>
+                <div className="flex justify-between font-semibold border-t border-border/50 pt-1.5">
+                  <span>Total client</span>
+                  <span>{(total + parseFloat(deliveryFeeInput)).toFixed(2)} €</span>
+                </div>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button
+                className="flex-1 h-10 text-sm font-semibold gap-2"
+                onClick={() => {
+                  const fee = deliveryFeeInput ? deliveryFeeInput : "0";
+                  onStatusChange("ACCEPTED", { deliveryFee: fee });
+                  setTimeout(() => {
+                    onStatusChange("PENDING_PAYMENT");
+                  }, 100);
+                  toast.success("Commande acceptée ! Le client peut maintenant payer.");
+                }}
+              >
+                <Check className="h-4 w-4" />
+                Accepter
+              </Button>
+              <Button size="sm" variant="outline" className="h-10" onClick={() => setShowAcceptForm(false)}>
+                Annuler
+              </Button>
+            </div>
+          </div>
+        );
+      }
+
       return (
         <div className="space-y-2">
           <Button
             className="w-full h-12 text-sm font-semibold gap-2"
-            onClick={() => {
-              // ACCEPTED then immediately transitions to PENDING_PAYMENT
-              onStatusChange("ACCEPTED");
-              setTimeout(() => {
-                onStatusChange("PENDING_PAYMENT");
-              }, 100);
-              toast.success("Commande acceptée ! Le client peut maintenant payer.");
-            }}
+            onClick={() => setShowAcceptForm(true)}
           >
             <Check className="h-4 w-4" />
             Accepter la commande
@@ -199,9 +253,21 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
               </button>
             ))}
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-            <span className="text-sm text-muted-foreground">Montant à payer</span>
-            <span className="text-lg font-bold">{total.toFixed(2)} €</span>
+          <div className="p-3 rounded-lg bg-muted/50 space-y-1.5">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Sous-total produits</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
+            {deliveryFee != null && deliveryFee > 0 && (
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Frais de livraison</span>
+                <span>{deliveryFee.toFixed(2)} €</span>
+              </div>
+            )}
+            <div className="flex justify-between font-semibold border-t border-border/50 pt-1.5">
+              <span className="text-sm">Total à payer</span>
+              <span className="text-lg">{totalWithDelivery.toFixed(2)} €</span>
+            </div>
           </div>
           <Button
             className="w-full h-12 text-sm font-semibold gap-2"
@@ -212,7 +278,7 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
             }}
           >
             <CreditCard className="h-4 w-4" />
-            Payer {total.toFixed(2)} €
+            Payer {totalWithDelivery.toFixed(2)} €
           </Button>
           <Button
             variant="ghost"
@@ -226,13 +292,31 @@ export function OrderActionPanel({ orderId, status, role, total, onStatusChange 
     }
 
     return (
-      <Button
-        className="w-full h-12 text-sm font-semibold gap-2"
-        onClick={() => setShowPaymentForm(true)}
-      >
-        <CreditCard className="h-4 w-4" />
-        Procéder au paiement — {total.toFixed(2)} €
-      </Button>
+      <div className="space-y-3">
+        {deliveryFee != null && deliveryFee > 0 && (
+          <div className="p-3 rounded-lg bg-muted/30 border border-border/40 space-y-1.5">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Sous-total produits</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Frais de livraison (ajoutés par le vendeur)</span>
+              <span>{deliveryFee.toFixed(2)} €</span>
+            </div>
+            <div className="flex justify-between text-sm font-semibold border-t border-border/50 pt-1.5">
+              <span>Total à payer</span>
+              <span>{totalWithDelivery.toFixed(2)} €</span>
+            </div>
+          </div>
+        )}
+        <Button
+          className="w-full h-12 text-sm font-semibold gap-2"
+          onClick={() => setShowPaymentForm(true)}
+        >
+          <CreditCard className="h-4 w-4" />
+          Procéder au paiement — {totalWithDelivery.toFixed(2)} €
+        </Button>
+      </div>
     );
   }
 
