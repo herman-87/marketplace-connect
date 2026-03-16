@@ -198,10 +198,10 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
           {/* Found User Profile */}
           {foundUser && (
             <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 rounded-lg border border-border bg-muted/30">
-                <Avatar className="h-14 w-14 border-2 border-primary/20">
+              <div className="flex items-center gap-4 p-4 rounded-lg border border-border hover:border-foreground transition-colors bg-muted/30">
+                <Avatar className="h-14 w-14 border-2 border-foreground/20">
                   <AvatarImage src={foundUser.avatar} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-lg">
+                  <AvatarFallback className="bg-muted text-foreground text-lg">
                     {foundUser.name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
