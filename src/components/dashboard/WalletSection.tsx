@@ -73,7 +73,7 @@ export function WalletSection() {
             </div>
           </CardContent>
         </Card>
-        <Card className="cursor-pointer hover:border-primary/30 transition-all">
+        <Card className="cursor-pointer hover:border-foreground transition-all">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="p-2 rounded-lg bg-muted">
               <Smartphone className="w-5 h-5 text-foreground" />
