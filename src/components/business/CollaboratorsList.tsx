@@ -306,6 +306,20 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
         </div>
       )}
 
+      {hasMore && (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => setShowAll(true)}
+          >
+            {t("collaborations.seeMore")}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      )}
+
       <AdaptivePagination
         currentPage={page}
         totalPages={totalPages}
