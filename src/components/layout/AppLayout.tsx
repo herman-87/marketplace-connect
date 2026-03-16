@@ -213,7 +213,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
         />
 
         {/* Desktop Header */}
-        <header className="h-16 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10 hidden lg:flex items-center justify-between px-4 lg:px-8">
+        <header className="h-16 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10 hidden md:flex items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-4">
             {title && (
               <div>
