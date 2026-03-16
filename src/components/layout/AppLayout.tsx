@@ -256,7 +256,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
 
         {/* Mobile Notifications Sheet */}
         <Sheet open={notificationsOpen} onOpenChange={setNotificationsOpen}>
-          <SheetContent side="right" className="w-full sm:w-[400px] p-0 lg:hidden">
+          <SheetContent side="right" className="w-full sm:w-[400px] p-0 md:hidden">
             <NotificationsContent />
           </SheetContent>
         </Sheet>
