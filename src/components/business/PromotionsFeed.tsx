@@ -170,7 +170,7 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
             return (
               <div
                 key={promo.id}
-                className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-border transition-colors"
+                className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-primary transition-colors"
                 onClick={() => handlePromoClick(promo)}
               >
                 {/* Header: Nom + Status + Menu */}
