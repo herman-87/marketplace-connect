@@ -146,11 +146,11 @@ function OrderCardView({ order, onClick }: { order: Order; onClick: () => void }
 
       {order.status === "CREATED" && (
         <div className="flex justify-center gap-1.5 pt-1">
-          <Button size="sm" className="h-6 px-2.5 text-[10px] gap-0.5" onClick={e => e.stopPropagation()}>
-            <Check className="h-2.5 w-2.5" />Accepter
+          <Button size="sm" className="h-7 px-3 text-[11px] gap-1" onClick={e => e.stopPropagation()}>
+            <Check className="h-3 w-3" />Accepter
           </Button>
-          <Button size="sm" variant="outline" className="h-6 px-2.5 text-[10px] gap-0.5 text-destructive" onClick={e => e.stopPropagation()}>
-            <X className="h-2.5 w-2.5" />Refuser
+          <Button size="sm" variant="outline" className="h-7 px-3 text-[11px] gap-1 text-destructive" onClick={e => e.stopPropagation()}>
+            <X className="h-3 w-3" />Refuser
           </Button>
         </div>
       )}
