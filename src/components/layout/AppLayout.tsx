@@ -199,7 +199,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
   return (
     <div className="flex min-h-screen w-full bg-background">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <AppSidebar />
       </div>
       
