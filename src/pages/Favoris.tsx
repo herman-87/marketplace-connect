@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,11 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  Heart, Store, Search, LayoutGrid, List, Star, ShoppingCart, Trash2, Eye,
+  Heart, Store, Search, LayoutGrid, List, Star, ShoppingCart, Trash2, Eye, MapPin, Verified, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PaginationControls } from "@/components/marketplace/PaginationControls";
@@ -47,11 +49,11 @@ const favoriteProducts = [
 ];
 
 const favoriteShops = [
-  { id: "1", name: "TechStore", category: "High-Tech", rating: 4.6, productsCount: 156, avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=80&h=80&fit=crop" },
-  { id: "2", name: "ModeBoutique", category: "Mode", rating: 4.7, productsCount: 89, avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=80&h=80&fit=crop" },
-  { id: "3", name: "MaisonDeco", category: "Maison", rating: 4.5, productsCount: 64, avatar: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=80&fit=crop" },
-  { id: "4", name: "BeautéShop", category: "Beauté", rating: 4.8, productsCount: 120, avatar: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=80&h=80&fit=crop" },
-  { id: "5", name: "AccessoiresPlus", category: "Accessoires", rating: 4.4, productsCount: 45, avatar: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=80&fit=crop" },
+  { id: "1", name: "TechStore", category: "High-Tech", description: "Les meilleurs gadgets au meilleur prix", rating: 4.6, reviewsCount: 189, location: "Paris 8ème", productsCount: 156, isVerified: true, followers: 890, coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop" },
+  { id: "2", name: "ModeBoutique", category: "Mode", description: "Tendances et styles uniques", rating: 4.7, reviewsCount: 256, location: "Paris 3ème", productsCount: 89, isVerified: true, followers: 2100, coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=100&h=100&fit=crop" },
+  { id: "3", name: "MaisonDeco", category: "Maison", description: "Décoration et ameublement tendance", rating: 4.5, reviewsCount: 145, location: "Paris 5ème", productsCount: 64, isVerified: false, followers: 380, coverImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop" },
+  { id: "4", name: "BeautéShop", category: "Beauté", description: "Cosmétiques naturels et bio", rating: 4.8, reviewsCount: 267, location: "Paris 6ème", productsCount: 120, isVerified: true, followers: 950, coverImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=100&h=100&fit=crop" },
+  { id: "5", name: "AccessoiresPlus", category: "Accessoires", description: "Bijoux, montres et accessoires", rating: 4.4, reviewsCount: 234, location: "Paris 2ème", productsCount: 45, isVerified: true, followers: 560, coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop", avatar: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100&h=100&fit=crop" },
 ];
 
 type TabFilter = "products" | "shops";
@@ -252,54 +254,69 @@ export default function Favoris() {
             {paginatedShops.length === 0 ? (
               <Card><CardContent className="p-8 text-center text-muted-foreground">Aucune boutique favorite trouvée.</CardContent></Card>
             ) : viewMode === "grid" ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 {paginatedShops.map((shop) => (
-                  <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all group">
-                    <CardContent className="p-4 text-center">
-                      <img src={shop.avatar} alt={shop.name} className="w-16 h-16 rounded-xl object-cover mx-auto mb-3 group-hover:scale-105 transition-transform duration-300" />
-                      <h4 className="font-semibold text-foreground">{shop.name}</h4>
-                      <Badge variant="secondary" className="text-[10px] mt-1">{shop.category}</Badge>
-                      <div className="flex items-center justify-center gap-1 mt-2">
-                        <Star className="w-3 h-3 fill-primary text-primary" />
-                        <span className="text-xs font-medium">{shop.rating}</span>
-                        <span className="text-xs text-muted-foreground ml-1">• {shop.productsCount} produits</span>
+                  <Card key={shop.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
+                    <div className="relative h-20 bg-muted overflow-hidden">
+                      <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7 bg-destructive/90 text-destructive-foreground hover:bg-destructive">
+                        <Heart className="w-3.5 h-3.5 fill-current" />
+                      </Button>
+                      <div className="absolute -bottom-6 left-4">
+                        <Avatar className="h-14 w-14 border-4 border-card">
+                          <AvatarImage src={shop.avatar} alt={shop.name} />
+                          <AvatarFallback className="bg-muted text-foreground font-bold">{shop.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                        </Avatar>
                       </div>
-                      <div className="flex gap-2 mt-3 pt-3 border-t border-border/50 justify-center">
-                        <Button size="sm" variant="outline" className="h-8 text-xs gap-1">
-                          <Eye className="w-3 h-3" /> Visiter
-                        </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                    </div>
+                    <CardContent className="pt-8 pb-4 px-4">
+                      <div className="flex items-center gap-1.5">
+                        <h3 className="font-semibold text-foreground">{shop.name}</h3>
+                        {shop.isVerified && <Verified className="w-4 h-4 text-primary fill-primary/20" />}
+                      </div>
+                      <Badge variant="secondary" className="mt-1 text-[10px]">{shop.category}</Badge>
+                      <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{shop.description}</p>
+                      <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1"><Star className="w-3 h-3 fill-primary text-primary" /><span className="font-medium text-foreground">{shop.rating}</span><span>({shop.reviewsCount})</span></div>
+                        <div className="flex items-center gap-1"><MapPin className="w-3 h-3" /><span>{shop.location}</span></div>
+                      </div>
+                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
+                        <div className="text-xs"><span className="font-semibold text-foreground">{shop.productsCount}</span><span className="text-muted-foreground"> produits</span></div>
+                        <Button size="sm" variant="ghost" className="text-xs h-7 gap-1">Visiter<ArrowRight className="w-3 h-3" /></Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {paginatedShops.map((shop) => (
-                  <Card key={shop.id} className="hover:border-primary/30 transition-all">
-                    <CardContent className="p-3 md:p-4 flex items-center gap-3">
-                      <img src={shop.avatar} alt={shop.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground">{shop.name}</h4>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Badge variant="secondary" className="text-[10px]">{shop.category}</Badge>
-                          <div className="flex items-center gap-0.5">
-                            <Star className="w-3 h-3 fill-primary text-primary" />
-                            <span>{shop.rating}</span>
+                  <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all">
+                    <div className="flex">
+                      <div className="relative w-32 sm:w-44 shrink-0 bg-muted overflow-hidden">
+                        <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover" />
+                      </div>
+                      <CardContent className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <Avatar className="h-8 w-8"><AvatarImage src={shop.avatar} /><AvatarFallback className="text-xs">{shop.name.substring(0, 2)}</AvatarFallback></Avatar>
+                            <h3 className="font-semibold text-foreground">{shop.name}</h3>
+                            {shop.isVerified && <Verified className="w-4 h-4 text-primary fill-primary/20" />}
+                            <Badge variant="secondary" className="text-[10px] ml-1">{shop.category}</Badge>
                           </div>
-                          <span>{shop.productsCount} produits</span>
+                          <p className="text-xs text-muted-foreground mt-1">{shop.description}</p>
+                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1"><Star className="w-3 h-3 fill-primary text-primary" /><span className="font-medium text-foreground">{shop.rating}</span></div>
+                            <div className="flex items-center gap-1"><MapPin className="w-3 h-3" />{shop.location}</div>
+                            <span>{shop.productsCount} produits</span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex gap-2 shrink-0">
-                        <Button size="sm" variant="outline" className="h-8 text-xs">Visiter</Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
+                        <div className="flex items-center justify-between mt-2">
+                          <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>
+                          <Button size="sm" variant="ghost" className="text-xs gap-1">Visiter<ArrowRight className="w-3 h-3" /></Button>
+                        </div>
+                      </CardContent>
+                    </div>
                   </Card>
                 ))}
               </div>
