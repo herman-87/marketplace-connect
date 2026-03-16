@@ -149,14 +149,20 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
               </Badge>
             </Button>
           ))}
-          <span className="ml-auto text-xs text-muted-foreground whitespace-nowrap shrink-0">
-            {filtered.length} résultat{filtered.length > 1 ? "s" : ""}
-          </span>
+          <div className="flex rounded-md bg-muted p-0.5 ml-auto shrink-0">
+            <Button variant={viewMode === "grid" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("grid")}>
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </Button>
+            <Button variant={viewMode === "list" ? "secondary" : "ghost"} size="icon" className="h-7 w-7" onClick={() => setViewMode("list")}>
+              <List className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Content */}
       {paginated.length > 0 ? (
+        viewMode === "grid" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {paginated.map(promo => {
             const status = statusConfig[promo.status];
