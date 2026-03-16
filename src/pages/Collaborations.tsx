@@ -98,6 +98,7 @@ const permissionLabels: Record<string, { label: string; icon: React.ComponentTyp
 
 export default function Collaborations() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const { t } = useLanguage();
   return (
     <AppLayout
       title="Mes Collaborations"
