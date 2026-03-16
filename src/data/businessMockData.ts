@@ -234,6 +234,7 @@ export const mockOrders = [
       { name: "Casque Audio Premium", quantity: 1, price: 199.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" },
     ],
     total: 199.99,
+    deliveryFee: 5.00,
     status: "PENDING_PAYMENT" as const,
     createdAt: "2025-02-15T09:45:00Z",
     deliveryAddress: "12 Avenue des Champs-Élysées, 75008 Paris",
