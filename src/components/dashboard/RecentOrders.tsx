@@ -120,12 +120,12 @@ export function RecentOrders() {
 
                 {/* Actions for CREATED status (business perspective) */}
                 {order.status === "CREATED" && (
-                  <div className="flex items-center justify-center gap-1.5 shrink-0">
-                    <Button size="sm" variant="outline" className="h-6 px-2.5 text-[10px]">
-                      Refuser
-                    </Button>
-                    <Button size="sm" className="h-6 px-2.5 text-[10px]">
+                  <div className="flex items-center justify-center gap-2 shrink-0">
+                    <Button size="sm" className="h-8 text-xs gap-1.5">
                       Accepter
+                    </Button>
+                    <Button size="sm" variant="outline" className="h-8 text-xs gap-1.5 text-destructive hover:text-destructive">
+                      Refuser
                     </Button>
                   </div>
                 )}
