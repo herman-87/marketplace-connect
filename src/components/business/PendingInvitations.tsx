@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import {
   Mail,
   Clock,
@@ -14,6 +13,8 @@ import {
   List,
   UserPlus,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -34,7 +35,7 @@ interface PendingInvitationsProps {
   onResend?: (id: string) => void;
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 2;
 
 function InvitationCard({ inv, onCancel, onResend }: { inv: PendingInvitation; onCancel?: (id: string) => void; onResend?: (id: string) => void }) {
   return (
@@ -201,12 +202,33 @@ export function PendingInvitations({ invitations, onCancel, onResend }: PendingI
         </div>
       )}
 
-      <AdaptivePagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-        variant={filtered.length > 12 ? "full" : "compact"}
-      />
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs gap-1"
+            disabled={page === 1}
+            onClick={() => setPage(p => p - 1)}
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+            Précédent
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            {page} / {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs gap-1"
+            disabled={page === totalPages}
+            onClick={() => setPage(p => p + 1)}
+          >
+            Suivant
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
