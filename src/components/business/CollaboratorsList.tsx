@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import {
   Store,
   Users,
   ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -234,9 +236,12 @@ function CollabListView({ collab, isOwner, isLast }: { collab: Collaborator; isO
 }
 
 export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListProps) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
+  const INITIAL_VISIBLE = 3;
+  const [showAll, setShowAll] = useState(false);
 
   const sorted = [...collaborators]
     .sort((a, b) => b.activityScore - a.activityScore)
@@ -244,6 +249,8 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
 
   const totalPages = Math.ceil(sorted.length / ITEMS_PER_PAGE);
   const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const displayed = showAll ? paginated : paginated.slice(0, INITIAL_VISIBLE);
+  const hasMore = paginated.length > INITIAL_VISIBLE && !showAll;
 
   return (
     <div className="space-y-4">
@@ -285,17 +292,31 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {paginated.map(c => <CollabCardView key={c.id} collab={c} isOwner={isOwner} />)}
+            {displayed.map(c => <CollabCardView key={c.id} collab={c} isOwner={isOwner} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden">
-            {paginated.map((c, i) => <CollabListView key={c.id} collab={c} isOwner={isOwner} isLast={i === paginated.length - 1} />)}
+            {displayed.map((c, i) => <CollabListView key={c.id} collab={c} isOwner={isOwner} isLast={i === displayed.length - 1} />)}
           </div>
         )
       ) : (
         <div className="py-8 text-center text-muted-foreground text-sm">
           <Search className="h-8 w-8 mx-auto mb-2 opacity-30" />
           <p>Aucun membre trouvé</p>
+        </div>
+      )}
+
+      {hasMore && (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => setShowAll(true)}
+          >
+            {t("collaborations.seeMore")}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
         </div>
       )}
 
