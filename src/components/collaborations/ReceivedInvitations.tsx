@@ -123,13 +123,13 @@ function InvitationRow({ inv, onAccept, onDecline, isLast }: { inv: ReceivedInvi
           <span className="text-xs text-muted-foreground truncate">{inv.invitedBy.name}</span>
         </div>
       </div>
-      <div className="flex gap-1 md:gap-1.5 shrink-0">
-        <Button size="sm" className="h-7 md:h-8 text-xs px-2 md:px-3 gap-1" onClick={() => onAccept(inv.id)}>
-          <Check className="h-3 w-3 md:h-3.5 md:w-3.5" />
+      <div className="flex justify-center gap-1 md:gap-1.5 shrink-0">
+        <Button size="sm" className="h-6 text-[10px] px-2 gap-0.5" onClick={() => onAccept(inv.id)}>
+          <Check className="h-2.5 w-2.5" />
           <span className="hidden sm:inline">Accepter</span>
         </Button>
-        <Button size="sm" variant="outline" className="h-7 md:h-8 text-xs px-2 md:px-3 gap-1 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
-          <X className="h-3 w-3 md:h-3.5 md:w-3.5" />
+        <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 gap-0.5 text-destructive hover:text-destructive" onClick={() => onDecline(inv.id)}>
+          <X className="h-2.5 w-2.5" />
           <span className="hidden sm:inline">Refuser</span>
         </Button>
       </div>
