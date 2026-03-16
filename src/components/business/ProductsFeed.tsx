@@ -76,7 +76,7 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
 
   return (
     <div 
-      className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-border transition-colors"
+      className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-foreground transition-colors"
       onClick={() => onProductClick(product)}
     >
       <div className="relative h-36 bg-muted">
