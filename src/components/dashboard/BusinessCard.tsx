@@ -83,7 +83,7 @@ export function BusinessCard({
         <CardContent className="p-4">
           {/* Title & Role */}
           <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-foreground transition-colors">
               {name}
             </h3>
             <Badge variant="secondary" className="text-xs shrink-0">
