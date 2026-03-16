@@ -292,11 +292,11 @@ export function CollaboratorsList({ collaborators, isOwner }: CollaboratorsListP
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {paginated.map(c => <CollabCardView key={c.id} collab={c} isOwner={isOwner} />)}
+            {displayed.map(c => <CollabCardView key={c.id} collab={c} isOwner={isOwner} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden">
-            {paginated.map((c, i) => <CollabListView key={c.id} collab={c} isOwner={isOwner} isLast={i === paginated.length - 1} />)}
+            {displayed.map((c, i) => <CollabListView key={c.id} collab={c} isOwner={isOwner} isLast={i === displayed.length - 1} />)}
           </div>
         )
       ) : (
