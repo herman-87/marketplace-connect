@@ -260,6 +260,78 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
             );
           })}
         </div>
+        ) : (
+          <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
+            {paginated.map(promo => {
+              const status = statusConfig[promo.status];
+              const StatusIcon = status.icon;
+              const remainingBadge = promo.status === "active" ? (() => {
+                const remaining = Math.ceil((new Date(promo.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                return (
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${remaining <= 3 ? "text-destructive bg-destructive/10" : "text-primary bg-primary/10"}`}>
+                    {remaining > 0 ? `${remaining}j restant${remaining > 1 ? "s" : ""}` : "Expire aujourd'hui"}
+                  </span>
+                );
+              })() : promo.status === "scheduled" ? (() => {
+                const daysUntilStart = Math.ceil((new Date(promo.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                return (
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 text-primary bg-primary/10">
+                    {daysUntilStart > 0 ? `Dans ${daysUntilStart}j` : "Aujourd'hui"}
+                  </span>
+                );
+              })() : (
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 text-muted-foreground bg-muted">Terminée</span>
+              );
+
+              return (
+                <div
+                  key={promo.id}
+                  className="group flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                  onClick={() => handlePromoClick(promo)}
+                >
+                  <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                    <Percent className="w-4 h-4 text-foreground" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold text-sm truncate">{promo.productName}</h3>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                      <Clock className="h-3 w-3 shrink-0" />
+                      <span className="truncate">
+                        {new Date(promo.startDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })} — {new Date(promo.endDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-foreground">-{promo.discountPercent}%</p>
+                      <p className="text-xs text-muted-foreground line-through">{promo.productPrice.toFixed(2)} €</p>
+                    </div>
+                    {remainingBadge}
+                    <Badge variant={status.variant} className="gap-1 text-[10px]">
+                      <StatusIcon className="h-3 w-3" />
+                      {status.label}
+                    </Badge>
+                    {isOwner && (
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-7 w-7">
+                              <MoreHorizontal className="h-3.5 w-3.5" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handlePromoClick(promo)}>Modifier</DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(promo.id)}>Supprimer</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )
       ) : (
         <div className="py-12 text-center text-muted-foreground text-sm">
           Aucune promotion trouvée
