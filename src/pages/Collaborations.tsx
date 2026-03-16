@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useLanguage } from "@/hooks/use-language";
 import { Link } from "react-router-dom";
 import { 
   Search, 
