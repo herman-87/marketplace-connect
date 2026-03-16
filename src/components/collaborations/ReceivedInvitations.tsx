@@ -140,6 +140,7 @@ function InvitationRow({ inv, onAccept, onDecline, isLast }: { inv: ReceivedInvi
 }
 
 export function ReceivedInvitations({ invitations: initialInvitations }: ReceivedInvitationsProps) {
+  const { t } = useLanguage();
   const [invitations, setInvitations] = useState(initialInvitations);
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
