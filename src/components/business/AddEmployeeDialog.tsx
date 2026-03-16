@@ -232,9 +232,9 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
                         onClick={() => toggleRole(role.id)}
                         className={cn(
                           "relative flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
-                          "hover:border-primary/50 hover:bg-primary/5",
+                          "hover:border-foreground",
                           isSelected 
-                            ? "border-primary bg-primary/10" 
+                            ? "border-foreground bg-muted/50" 
                             : "border-border bg-background"
                         )}
                       >
