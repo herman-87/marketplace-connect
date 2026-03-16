@@ -90,7 +90,7 @@ function InvitationCard({ inv, onAccept, onDecline }: { inv: ReceivedInvitation;
 
         <p className="text-xs text-muted-foreground">Reçue {inv.receivedAt}</p>
 
-        <div className="flex gap-1.5 pt-2 border-t border-border/40">
+        <div className="flex justify-center gap-1.5 pt-2 border-t border-border/40">
           <Button size="sm" className="h-6 px-2.5 text-[10px] gap-0.5" onClick={() => onAccept(inv.id)}>
             <Check className="h-2.5 w-2.5" />
             Accepter
