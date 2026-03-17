@@ -233,7 +233,7 @@ export default function MesAchats() {
       return (
         <Card
           key={purchase.id}
-          className="overflow-hidden hover:border-primary/30 transition-all cursor-pointer group"
+          className="overflow-hidden hover:border-foreground/30 transition-all cursor-pointer group"
           onClick={() => setSelectedOrder(purchase)}
         >
           <div className="relative h-32 sm:h-36 bg-muted overflow-hidden">
