@@ -126,7 +126,7 @@ export default function MarketplaceTrending() {
             {paginated.map((product) => {
               const liked = isFavorite(product.id);
               return (
-                <Card key={product.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
+                <Card key={product.id} className="group overflow-hidden hover:border-foreground/30 transition-all duration-300">
                   <div className="relative h-36 sm:h-44 bg-muted overflow-hidden">
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                     <Badge variant="secondary" className="absolute top-2 left-2 gap-0.5 text-[10px]">{product.category}</Badge>
