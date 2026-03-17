@@ -324,7 +324,7 @@ export default function BusinessSettings() {
                 </Avatar>
                 <div className="flex-1 space-y-2">
                   <Label htmlFor="logo-upload" className="cursor-pointer">
-                    <div className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-colors">
+                    <div className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-border rounded-lg hover:border-foreground/30 hover:bg-muted/50 transition-colors">
                       <Upload className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">Choisir une image</span>
                     </div>
