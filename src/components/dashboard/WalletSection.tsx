@@ -62,7 +62,7 @@ export function WalletSection() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="cursor-pointer hover:border-foreground transition-all">
+        <Card className="cursor-pointer hover:border-foreground/30 transition-all">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="p-2 rounded-lg bg-muted">
               <CreditCard className="w-5 h-5 text-foreground" />
