@@ -244,8 +244,8 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
                 className={cn(
                   "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all text-xs",
                   paymentMethod === method.id
-                    ? "border-primary bg-primary/10 text-foreground"
-                    : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                    ? "border-foreground bg-muted text-foreground"
+                    : "border-border bg-card text-muted-foreground hover:border-foreground/30"
                 )}
               >
                 <method.icon className="h-5 w-5" />

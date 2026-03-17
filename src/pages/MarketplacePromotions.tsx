@@ -183,7 +183,7 @@ export default function MarketplacePromotions() {
             {paginated.map((deal) => {
               const liked = isFavorite(deal.id);
               return (
-                <Card key={deal.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
+                <Card key={deal.id} className="group overflow-hidden hover:border-foreground/30 transition-all duration-300">
                   <div className="relative h-36 sm:h-44 bg-muted overflow-hidden">
                     <img
                       src={deal.image}
@@ -243,7 +243,7 @@ export default function MarketplacePromotions() {
             {paginated.map((deal) => {
               const liked = isFavorite(deal.id);
               return (
-                <Card key={deal.id} className="overflow-hidden hover:border-primary/30 transition-all">
+                <Card key={deal.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                   <div className="flex">
                     <div className="relative w-32 sm:w-44 shrink-0 bg-muted overflow-hidden">
                       <img src={deal.image} alt={deal.name} className="w-full h-full object-cover" loading="lazy" />

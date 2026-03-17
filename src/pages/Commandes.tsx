@@ -106,7 +106,7 @@ function OrderCardView({ order, onClick }: { order: Order; onClick: () => void }
   const config = ORDER_STATUS_CONFIG[order.status];
 
   return (
-    <div className="rounded-lg bg-card border border-border/60 p-4 md:p-5 space-y-3 hover:border-primary/30 transition-colors cursor-pointer" onClick={onClick}>
+    <div className="rounded-lg bg-card border border-border/60 p-4 md:p-5 space-y-3 hover:border-foreground/30 transition-colors cursor-pointer" onClick={onClick}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">

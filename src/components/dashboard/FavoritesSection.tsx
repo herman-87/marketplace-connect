@@ -38,7 +38,7 @@ export function FavoritesSection() {
       <TabsContent value="products">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {favoriteProducts.map((product) => (
-            <Card key={product.id} className="group overflow-hidden hover:border-foreground transition-all">
+            <Card key={product.id} className="group overflow-hidden hover:border-foreground/30 transition-all">
               <div className="relative h-28 bg-muted overflow-hidden">
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <Button
@@ -72,7 +72,7 @@ export function FavoritesSection() {
       <TabsContent value="shops">
         <div className="space-y-3">
           {favoriteShops.map((shop) => (
-            <Card key={shop.id} className="hover:border-foreground transition-all">
+            <Card key={shop.id} className="hover:border-foreground/30 transition-all">
               <CardContent className="p-3 md:p-4 flex items-center gap-3">
                 <img src={shop.avatar} alt={shop.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
                 <div className="flex-1 min-w-0">

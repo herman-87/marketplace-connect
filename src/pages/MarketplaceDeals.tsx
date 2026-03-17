@@ -92,7 +92,7 @@ export default function MarketplaceDeals() {
             {paginated.map((deal) => {
               const Icon = deal.icon;
               return (
-                <Card key={deal.id} className="group p-4 bg-card border border-border hover:border-primary/30 transition-all duration-300">
+                <Card key={deal.id} className="group p-4 bg-card border border-border hover:border-foreground/30 transition-all duration-300">
                   <div className="flex items-start gap-3">
                     <div className="p-2.5 rounded-xl bg-primary/10"><Icon className="w-5 h-5 text-primary" /></div>
                     <div className="flex-1 min-w-0">

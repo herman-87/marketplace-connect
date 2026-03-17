@@ -175,7 +175,7 @@ export default function Favoris() {
             ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {paginatedProducts.map((product) => (
-                  <Card key={product.id} className="group overflow-hidden hover:border-primary/30 transition-all">
+                  <Card key={product.id} className="group overflow-hidden hover:border-foreground/30 transition-all">
                     <div className="relative h-32 sm:h-36 bg-muted overflow-hidden">
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       <Button
@@ -210,7 +210,7 @@ export default function Favoris() {
             ) : (
               <div className="space-y-2">
                 {paginatedProducts.map((product) => (
-                  <Card key={product.id} className="overflow-hidden hover:border-primary/30 transition-all">
+                  <Card key={product.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                     <CardContent className="p-0">
                       <div className="flex gap-3 p-3 md:p-4">
                         <img src={product.image} alt={product.name} className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shrink-0" />
@@ -256,7 +256,7 @@ export default function Favoris() {
             ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 {paginatedShops.map((shop) => (
-                  <Card key={shop.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
+                  <Card key={shop.id} className="group overflow-hidden hover:border-foreground/30 transition-all duration-300">
                     <div className="relative h-20 bg-muted overflow-hidden">
                       <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7 bg-destructive/90 text-destructive-foreground hover:bg-destructive">
@@ -291,7 +291,7 @@ export default function Favoris() {
             ) : (
               <div className="space-y-3">
                 {paginatedShops.map((shop) => (
-                  <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all">
+                  <Card key={shop.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                     <div className="flex">
                       <div className="relative w-32 sm:w-44 shrink-0 bg-muted overflow-hidden">
                         <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover" />

@@ -91,7 +91,7 @@ export function FeaturedShops() {
           return (
             <Card 
               key={shop.id}
-              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
+              className="group overflow-hidden hover:border-foreground/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Header with Cover Image */}
               <Link to={`/business/${shop.id}`}>

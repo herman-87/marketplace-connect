@@ -308,7 +308,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
                 {Array.from({ length: MAX_IMAGES }).map((_, i) => (
                   <button
                     key={i}
-                    className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-foreground/30 flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ImagePlus className="w-5 h-5" />
                     <span className="text-[10px]">{i + 1}</span>

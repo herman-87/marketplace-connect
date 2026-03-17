@@ -83,7 +83,7 @@ export function TrendingProducts() {
           return (
             <Link key={product.id} to={`/product/${product.id}`}>
             <Card 
-              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
+              className="group overflow-hidden hover:border-foreground/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Image Area */}
               <div className="relative h-24 sm:h-32 bg-muted overflow-hidden">

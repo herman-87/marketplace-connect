@@ -50,7 +50,7 @@ const ITEMS_PER_PAGE = 6;
 
 function InvitationCard({ inv, onAccept, onDecline }: { inv: ReceivedInvitation; onAccept: (id: string) => void; onDecline: (id: string) => void }) {
   return (
-    <Card className="overflow-hidden hover:border-foreground transition-colors group">
+    <Card className="overflow-hidden hover:border-foreground/30 transition-colors group">
       <div className="h-14 bg-muted/50 relative flex items-center justify-center">
         <Store className="w-5 h-5 text-muted-foreground" />
         <Badge variant="outline" className="absolute top-2 right-2 text-xs gap-1 text-warning border-warning/30 bg-warning/10">

@@ -198,7 +198,7 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
           {/* Found User Profile */}
           {foundUser && (
             <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 rounded-lg border border-border hover:border-foreground transition-colors bg-muted/30">
+              <div className="flex items-center gap-4 p-4 rounded-lg border border-border hover:border-foreground/30 transition-colors bg-muted/30">
                 <Avatar className="h-14 w-14 border-2 border-foreground/20">
                   <AvatarImage src={foundUser.avatar} />
                   <AvatarFallback className="bg-muted text-foreground text-lg">
@@ -232,7 +232,7 @@ export function AddEmployeeDialog({ onAddEmployee }: AddEmployeeDialogProps) {
                         onClick={() => toggleRole(role.id)}
                         className={cn(
                           "relative flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
-                          "hover:border-foreground",
+                          "hover:border-foreground/30",
                           isSelected 
                             ? "border-foreground bg-muted/50" 
                             : "border-border bg-background"

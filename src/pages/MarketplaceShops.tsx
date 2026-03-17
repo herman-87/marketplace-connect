@@ -114,7 +114,7 @@ export default function MarketplaceShops() {
         ) : viewMode === "grid" ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {paginated.map((shop) => (
-              <Card key={shop.id} className="group overflow-hidden hover:border-primary/30 transition-all duration-300">
+              <Card key={shop.id} className="group overflow-hidden hover:border-foreground/30 transition-all duration-300">
                 <div className="relative h-20 bg-muted overflow-hidden">
                   <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-8 w-8 bg-card/80 hover:bg-card text-muted-foreground hover:text-primary"><Heart className="w-4 h-4" /></Button>
@@ -147,7 +147,7 @@ export default function MarketplaceShops() {
         ) : (
           <div className="space-y-3">
             {paginated.map((shop) => (
-              <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all">
+              <Card key={shop.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                 <div className="flex">
                   <div className="relative w-32 sm:w-44 shrink-0 bg-muted overflow-hidden">
                     <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover" />
