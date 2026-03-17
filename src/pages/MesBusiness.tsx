@@ -138,8 +138,8 @@ export default function MesBusiness() {
           {remainingSlots > 0 && (
             <CreateBusinessSheet
               trigger={
-                <button className="group min-h-[180px] md:min-h-[200px] rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition-colors flex flex-col items-center justify-center gap-3 text-muted-foreground hover:text-foreground">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted group-hover:bg-primary/10 flex items-center justify-center transition-colors">
+                <button className="group min-h-[180px] md:min-h-[200px] rounded-xl border-2 border-dashed border-border hover:border-foreground/30 transition-colors flex flex-col items-center justify-center gap-3 text-muted-foreground hover:text-foreground">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted group-hover:bg-muted/80 flex items-center justify-center transition-colors">
                     <Plus className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <div className="text-center">

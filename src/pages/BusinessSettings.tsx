@@ -430,7 +430,7 @@ export default function BusinessSettings() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div 
-                className="relative w-full aspect-[4/1] rounded-xl overflow-hidden border-2 border-dashed border-border bg-muted/30 group cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors"
+                className="relative w-full aspect-[4/1] rounded-xl overflow-hidden border-2 border-dashed border-border bg-muted/30 group cursor-pointer hover:border-foreground/30 hover:bg-muted/50 transition-colors"
                 onClick={() => document.getElementById('banner-upload')?.click()}
               >
                 {banner ? (

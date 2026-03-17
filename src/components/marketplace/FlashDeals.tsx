@@ -115,7 +115,7 @@ export function FlashDeals() {
           return (
             <Link key={deal.id} to={`/product/${deal.id}`}>
             <Card 
-              className="group overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer h-full"
+              className="group overflow-hidden hover:border-foreground/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Image Area */}
               <div className="relative h-28 sm:h-36 bg-muted overflow-hidden">

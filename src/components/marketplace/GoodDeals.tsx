@@ -78,7 +78,7 @@ export function GoodDeals() {
           return (
             <Card 
               key={deal.id} 
-              className="group p-4 bg-card border border-border hover:border-primary/30 transition-all duration-300 cursor-pointer"
+              className="group p-4 bg-card border border-border hover:border-foreground/30 transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <div className="p-2.5 rounded-xl bg-primary/10">

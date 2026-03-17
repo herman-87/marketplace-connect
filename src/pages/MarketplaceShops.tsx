@@ -147,7 +147,7 @@ export default function MarketplaceShops() {
         ) : (
           <div className="space-y-3">
             {paginated.map((shop) => (
-              <Card key={shop.id} className="overflow-hidden hover:border-primary/30 transition-all">
+              <Card key={shop.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                 <div className="flex">
                   <div className="relative w-32 sm:w-44 shrink-0 bg-muted overflow-hidden">
                     <img src={shop.coverImage} alt={shop.name} className="w-full h-full object-cover" />

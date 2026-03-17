@@ -272,7 +272,7 @@ export default function MesAchats() {
     return (
       <Card
         key={purchase.id}
-        className="overflow-hidden hover:border-primary/30 transition-all cursor-pointer"
+        className="overflow-hidden hover:border-foreground/30 transition-all cursor-pointer"
         onClick={() => setSelectedOrder(purchase)}
       >
         <CardContent className="p-0">

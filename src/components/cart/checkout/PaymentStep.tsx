@@ -80,8 +80,8 @@ export function PaymentStep({ selectedBusinessId, onBack, onConfirm }: PaymentSt
                       className={cn(
                         "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
                         selectedPayment === method.id
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
+                          ? "border-foreground bg-muted"
+                          : "border-border hover:border-foreground/30"
                       )}
                     >
                       <RadioGroupItem value={method.id} id={method.id} className="sr-only" />

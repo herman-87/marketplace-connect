@@ -50,8 +50,8 @@ export function CartStep({ selectedBusinessId, onSelectBusiness, onContinue }: C
               onClick={() => onSelectBusiness(subCart.businessId)}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition-all whitespace-nowrap shrink-0 ${
                 selectedBusinessId === subCart.businessId 
-                  ? 'border-primary bg-primary/10 text-primary' 
-                  : 'border-border hover:border-primary/50 bg-card text-foreground'
+                  ? 'border-foreground bg-muted text-foreground' 
+                  : 'border-border hover:border-foreground/30 bg-card text-foreground'
               }`}
             >
               <Store className="w-4 h-4 shrink-0" />

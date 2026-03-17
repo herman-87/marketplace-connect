@@ -316,7 +316,7 @@ export function CreateBusinessSheet({ trigger }: CreateBusinessSheetProps) {
                   <ImagePlus className="w-6 h-6" />
                   <span className="text-xs font-medium">Logo</span>
                 </button>
-                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                <button className="h-32 rounded-xl border-2 border-dashed border-border hover:border-foreground/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                   <ImagePlus className="w-6 h-6" />
                   <span className="text-xs font-medium">Bannière</span>
                 </button>
