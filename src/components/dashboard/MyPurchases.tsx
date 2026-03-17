@@ -137,7 +137,7 @@ export function MyPurchases() {
         return (
           <Card
             key={purchase.id}
-            className="overflow-hidden hover:border-foreground transition-all cursor-pointer"
+            className="overflow-hidden hover:border-foreground/30 transition-all cursor-pointer"
             onClick={() => setSelectedOrder(purchase)}
           >
             <CardContent className="p-0">

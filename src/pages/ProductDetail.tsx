@@ -130,7 +130,7 @@ function SimilarProductCard({ item, onClick }: { item: typeof mockSimilarProduct
   return (
     <button
       onClick={onClick}
-      className="text-left rounded-xl overflow-hidden bg-card border border-border/50 hover:border-foreground/20 transition-colors"
+      className="text-left rounded-xl overflow-hidden bg-card border border-border/50 hover:border-foreground/30 transition-colors"
     >
       <div className="aspect-square bg-muted/30 flex items-center justify-center text-4xl">
         🛍️
