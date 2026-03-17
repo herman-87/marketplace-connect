@@ -210,7 +210,7 @@ export default function Favoris() {
             ) : (
               <div className="space-y-2">
                 {paginatedProducts.map((product) => (
-                  <Card key={product.id} className="overflow-hidden hover:border-primary/30 transition-all">
+                  <Card key={product.id} className="overflow-hidden hover:border-foreground/30 transition-all">
                     <CardContent className="p-0">
                       <div className="flex gap-3 p-3 md:p-4">
                         <img src={product.image} alt={product.name} className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shrink-0" />
