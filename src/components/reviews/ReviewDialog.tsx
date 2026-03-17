@@ -37,16 +37,17 @@ export function ReviewDialog({ type, targetId, targetName, trigger }: ReviewDial
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Votre avis sur {targetName}</DialogTitle>
+      <DialogContent className="sm:max-w-lg p-8">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-xl font-bold">Votre avis</DialogTitle>
+          <p className="text-sm text-muted-foreground">{targetName}</p>
         </DialogHeader>
-        <div className="space-y-4 pt-2">
-          <div className="space-y-2">
+        <div className="space-y-6 pt-4">
+          <div className="space-y-3">
             <p className="text-sm font-medium">Note</p>
             <StarRatingInput value={rating} onChange={setRating} size="lg" />
             {rating > 0 && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {rating === 1 && "Très insatisfait"}
                 {rating === 2 && "Insatisfait"}
                 {rating === 3 && "Correct"}
@@ -55,17 +56,18 @@ export function ReviewDialog({ type, targetId, targetName, trigger }: ReviewDial
               </p>
             )}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             <p className="text-sm font-medium">Commentaire (optionnel)</p>
             <Textarea
               placeholder="Partagez votre expérience..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              rows={3}
+              rows={5}
+              className="resize-none"
             />
           </div>
           <Button
-            className="w-full gradient-primary text-primary-foreground"
+            className="w-full h-11 font-semibold"
             onClick={handleSubmit}
             disabled={rating === 0}
           >
