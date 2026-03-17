@@ -175,7 +175,7 @@ export default function Favoris() {
             ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {paginatedProducts.map((product) => (
-                  <Card key={product.id} className="group overflow-hidden hover:border-primary/30 transition-all">
+                  <Card key={product.id} className="group overflow-hidden hover:border-foreground/30 transition-all">
                     <div className="relative h-32 sm:h-36 bg-muted overflow-hidden">
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       <Button
