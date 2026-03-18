@@ -422,6 +422,16 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Product Preview Dialog */}
+      <ProductPreviewDialog
+        product={previewProduct}
+        open={previewOpen}
+        onOpenChange={(open) => {
+          setPreviewOpen(open);
+          if (!open) setPreviewProduct(null);
+        }}
+      />
     </div>
   );
 }
