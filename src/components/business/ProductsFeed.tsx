@@ -72,13 +72,13 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const },
 };
 
-function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
+function ProductCardView({ product, isOwner, onPreviewClick, onEditClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onPreviewClick: (p: Product) => void; onEditClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
 
   return (
     <div 
       className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-foreground/30 transition-colors"
-      onClick={() => onProductClick(product)}
+      onClick={() => onPreviewClick(product)}
     >
       <div className="relative h-36 bg-muted">
         {product.image ? (
@@ -100,7 +100,7 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onEditClick(product)}>Modifier</DropdownMenuItem>
                 {product.status === "published" && (
                   <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
