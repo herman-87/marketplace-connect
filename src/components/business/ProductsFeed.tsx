@@ -144,13 +144,13 @@ function ProductCardView({ product, isOwner, onPreviewClick, onEditClick, onCrea
   );
 }
 
-function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
+function ProductListView({ product, isOwner, onPreviewClick, onEditClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onPreviewClick: (p: Product) => void; onEditClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
 
   return (
     <div 
       className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-4 hover:bg-muted/30 transition-colors cursor-pointer"
-      onClick={() => onProductClick(product)}
+      onClick={() => onPreviewClick(product)}
     >
       <div className="h-10 w-10 md:h-12 md:w-12 rounded-md bg-muted flex items-center justify-center text-lg md:text-xl shrink-0">
         🛍️
@@ -192,7 +192,7 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onEditClick(product)}>Modifier</DropdownMenuItem>
               {product.status === "published" && (
                 <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
                   <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
