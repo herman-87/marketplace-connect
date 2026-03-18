@@ -216,12 +216,19 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
   const [page, setPage] = useState(1);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [promoProductId, setPromoProductId] = useState<string | null>(null);
   const [promoOpen, setPromoOpen] = useState(false);
   const [publishTarget, setPublishTarget] = useState<Product | null>(null);
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
-  const handleProductClick = (product: Product) => {
+  const handlePreviewClick = (product: Product) => {
+    setPreviewProduct(product);
+    setPreviewOpen(true);
+  };
+
+  const handleEditClick = (product: Product) => {
     setEditProduct(product);
     setEditOpen(true);
   };
