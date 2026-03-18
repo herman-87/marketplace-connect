@@ -69,9 +69,9 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
       </div>
 
       {/* Main content - stacked on mobile, side by side on desktop */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6">
         {/* Left: Order info + products */}
-        <div className="md:col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-4">
           {/* Customer / Business info */}
           <div className="p-4 rounded-xl bg-card border border-border/60 space-y-3">
             <div className="flex items-center gap-3">
