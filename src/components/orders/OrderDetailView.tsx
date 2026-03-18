@@ -260,7 +260,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
       </div>
 
       {/* Bottom spacer for mobile fixed bar + nav */}
-      <div className="h-40 md:hidden" />
+      <div className="h-40 lg:hidden" />
     </div>
   );
 }
