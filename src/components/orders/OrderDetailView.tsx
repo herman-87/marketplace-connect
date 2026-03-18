@@ -247,8 +247,8 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
         </div>
       </div>
 
-      {/* Mobile fixed bottom action bar - above MobileNav */}
-      <div className="fixed bottom-16 md:bottom-0 left-0 md:left-64 right-0 p-4 bg-background/95 backdrop-blur-sm border-t border-border z-40 lg:hidden">
+      {/* Fixed bottom action bar - adapts to layout */}
+      <div className="sticky bottom-0 -mx-4 md:-mx-6 xl:-mx-8 px-4 md:px-6 xl:px-8 py-4 bg-background/95 backdrop-blur-sm border-t border-border z-40 lg:hidden mt-4">
         <OrderActionPanel
           orderId={order.id}
           status={order.status}
@@ -258,9 +258,6 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
           onStatusChange={handleStatusChange}
         />
       </div>
-
-      {/* Bottom spacer for mobile fixed bar + nav */}
-      <div className="h-40 lg:hidden" />
     </div>
   );
 }
