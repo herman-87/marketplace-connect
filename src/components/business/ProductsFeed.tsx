@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { CreateProductSheet } from "./CreateProductSheet";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
+import { ProductPreviewDialog } from "./ProductPreviewDialog";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import { toast } from "sonner";
 
@@ -71,13 +72,13 @@ const statusConfig = {
   removed: { label: "Retiré", variant: "outline" as const },
 };
 
-function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
+function ProductCardView({ product, isOwner, onPreviewClick, onEditClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onPreviewClick: (p: Product) => void; onEditClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
 
   return (
     <div 
       className="group rounded-lg bg-card border border-border/60 overflow-hidden cursor-pointer hover:border-foreground/30 transition-colors"
-      onClick={() => onProductClick(product)}
+      onClick={() => onPreviewClick(product)}
     >
       <div className="relative h-36 bg-muted">
         {product.image ? (
@@ -99,7 +100,7 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onEditClick(product)}>Modifier</DropdownMenuItem>
                 {product.status === "published" && (
                   <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
                     <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
@@ -143,13 +144,13 @@ function ProductCardView({ product, isOwner, onProductClick, onCreatePromo, onPu
   );
 }
 
-function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onProductClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
+function ProductListView({ product, isOwner, onPreviewClick, onEditClick, onCreatePromo, onPublishRequest }: { product: Product; isOwner: boolean; onPreviewClick: (p: Product) => void; onEditClick: (p: Product) => void; onCreatePromo: (productId: string) => void; onPublishRequest: (p: Product) => void }) {
   const status = statusConfig[product.status];
 
   return (
     <div 
       className="flex items-center gap-2 md:gap-4 px-3 md:px-4 py-3 md:py-4 hover:bg-muted/30 transition-colors cursor-pointer"
-      onClick={() => onProductClick(product)}
+      onClick={() => onPreviewClick(product)}
     >
       <div className="h-10 w-10 md:h-12 md:w-12 rounded-md bg-muted flex items-center justify-center text-lg md:text-xl shrink-0">
         🛍️
@@ -191,7 +192,7 @@ function ProductListView({ product, isOwner, onProductClick, onCreatePromo, onPu
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onProductClick(product)}>Modifier</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onEditClick(product)}>Modifier</DropdownMenuItem>
               {product.status === "published" && (
                 <DropdownMenuItem onClick={() => onCreatePromo(product.id)}>
                   <Percent className="h-3.5 w-3.5 mr-1.5" />Créer une promo
@@ -215,12 +216,19 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
   const [page, setPage] = useState(1);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [promoProductId, setPromoProductId] = useState<string | null>(null);
   const [promoOpen, setPromoOpen] = useState(false);
   const [publishTarget, setPublishTarget] = useState<Product | null>(null);
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
-  const handleProductClick = (product: Product) => {
+  const handlePreviewClick = (product: Product) => {
+    setPreviewProduct(product);
+    setPreviewOpen(true);
+  };
+
+  const handleEditClick = (product: Product) => {
     setEditProduct(product);
     setEditOpen(true);
   };
@@ -342,11 +350,11 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
       {paginated.length > 0 ? (
         viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
+            {paginated.map(p => <ProductCardView key={p.id} product={p} isOwner={isOwner} onPreviewClick={handlePreviewClick} onEditClick={handleEditClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-card overflow-hidden divide-y divide-border/50">
-            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onProductClick={handleProductClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
+            {paginated.map(p => <ProductListView key={p.id} product={p} isOwner={isOwner} onPreviewClick={handlePreviewClick} onEditClick={handleEditClick} onCreatePromo={handleCreatePromo} onPublishRequest={handlePublishRequest} />)}
           </div>
         )
       ) : (
@@ -414,6 +422,16 @@ export function ProductsFeed({ products: initialProducts, isOwner }: ProductsFee
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Product Preview Dialog */}
+      <ProductPreviewDialog
+        product={previewProduct}
+        open={previewOpen}
+        onOpenChange={(open) => {
+          setPreviewOpen(open);
+          if (!open) setPreviewProduct(null);
+        }}
+      />
     </div>
   );
 }
