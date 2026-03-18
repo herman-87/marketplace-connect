@@ -248,7 +248,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
       </div>
 
       {/* Mobile fixed bottom action bar - above MobileNav */}
-      <div className="fixed bottom-16 left-0 right-0 p-4 bg-background/95 backdrop-blur-sm border-t border-border z-40 lg:hidden">
+      <div className="fixed bottom-16 md:bottom-0 left-0 md:left-64 right-0 p-4 bg-background/95 backdrop-blur-sm border-t border-border z-40 lg:hidden">
         <OrderActionPanel
           orderId={order.id}
           status={order.status}
