@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { CreateProductSheet } from "./CreateProductSheet";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
+import { ProductPreviewDialog } from "./ProductPreviewDialog";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
 import { toast } from "sonner";
 
