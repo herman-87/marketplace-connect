@@ -150,7 +150,7 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
         </div>
 
         {/* Right: Timeline / Chat + Action Panel */}
-        <div className="md:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4">
           <div className="rounded-2xl bg-card border border-border/60 overflow-hidden flex flex-col">
             {/* Toggle Switch */}
             <div className="p-3 border-b border-border/40">
