@@ -22,8 +22,12 @@ import { PaginationControls } from "@/components/marketplace/PaginationControls"
 const mockPurchases: Order[] = [
   {
     id: "ACH-001", customer: { name: "Vous" },
-    products: [{ name: "Burger Deluxe Menu", quantity: 2, price: 25.80, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop" }],
-    total: 25.80, status: "IN_DELIVERY", createdAt: "2025-02-15T14:30:00Z",
+    products: [
+      { name: "Burger Deluxe Menu", quantity: 2, price: 25.80, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop" },
+      { name: "Frites Maison", quantity: 1, price: 5.50, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=80&h=80&fit=crop" },
+      { name: "Coca-Cola", quantity: 2, price: 3.00 },
+    ],
+    total: 63.10, status: "IN_DELIVERY", createdAt: "2025-02-15T14:30:00Z",
     deliveryAddress: "12 Rue de la Liberté, Dakar", deliveryMethod: "express",
     statusHistory: [
       { status: "CREATED", timestamp: "2025-02-15T14:00:00Z" },
@@ -54,8 +58,9 @@ const mockPurchases: Order[] = [
     products: [
       { name: "T-shirt Premium", quantity: 2, price: 69.98, image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=80&fit=crop" },
       { name: "Jean Slim", quantity: 1, price: 49.99 },
+      { name: "Ceinture Cuir", quantity: 1, price: 25.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
     ],
-    total: 119.97, status: "COMPLETED", createdAt: "2025-01-12T16:45:00Z",
+    total: 144.97, status: "COMPLETED", createdAt: "2025-01-12T16:45:00Z",
     statusHistory: [
       { status: "CREATED", timestamp: "2025-01-12T16:00:00Z" },
       { status: "ACCEPTED", timestamp: "2025-01-12T16:15:00Z" },
@@ -69,8 +74,11 @@ const mockPurchases: Order[] = [
   },
   {
     id: "ACH-004", customer: { name: "Vous" },
-    products: [{ name: "Poulet Yassa", quantity: 1, price: 15.90, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=80&h=80&fit=crop" }],
-    total: 15.90, status: "PENDING_PAYMENT", createdAt: "2025-02-15T12:00:00Z",
+    products: [
+      { name: "Poulet Yassa", quantity: 1, price: 15.90, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=80&h=80&fit=crop" },
+      { name: "Riz au Poisson", quantity: 1, price: 12.50 },
+    ],
+    total: 28.40, status: "PENDING_PAYMENT", createdAt: "2025-02-15T12:00:00Z",
     deliveryAddress: "8 Rue Faidherbe, Dakar", deliveryMethod: "standard",
     statusHistory: [
       { status: "CREATED", timestamp: "2025-02-15T12:00:00Z" },
@@ -110,8 +118,11 @@ const mockPurchases: Order[] = [
   },
   {
     id: "ACH-007", customer: { name: "Vous" },
-    products: [{ name: "Sac bandoulière cuir", quantity: 1, price: 65.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" }],
-    total: 65.00, status: "COMPLETED", createdAt: "2024-12-20T15:00:00Z",
+    products: [
+      { name: "Sac bandoulière cuir", quantity: 1, price: 65.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
+      { name: "Portefeuille assorti", quantity: 1, price: 35.00 },
+    ],
+    total: 100.00, status: "COMPLETED", createdAt: "2024-12-20T15:00:00Z",
     statusHistory: [
       { status: "CREATED", timestamp: "2024-12-20T15:00:00Z" },
       { status: "ACCEPTED", timestamp: "2024-12-20T15:30:00Z" },
@@ -228,6 +239,7 @@ export default function MesAchats() {
     const config = ORDER_STATUS_CONFIG[purchase.status];
     const StatusIcon = iconMap[config.icon] || Clock;
     const businessName = businessNames[purchase.id] || "Boutique";
+    const productCount = purchase.products.length;
 
     if (viewMode === "grid") {
       return (
@@ -248,6 +260,11 @@ export default function MesAchats() {
               <StatusIcon className="w-3 h-3 mr-1" />
               {config.label}
             </Badge>
+            {productCount > 1 && (
+              <Badge className="absolute top-2 right-2 text-[10px] bg-foreground/80 text-background border-0">
+                {productCount} articles
+              </Badge>
+            )}
           </div>
           <CardContent className="p-3">
             <p className="text-[10px] text-muted-foreground">
@@ -255,9 +272,21 @@ export default function MesAchats() {
               {" • "}{purchase.id}
             </p>
             <p className="font-semibold text-sm text-foreground mt-0.5">{businessName}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {purchase.products.map((i) => `${i.quantity}x ${i.name}`).join(", ")}
-            </p>
+            <div className="mt-1.5 space-y-1">
+              {purchase.products.slice(0, 2).map((item, idx) => (
+                <div key={idx} className="flex items-center gap-1.5">
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="w-5 h-5 rounded object-cover shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded bg-muted shrink-0" />
+                  )}
+                  <span className="text-[11px] text-muted-foreground truncate">{item.quantity}x {item.name}</span>
+                </div>
+              ))}
+              {productCount > 2 && (
+                <p className="text-[10px] text-muted-foreground/70">+{productCount - 2} autre{productCount - 2 > 1 ? "s" : ""}</p>
+              )}
+            </div>
             <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
               <span className="font-bold text-foreground">{purchase.total.toFixed(2)} €</span>
               <Button size="sm" variant="ghost" className="h-7 text-xs gap-1 text-primary p-0">
@@ -276,39 +305,50 @@ export default function MesAchats() {
         onClick={() => setSelectedOrder(purchase)}
       >
         <CardContent className="p-0">
-          <div className="flex gap-3 p-3 md:p-4">
-            {purchase.products[0]?.image ? (
-              <img src={purchase.products[0].image} alt={businessName} className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shrink-0" />
-            ) : (
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                <Package className="h-6 w-6 text-muted-foreground" />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-[10px] text-muted-foreground">
-                    {new Date(purchase.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
-                    {" • "}{purchase.id}
-                  </p>
-                  <p className="font-semibold text-sm text-foreground">{businessName}</p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {purchase.products.map((i) => `${i.quantity}x ${i.name}`).join(", ")}
-                  </p>
-                </div>
-                <Badge variant="outline" className={cn("text-[10px] md:text-xs shrink-0", statusBadgeStyles[config.color])}>
-                  <StatusIcon className="w-3 h-3 mr-1" />
-                  <span className="hidden sm:inline">{config.label}</span>
-                  <span className="sm:hidden">{config.label.split(" ")[0]}</span>
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
-                <p className="font-bold text-foreground">{purchase.total.toFixed(2)} €</p>
-                <Button size="sm" variant="ghost" className="h-7 text-xs gap-1 text-primary">
-                  Détails <ChevronRight className="w-3 h-3" />
-                </Button>
-              </div>
+          {/* Header: date, business, status */}
+          <div className="flex items-center justify-between gap-2 p-3 pb-0 md:p-4 md:pb-0">
+            <div className="min-w-0">
+              <p className="text-[10px] text-muted-foreground">
+                {new Date(purchase.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                {" • "}{purchase.id}
+              </p>
+              <p className="font-semibold text-sm text-foreground">{businessName}</p>
             </div>
+            <Badge variant="outline" className={cn("text-[10px] md:text-xs shrink-0", statusBadgeStyles[config.color])}>
+              <StatusIcon className="w-3 h-3 mr-1" />
+              <span className="hidden sm:inline">{config.label}</span>
+              <span className="sm:hidden">{config.label.split(" ")[0]}</span>
+            </Badge>
+          </div>
+
+          {/* Products list */}
+          <div className="px-3 md:px-4 mt-2 space-y-1.5">
+            {purchase.products.map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2.5">
+                {item.image ? (
+                  <img src={item.image} alt={item.name} className="w-9 h-9 rounded-md object-cover shrink-0" />
+                ) : (
+                  <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
+                    <Package className="h-4 w-4 text-muted-foreground/50" />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-foreground truncate">{item.name}</p>
+                  <p className="text-[10px] text-muted-foreground">Qté: {item.quantity} • {item.price.toFixed(2)} €</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer: total + details */}
+          <div className="flex items-center justify-between mx-3 md:mx-4 mt-2 mb-3 md:mb-4 pt-2 border-t border-border/50">
+            <div>
+              <p className="text-[10px] text-muted-foreground">{productCount} article{productCount > 1 ? "s" : ""}</p>
+              <p className="font-bold text-foreground">{purchase.total.toFixed(2)} €</p>
+            </div>
+            <Button size="sm" variant="ghost" className="h-7 text-xs gap-1 text-primary">
+              Détails <ChevronRight className="w-3 h-3" />
+            </Button>
           </div>
         </CardContent>
       </Card>
