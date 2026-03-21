@@ -27,8 +27,40 @@ const mockPurchases: Order[] = [
       { name: "Frites Maison", quantity: 1, price: 5.50, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=80&h=80&fit=crop" },
       { name: "Coca-Cola", quantity: 2, price: 3.00 },
     ],
+    total: 63.10, status: "IN_DELIVERY", createdAt: "2025-02-15T14:30:00Z",
+    deliveryAddress: "12 Rue de la Liberté, Dakar", deliveryMethod: "express",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-15T14:00:00Z" },
+      { status: "ACCEPTED", timestamp: "2025-02-15T14:05:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-15T14:05:00Z" },
+      { status: "PAID", timestamp: "2025-02-15T14:10:00Z", note: "Paiement Mobile Money" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-15T14:20:00Z" },
+      { status: "IN_DELIVERY", timestamp: "2025-02-15T14:30:00Z", note: "Livreur: Abdou D." },
     ],
-    total: 119.97, status: "COMPLETED", createdAt: "2025-01-12T16:45:00Z",
+  },
+  {
+    id: "ACH-002", customer: { name: "Vous" },
+    products: [{ name: "Écouteurs Bluetooth Pro", quantity: 1, price: 79.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" }],
+    total: 79.99, status: "DELIVERED", createdAt: "2025-02-14T10:15:00Z",
+    deliveryAddress: "45 Avenue Bourguiba, Dakar", deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-14T10:00:00Z" },
+      { status: "ACCEPTED", timestamp: "2025-02-14T10:10:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-14T10:10:00Z" },
+      { status: "PAID", timestamp: "2025-02-14T10:15:00Z" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-14T12:00:00Z" },
+      { status: "IN_DELIVERY", timestamp: "2025-02-14T14:00:00Z" },
+      { status: "DELIVERED", timestamp: "2025-02-14T16:00:00Z", note: "Livré à l'adresse" },
+    ],
+  },
+  {
+    id: "ACH-003", customer: { name: "Vous" },
+    products: [
+      { name: "T-shirt Premium", quantity: 2, price: 69.98, image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=80&fit=crop" },
+      { name: "Jean Slim", quantity: 1, price: 49.99 },
+      { name: "Ceinture Cuir", quantity: 1, price: 25.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
+    ],
+    total: 144.97, status: "COMPLETED", createdAt: "2025-01-12T16:45:00Z",
     statusHistory: [
       { status: "CREATED", timestamp: "2025-01-12T16:00:00Z" },
       { status: "ACCEPTED", timestamp: "2025-01-12T16:15:00Z" },
@@ -42,8 +74,11 @@ const mockPurchases: Order[] = [
   },
   {
     id: "ACH-004", customer: { name: "Vous" },
-    products: [{ name: "Poulet Yassa", quantity: 1, price: 15.90, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=80&h=80&fit=crop" }],
-    total: 15.90, status: "PENDING_PAYMENT", createdAt: "2025-02-15T12:00:00Z",
+    products: [
+      { name: "Poulet Yassa", quantity: 1, price: 15.90, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=80&h=80&fit=crop" },
+      { name: "Riz au Poisson", quantity: 1, price: 12.50 },
+    ],
+    total: 28.40, status: "PENDING_PAYMENT", createdAt: "2025-02-15T12:00:00Z",
     deliveryAddress: "8 Rue Faidherbe, Dakar", deliveryMethod: "standard",
     statusHistory: [
       { status: "CREATED", timestamp: "2025-02-15T12:00:00Z" },
@@ -83,8 +118,11 @@ const mockPurchases: Order[] = [
   },
   {
     id: "ACH-007", customer: { name: "Vous" },
-    products: [{ name: "Sac bandoulière cuir", quantity: 1, price: 65.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" }],
-    total: 65.00, status: "COMPLETED", createdAt: "2024-12-20T15:00:00Z",
+    products: [
+      { name: "Sac bandoulière cuir", quantity: 1, price: 65.00, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
+      { name: "Portefeuille assorti", quantity: 1, price: 35.00 },
+    ],
+    total: 100.00, status: "COMPLETED", createdAt: "2024-12-20T15:00:00Z",
     statusHistory: [
       { status: "CREATED", timestamp: "2024-12-20T15:00:00Z" },
       { status: "ACCEPTED", timestamp: "2024-12-20T15:30:00Z" },
