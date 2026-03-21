@@ -22,38 +22,11 @@ import { PaginationControls } from "@/components/marketplace/PaginationControls"
 const mockPurchases: Order[] = [
   {
     id: "ACH-001", customer: { name: "Vous" },
-    products: [{ name: "Burger Deluxe Menu", quantity: 2, price: 25.80, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop" }],
-    total: 25.80, status: "IN_DELIVERY", createdAt: "2025-02-15T14:30:00Z",
-    deliveryAddress: "12 Rue de la Liberté, Dakar", deliveryMethod: "express",
-    statusHistory: [
-      { status: "CREATED", timestamp: "2025-02-15T14:00:00Z" },
-      { status: "ACCEPTED", timestamp: "2025-02-15T14:05:00Z" },
-      { status: "PENDING_PAYMENT", timestamp: "2025-02-15T14:05:00Z" },
-      { status: "PAID", timestamp: "2025-02-15T14:10:00Z", note: "Paiement Mobile Money" },
-      { status: "PENDING_DELIVERY", timestamp: "2025-02-15T14:20:00Z" },
-      { status: "IN_DELIVERY", timestamp: "2025-02-15T14:30:00Z", note: "Livreur: Abdou D." },
-    ],
-  },
-  {
-    id: "ACH-002", customer: { name: "Vous" },
-    products: [{ name: "Écouteurs Bluetooth Pro", quantity: 1, price: 79.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" }],
-    total: 79.99, status: "DELIVERED", createdAt: "2025-02-14T10:15:00Z",
-    deliveryAddress: "45 Avenue Bourguiba, Dakar", deliveryMethod: "standard",
-    statusHistory: [
-      { status: "CREATED", timestamp: "2025-02-14T10:00:00Z" },
-      { status: "ACCEPTED", timestamp: "2025-02-14T10:10:00Z" },
-      { status: "PENDING_PAYMENT", timestamp: "2025-02-14T10:10:00Z" },
-      { status: "PAID", timestamp: "2025-02-14T10:15:00Z" },
-      { status: "PENDING_DELIVERY", timestamp: "2025-02-14T12:00:00Z" },
-      { status: "IN_DELIVERY", timestamp: "2025-02-14T14:00:00Z" },
-      { status: "DELIVERED", timestamp: "2025-02-14T16:00:00Z", note: "Livré à l'adresse" },
-    ],
-  },
-  {
-    id: "ACH-003", customer: { name: "Vous" },
     products: [
-      { name: "T-shirt Premium", quantity: 2, price: 69.98, image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=80&fit=crop" },
-      { name: "Jean Slim", quantity: 1, price: 49.99 },
+      { name: "Burger Deluxe Menu", quantity: 2, price: 25.80, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop" },
+      { name: "Frites Maison", quantity: 1, price: 5.50, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=80&h=80&fit=crop" },
+      { name: "Coca-Cola", quantity: 2, price: 3.00 },
+    ],
     ],
     total: 119.97, status: "COMPLETED", createdAt: "2025-01-12T16:45:00Z",
     statusHistory: [
