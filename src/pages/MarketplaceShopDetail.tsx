@@ -395,12 +395,10 @@ export default function MarketplaceShopDetail() {
                             className="h-8 w-8 shrink-0"
                             onClick={(e) => {
                               e.preventDefault();
-                              toggleFavorite({
+                            toggleFavorite({
                                 id: product.id,
                                 name: product.name,
-                                price: product.price,
-                                image: product.image,
-                                businessName: shop.name,
+                                businessId: shop.id,
                               });
                             }}
                           >
