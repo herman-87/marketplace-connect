@@ -94,7 +94,7 @@ export function FeaturedShops() {
               className="group overflow-hidden hover:border-foreground/30 transition-all duration-300 cursor-pointer h-full"
             >
               {/* Header with Cover Image */}
-              <Link to={`/business/${shop.id}`}>
+              <Link to={`/marketplace/shop/${shop.id}`}>
                 <div className="relative h-20 bg-muted overflow-hidden">
                   <img 
                     src={shop.coverImage} 
@@ -128,7 +128,7 @@ export function FeaturedShops() {
               </Button>
 
               <CardContent className="pt-8 pb-4 px-4">
-                <Link to={`/business/${shop.id}`}>
+                <Link to={`/marketplace/shop/${shop.id}`}>
                   {/* Name & Verified */}
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-semibold text-foreground">{shop.name}</h3>

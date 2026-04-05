@@ -28,6 +28,7 @@ import MarketplacePromotions from "./pages/MarketplacePromotions";
 import MarketplaceTrending from "./pages/MarketplaceTrending";
 import MarketplaceShops from "./pages/MarketplaceShops";
 import MarketplaceDeals from "./pages/MarketplaceDeals";
+import MarketplaceShopDetail from "./pages/MarketplaceShopDetail";
 import MesAchats from "./pages/MesAchats";
 import WalletPage from "./pages/WalletPage";
 import MesDepenses from "./pages/MesDepenses";
@@ -67,6 +68,7 @@ const App = () => (
                   <Route path="/marketplace/trending" element={<MarketplaceTrending />} />
                   <Route path="/marketplace/shops" element={<MarketplaceShops />} />
                   <Route path="/marketplace/deals" element={<MarketplaceDeals />} />
+                  <Route path="/marketplace/shop/:shopId" element={<MarketplaceShopDetail />} />
                   <Route path="/commandes" element={<Commandes />} />
                   <Route path="/product/:productId" element={<ProductDetail />} />
                   <Route path="/mes-achats" element={<MesAchats />} />
