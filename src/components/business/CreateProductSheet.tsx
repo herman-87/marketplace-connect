@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Save, ImagePlus, Package, RefreshCw } from "lucide-react";
+import { X, Save, ImagePlus, Package, RefreshCw, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProductData {
