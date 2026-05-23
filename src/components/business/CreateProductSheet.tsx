@@ -76,8 +76,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("XOF");
-  const [unitPrice, setUnitPrice] = useState("");
-  const [quantityContent, setQuantityContent] = useState("");
+  const [specifications, setSpecifications] = useState<Specification[]>([]);
 
   // Populate fields when editing
   useEffect(() => {
@@ -88,14 +87,13 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       setQuantity(product.quantity?.toString() || "");
       setPrice(product.price?.toString() || "");
       setCurrency(product.currency || "XOF");
-      setUnitPrice(product.unitPrice?.toString() || "");
-      setQuantityContent(product.quantityContent?.toString() || "");
+      setSpecifications(product.specifications || []);
     }
   }, [product, open]);
 
   // Track if anything changed (edit mode)
   const hasChanges = useMemo(() => {
-    if (!product) return true; // create mode always enabled
+    if (!product) return true;
     return (
       name !== (product.name || "") ||
       description !== (product.description || "") ||
@@ -103,10 +101,23 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       quantity !== (product.quantity?.toString() || "") ||
       price !== (product.price?.toString() || "") ||
       currency !== (product.currency || "XOF") ||
-      unitPrice !== (product.unitPrice?.toString() || "") ||
-      quantityContent !== (product.quantityContent?.toString() || "")
+      JSON.stringify(specifications) !== JSON.stringify(product.specifications || [])
     );
-  }, [name, description, category, quantity, price, currency, unitPrice, quantityContent, product]);
+  }, [name, description, category, quantity, price, currency, specifications, product]);
+
+  const addSpecification = () => {
+    setSpecifications((prev) => [...prev, { key: "", value: "" }]);
+  };
+
+  const updateSpecification = (index: number, field: "key" | "value", value: string) => {
+    setSpecifications((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, [field]: value } : s))
+    );
+  };
+
+  const removeSpecification = (index: number) => {
+    setSpecifications((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSave = () => {
     if (!name.trim()) {
@@ -122,6 +133,10 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       return;
     }
 
+    const cleanedSpecs = specifications.filter(
+      (s) => s.key.trim() && s.value.trim()
+    );
+
     const payload = {
       name,
       quantity: Number(quantity) || 0,
@@ -130,10 +145,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       description,
       images: {},
       initialQuantity: Number(quantity) || 0,
-      quantityContent: Number(quantityContent) || 0,
-      unitPrice: unitPrice
-        ? { amount: Number(unitPrice), currency }
-        : undefined,
+      specifications: cleanedSpecs,
     };
 
     console.log(isEditMode ? "Update product payload:" : "Create product payload:", payload);
@@ -150,8 +162,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       setQuantity("");
       setPrice("");
       setCurrency("XOF");
-      setUnitPrice("");
-      setQuantityContent("");
+      setSpecifications([]);
     }, 300);
   };
 
