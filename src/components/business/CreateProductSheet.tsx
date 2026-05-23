@@ -15,8 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Save, ImagePlus, Package, RefreshCw } from "lucide-react";
+import { X, Save, ImagePlus, Package, RefreshCw, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+
+interface Specification {
+  key: string;
+  value: string;
+}
 
 interface ProductData {
   id?: string;
@@ -25,13 +30,12 @@ interface ProductData {
   price: number;
   category: string;
   quantity?: number;
-  unitPrice?: number;
-  quantityContent?: number;
   currency?: string;
   status?: string;
   likes?: number;
   views?: number;
   sales?: number;
+  specifications?: Specification[];
 }
 
 interface CreateProductSheetProps {
@@ -72,8 +76,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("XOF");
-  const [unitPrice, setUnitPrice] = useState("");
-  const [quantityContent, setQuantityContent] = useState("");
+  const [specifications, setSpecifications] = useState<Specification[]>([]);
 
   // Populate fields when editing
   useEffect(() => {
@@ -84,14 +87,13 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       setQuantity(product.quantity?.toString() || "");
       setPrice(product.price?.toString() || "");
       setCurrency(product.currency || "XOF");
-      setUnitPrice(product.unitPrice?.toString() || "");
-      setQuantityContent(product.quantityContent?.toString() || "");
+      setSpecifications(product.specifications || []);
     }
   }, [product, open]);
 
   // Track if anything changed (edit mode)
   const hasChanges = useMemo(() => {
-    if (!product) return true; // create mode always enabled
+    if (!product) return true;
     return (
       name !== (product.name || "") ||
       description !== (product.description || "") ||
@@ -99,10 +101,23 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       quantity !== (product.quantity?.toString() || "") ||
       price !== (product.price?.toString() || "") ||
       currency !== (product.currency || "XOF") ||
-      unitPrice !== (product.unitPrice?.toString() || "") ||
-      quantityContent !== (product.quantityContent?.toString() || "")
+      JSON.stringify(specifications) !== JSON.stringify(product.specifications || [])
     );
-  }, [name, description, category, quantity, price, currency, unitPrice, quantityContent, product]);
+  }, [name, description, category, quantity, price, currency, specifications, product]);
+
+  const addSpecification = () => {
+    setSpecifications((prev) => [...prev, { key: "", value: "" }]);
+  };
+
+  const updateSpecification = (index: number, field: "key" | "value", value: string) => {
+    setSpecifications((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, [field]: value } : s))
+    );
+  };
+
+  const removeSpecification = (index: number) => {
+    setSpecifications((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSave = () => {
     if (!name.trim()) {
@@ -118,6 +133,10 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       return;
     }
 
+    const cleanedSpecs = specifications.filter(
+      (s) => s.key.trim() && s.value.trim()
+    );
+
     const payload = {
       name,
       quantity: Number(quantity) || 0,
@@ -126,10 +145,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       description,
       images: {},
       initialQuantity: Number(quantity) || 0,
-      quantityContent: Number(quantityContent) || 0,
-      unitPrice: unitPrice
-        ? { amount: Number(unitPrice), currency }
-        : undefined,
+      specifications: cleanedSpecs,
     };
 
     console.log(isEditMode ? "Update product payload:" : "Create product payload:", payload);
@@ -146,8 +162,7 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
       setQuantity("");
       setPrice("");
       setCurrency("XOF");
-      setUnitPrice("");
-      setQuantityContent("");
+      setSpecifications([]);
     }, 300);
   };
 
@@ -235,67 +250,93 @@ export function CreateProductSheet({ trigger, product, open: controlledOpen, onO
               </Select>
             </div>
 
-            {/* Price row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="prod-price">Prix *</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="prod-price"
-                    type="number"
-                    placeholder="0.00"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="flex-1"
-                  />
-                  <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className="w-[120px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currencies.map((c) => (
-                        <SelectItem key={c.value} value={c.value}>
-                          {c.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="prod-unit-price">Prix unitaire</Label>
+            {/* Price */}
+            <div className="space-y-2">
+              <Label htmlFor="prod-price">Prix *</Label>
+              <div className="flex gap-2">
                 <Input
-                  id="prod-unit-price"
+                  id="prod-price"
                   type="number"
                   placeholder="0.00"
-                  value={unitPrice}
-                  onChange={(e) => setUnitPrice(e.target.value)}
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="flex-1"
                 />
+                <Select value={currency} onValueChange={setCurrency}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>
+                        {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            {/* Quantity row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="prod-qty">Quantité</Label>
-                <Input
-                  id="prod-qty"
-                  type="number"
-                  placeholder="0"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
+            {/* Quantity */}
+            <div className="space-y-2">
+              <Label htmlFor="prod-qty">Quantité</Label>
+              <Input
+                id="prod-qty"
+                type="number"
+                placeholder="0"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+
+            {/* Specifications */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-base font-semibold">Spécifications</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addSpecification}
+                  className="gap-1.5"
+                >
+                  <Plus className="w-4 h-4" />
+                  Ajouter
+                </Button>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="prod-qty-content">Contenu par unité</Label>
-                <Input
-                  id="prod-qty-content"
-                  type="number"
-                  placeholder="0"
-                  value={quantityContent}
-                  onChange={(e) => setQuantityContent(e.target.value)}
-                />
-              </div>
+              {specifications.length === 0 ? (
+                <p className="text-sm text-muted-foreground border border-dashed border-border rounded-lg px-4 py-6 text-center">
+                  Aucune spécification. Ajoutez par exemple : Taille → XXL, Couleur → Noir.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {specifications.map((spec, i) => (
+                    <div key={i} className="flex gap-2 items-start">
+                      <Input
+                        placeholder="Nom (ex: Taille)"
+                        value={spec.key}
+                        onChange={(e) => updateSpecification(i, "key", e.target.value)}
+                        className="flex-1"
+                      />
+                      <Input
+                        placeholder="Valeur (ex: XXL)"
+                        value={spec.value}
+                        onChange={(e) => updateSpecification(i, "value", e.target.value)}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeSpecification(i)}
+                        className="shrink-0"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Images Section */}
