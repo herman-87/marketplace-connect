@@ -18,6 +18,11 @@ import {
 import { X, Save, ImagePlus, Package, RefreshCw, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+interface Specification {
+  key: string;
+  value: string;
+}
+
 interface ProductData {
   id?: string;
   name: string;
@@ -25,13 +30,12 @@ interface ProductData {
   price: number;
   category: string;
   quantity?: number;
-  unitPrice?: number;
-  quantityContent?: number;
   currency?: string;
   status?: string;
   likes?: number;
   views?: number;
   sales?: number;
+  specifications?: Specification[];
 }
 
 interface CreateProductSheetProps {
