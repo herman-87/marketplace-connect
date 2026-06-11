@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import { PriceDisplay } from "@/components/ui/price-display";
+import { toHT, formatPrice, DEFAULT_VAT_RATE } from "@/lib/tax";
 import { toast } from "sonner";
 
 interface Promotion {
@@ -210,18 +212,20 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
 
                 {/* Prix: grille 3 colonnes */}
                 <div className="px-4 py-3 border-t border-border/40">
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 items-start">
                     <div>
                       <p className="text-[10px] text-muted-foreground mb-0.5">Original</p>
-                      <p className="text-sm text-muted-foreground line-through">{promo.productPrice.toFixed(2)} €</p>
+                      <p className="text-sm text-muted-foreground line-through tabular-nums">{formatPrice(promo.productPrice)}</p>
+                      <p className="text-[10px] text-muted-foreground/70 tabular-nums">{formatPrice(toHT(promo.productPrice))} HT</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-muted-foreground mb-0.5">Réduction</p>
                       <p className="text-sm font-semibold text-foreground">-{promo.discountPercent}%</p>
+                      <p className="text-[10px] text-muted-foreground/70">TVA {Math.round(DEFAULT_VAT_RATE * 100)}%</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-muted-foreground mb-0.5">Prix final</p>
-                      <p className="text-sm font-bold text-foreground">{promo.discountPrice.toFixed(2)} €</p>
+                      <PriceDisplay price={promo.discountPrice} size="sm" variant="compact" align="left" />
                     </div>
                   </div>
                 </div>
@@ -302,10 +306,11 @@ export function PromotionsFeed({ promotions, isOwner }: PromotionsFeedProps) {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
-                    <div className="text-right">
+                    <div className="text-right leading-tight">
                       <p className="text-sm font-bold text-foreground">-{promo.discountPercent}%</p>
-                      <p className="text-xs text-muted-foreground line-through">{promo.productPrice.toFixed(2)} €</p>
+                      <p className="text-xs text-muted-foreground line-through tabular-nums">{formatPrice(promo.productPrice)}</p>
                     </div>
+                    <PriceDisplay price={promo.discountPrice} size="sm" variant="compact" align="right" />
                     {remainingBadge}
                     <Badge variant={status.variant} className="gap-1 text-[10px]">
                       <StatusIcon className="h-3 w-3" />
