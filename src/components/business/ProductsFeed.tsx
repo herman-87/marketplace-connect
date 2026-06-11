@@ -42,6 +42,7 @@ import { CreateProductSheet } from "./CreateProductSheet";
 import { CreatePromotionSheet } from "./CreatePromotionSheet";
 import { ProductPreviewDialog } from "./ProductPreviewDialog";
 import { AdaptivePagination } from "@/components/ui/adaptive-pagination";
+import { PriceDisplay } from "@/components/ui/price-display";
 import { toast } from "sonner";
 
 interface Product {
@@ -114,8 +115,8 @@ function ProductCardView({ product, isOwner, onPreviewClick, onEditClick, onCrea
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-base truncate">{product.name}</h3>
-          <span className="font-bold text-base whitespace-nowrap">{product.price}€</span>
+          <h3 className="font-semibold text-base truncate flex-1 min-w-0">{product.name}</h3>
+          <PriceDisplay price={product.price} size="md" align="right" variant="compact" />
         </div>
         <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{product.description}</p>
         <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
@@ -170,7 +171,7 @@ function ProductListView({ product, isOwner, onPreviewClick, onEditClick, onCrea
           </span>
         </div>
       </div>
-      <span className="font-bold text-sm md:text-base shrink-0">{product.price}€</span>
+      <PriceDisplay price={product.price} size="sm" align="right" variant="compact" className="shrink-0" />
       {isOwner && (
         <div className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
           <Button
