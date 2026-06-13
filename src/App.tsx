@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { CelebrationOverlay } from "@/components/ui/celebration";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -47,7 +48,8 @@ const App = () => (
           <ReviewsProvider>
             <TooltipProvider>
               <Toaster />
-              <Sonner />
+              <Sonner position="top-center" richColors closeButton />
+              <CelebrationOverlay />
               <BrowserRouter>
               <FavoritesProvider>
                 <Routes>
