@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, CreditCard, Smartphone, Banknote, Lock, Shield, Store } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { celebrate } from "@/components/ui/celebration";
 import { useCart, type SubCart } from "@/contexts/CartContext";
 
 interface PaymentStepProps {
@@ -250,7 +251,15 @@ export function PaymentStep({ selectedBusinessId, onBack, onConfirm }: PaymentSt
           <Button 
             className="flex-1 h-12 text-base gap-2" 
             size="lg"
-            onClick={onConfirm}
+            onClick={() => {
+              celebrate({
+                title: "Paiement réussi !",
+                message: `Votre paiement de ${total.toFixed(2)} € a été confirmé.`,
+                variant: "success",
+                emoji: "✨",
+              });
+              onConfirm();
+            }}
           >
             <Lock className="w-4 h-4" />
             Payer {total.toFixed(2)} €

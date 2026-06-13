@@ -15,6 +15,7 @@ import { CheckoutProgress } from "./checkout/CheckoutProgress";
 import { CartStep } from "./checkout/CartStep";
 import { DeliveryStep, type DeliveryFormData } from "./checkout/DeliveryStep";
 import { ConfirmationStep } from "./checkout/ConfirmationStep";
+import { celebrate } from "@/components/ui/celebration";
 import type { CheckoutStep } from "@/types/order";
 
 interface CartSheetProps {
@@ -63,6 +64,12 @@ export function CartSheet({ trigger }: CartSheetProps) {
   const handleConfirmOrder = () => {
     // Move to confirmation step (order created, waiting for business)
     setCurrentStep('confirmation');
+    celebrate({
+      title: "Commande envoyée !",
+      message: "Le vendeur va recevoir votre demande dans un instant.",
+      variant: "party",
+      emoji: "🎉",
+    });
   };
 
   const handleFinalClose = () => {
