@@ -29,7 +29,31 @@ import {
   Mail,
   Store,
   TrendingUp,
+  MessageCircle,
 } from "lucide-react";
+
+type PhoneEntry = { usage: "whatsapp" | "call" | "sms"; number: string; countryCode: string };
+
+const phoneUsageMeta: Record<PhoneEntry["usage"], { label: string; icon: typeof Phone; href: (full: string) => string; className: string }> = {
+  whatsapp: {
+    label: "WhatsApp",
+    icon: MessageCircle,
+    href: (full) => `https://wa.me/${full.replace(/[^\d]/g, "")}`,
+    className: "bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20",
+  },
+  call: {
+    label: "Appel",
+    icon: Phone,
+    href: (full) => `tel:${full}`,
+    className: "bg-muted hover:bg-muted/80 text-foreground border border-border/60",
+  },
+  sms: {
+    label: "SMS",
+    icon: MessageSquare,
+    href: (full) => `sms:${full}`,
+    className: "bg-blue-500/10 hover:bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/20",
+  },
+};
 import { cn } from "@/lib/utils";
 
 // Mock data for the public shop view
@@ -40,7 +64,7 @@ const shopData: Record<string, {
   category: string;
   location: string;
   email: string;
-  phone: string;
+  phones: PhoneEntry[];
   isVerified: boolean;
   isOpen: boolean;
   coverImage: string;
@@ -58,7 +82,11 @@ const shopData: Record<string, {
     category: "High-Tech",
     location: "Paris 8ème, France",
     email: "contact@techstore.com",
-    phone: "+33 1 23 45 67 89",
+    phones: [
+      { usage: "whatsapp", number: "07 12 34 56 78", countryCode: "+225" },
+      { usage: "call", number: "01 23 45 67 89", countryCode: "+33" },
+      { usage: "sms", number: "01 23 45 67 89", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=400&fit=crop",
@@ -76,7 +104,10 @@ const shopData: Record<string, {
     category: "Mode",
     location: "Paris 3ème, France",
     email: "hello@modeboutique.com",
-    phone: "+33 1 98 76 54 32",
+    phones: [
+      { usage: "whatsapp", number: "01 98 76 54 32", countryCode: "+33" },
+      { usage: "call", number: "01 98 76 54 32", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop",
@@ -94,7 +125,9 @@ const shopData: Record<string, {
     category: "Streetwear",
     location: "Paris 10ème, France",
     email: "info@urbanwear.com",
-    phone: "+33 1 55 44 33 22",
+    phones: [
+      { usage: "call", number: "01 55 44 33 22", countryCode: "+33" },
+    ],
     isVerified: false,
     isOpen: false,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop",
@@ -112,7 +145,10 @@ const shopData: Record<string, {
     category: "Sport",
     location: "Paris 15ème, France",
     email: "contact@sportzone.com",
-    phone: "+33 1 44 55 66 77",
+    phones: [
+      { usage: "whatsapp", number: "01 44 55 66 77", countryCode: "+33" },
+      { usage: "sms", number: "01 44 55 66 77", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&h=400&fit=crop",
@@ -306,13 +342,34 @@ export default function MarketplaceShopDetail() {
               <Mail className="h-3.5 w-3.5" />
               <span>{shop.email}</span>
             </a>
-            <a
-              href={`tel:${shop.phone}`}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              <span>{shop.phone}</span>
-            </a>
+            {shop.phones.map((p, i) => {
+              const meta = phoneUsageMeta[p.usage];
+              const Icon = meta.icon;
+              const full = `${p.countryCode} ${p.number}`.trim();
+              return (
+                <a
+                  key={`${p.usage}-${i}`}
+                  href={meta.href(full)}
+                  target={p.usage === "whatsapp" ? "_blank" : undefined}
+                  rel={p.usage === "whatsapp" ? "noopener noreferrer" : undefined}
+                  className={cn(
+                    "flex items-center gap-2 pl-2.5 pr-3 py-1.5 rounded-full transition-colors",
+                    meta.className
+                  )}
+                  aria-label={`${meta.label} ${full}`}
+                >
+                  <span className="flex items-center justify-center h-5 w-5 rounded-full bg-background/60">
+                    <Icon className="h-3 w-3" />
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                      {meta.label}
+                    </span>
+                    <span className="text-xs font-medium">{full}</span>
+                  </span>
+                </a>
+              );
+            })}
           </div>
 
           {/* Stats Bar */}
