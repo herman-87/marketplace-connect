@@ -125,7 +125,9 @@ const shopData: Record<string, {
     category: "Streetwear",
     location: "Paris 10ème, France",
     email: "info@urbanwear.com",
-    phone: "+33 1 55 44 33 22",
+    phones: [
+      { usage: "call", number: "01 55 44 33 22", countryCode: "+33" },
+    ],
     isVerified: false,
     isOpen: false,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop",
