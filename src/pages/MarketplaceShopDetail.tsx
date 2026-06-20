@@ -64,7 +64,7 @@ const shopData: Record<string, {
   category: string;
   location: string;
   email: string;
-  phone: string;
+  phones: PhoneEntry[];
   isVerified: boolean;
   isOpen: boolean;
   coverImage: string;
@@ -82,7 +82,11 @@ const shopData: Record<string, {
     category: "High-Tech",
     location: "Paris 8ème, France",
     email: "contact@techstore.com",
-    phone: "+33 1 23 45 67 89",
+    phones: [
+      { usage: "whatsapp", number: "07 12 34 56 78", countryCode: "+225" },
+      { usage: "call", number: "01 23 45 67 89", countryCode: "+33" },
+      { usage: "sms", number: "01 23 45 67 89", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=400&fit=crop",
