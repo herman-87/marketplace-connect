@@ -240,6 +240,24 @@ export default function MarketplaceShopDetail() {
                     {shop.isOpen ? "Ouvert" : "Fermé"}
                   </Badge>
                 </div>
+                {/* Rating stars */}
+                <div className="flex items-center gap-1.5 mt-1">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={cn(
+                          "w-4 h-4",
+                          s <= Math.round(displayRating)
+                            ? "fill-amber-400 text-amber-400"
+                            : "fill-muted text-muted-foreground/30"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium text-foreground">{displayRating}</span>
+                  <span className="text-xs text-muted-foreground">· {displayReviewCount} avis</span>
+                </div>
                 <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground flex-wrap">
                   <Badge variant="outline" className="text-xs font-normal">{shop.category}</Badge>
                   <span className="flex items-center gap-1">
