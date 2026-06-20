@@ -104,7 +104,10 @@ const shopData: Record<string, {
     category: "Mode",
     location: "Paris 3ème, France",
     email: "hello@modeboutique.com",
-    phone: "+33 1 98 76 54 32",
+    phones: [
+      { usage: "whatsapp", number: "01 98 76 54 32", countryCode: "+33" },
+      { usage: "call", number: "01 98 76 54 32", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop",
