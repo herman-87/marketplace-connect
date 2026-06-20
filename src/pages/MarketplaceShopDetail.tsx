@@ -145,7 +145,10 @@ const shopData: Record<string, {
     category: "Sport",
     location: "Paris 15ème, France",
     email: "contact@sportzone.com",
-    phone: "+33 1 44 55 66 77",
+    phones: [
+      { usage: "whatsapp", number: "01 44 55 66 77", countryCode: "+33" },
+      { usage: "sms", number: "01 44 55 66 77", countryCode: "+33" },
+    ],
     isVerified: true,
     isOpen: true,
     coverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&h=400&fit=crop",
