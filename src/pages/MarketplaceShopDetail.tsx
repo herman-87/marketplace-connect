@@ -240,6 +240,24 @@ export default function MarketplaceShopDetail() {
                     {shop.isOpen ? "Ouvert" : "Fermé"}
                   </Badge>
                 </div>
+                {/* Rating stars */}
+                <div className="flex items-center gap-1.5 mt-1">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={cn(
+                          "w-4 h-4",
+                          s <= Math.round(displayRating)
+                            ? "fill-amber-400 text-amber-400"
+                            : "fill-muted text-muted-foreground/30"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium text-foreground">{displayRating}</span>
+                  <span className="text-xs text-muted-foreground">· {displayReviewCount} avis</span>
+                </div>
                 <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground flex-wrap">
                   <Badge variant="outline" className="text-xs font-normal">{shop.category}</Badge>
                   <span className="flex items-center gap-1">
@@ -275,9 +293,27 @@ export default function MarketplaceShopDetail() {
           </div>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground max-w-2xl mb-6">
+          <p className="text-sm text-muted-foreground max-w-2xl mb-4">
             {shop.description}
           </p>
+
+          {/* Contact Info */}
+          <div className="flex flex-wrap items-center gap-3 mb-6 text-sm text-muted-foreground">
+            <a
+              href={`mailto:${shop.email}`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              <span>{shop.email}</span>
+            </a>
+            <a
+              href={`tel:${shop.phone}`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              <span>{shop.phone}</span>
+            </a>
+          </div>
 
           {/* Stats Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
