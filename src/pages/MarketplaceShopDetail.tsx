@@ -29,7 +29,31 @@ import {
   Mail,
   Store,
   TrendingUp,
+  MessageCircle,
 } from "lucide-react";
+
+type PhoneEntry = { usage: "whatsapp" | "call" | "sms"; number: string; countryCode: string };
+
+const phoneUsageMeta: Record<PhoneEntry["usage"], { label: string; icon: typeof Phone; href: (full: string) => string; className: string }> = {
+  whatsapp: {
+    label: "WhatsApp",
+    icon: MessageCircle,
+    href: (full) => `https://wa.me/${full.replace(/[^\d]/g, "")}`,
+    className: "bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20",
+  },
+  call: {
+    label: "Appel",
+    icon: Phone,
+    href: (full) => `tel:${full}`,
+    className: "bg-muted hover:bg-muted/80 text-foreground border border-border/60",
+  },
+  sms: {
+    label: "SMS",
+    icon: MessageSquare,
+    href: (full) => `sms:${full}`,
+    className: "bg-blue-500/10 hover:bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/20",
+  },
+};
 import { cn } from "@/lib/utils";
 
 // Mock data for the public shop view
