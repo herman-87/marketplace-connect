@@ -342,13 +342,34 @@ export default function MarketplaceShopDetail() {
               <Mail className="h-3.5 w-3.5" />
               <span>{shop.email}</span>
             </a>
-            <a
-              href={`tel:${shop.phone}`}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              <span>{shop.phone}</span>
-            </a>
+            {shop.phones.map((p, i) => {
+              const meta = phoneUsageMeta[p.usage];
+              const Icon = meta.icon;
+              const full = `${p.countryCode} ${p.number}`.trim();
+              return (
+                <a
+                  key={`${p.usage}-${i}`}
+                  href={meta.href(full)}
+                  target={p.usage === "whatsapp" ? "_blank" : undefined}
+                  rel={p.usage === "whatsapp" ? "noopener noreferrer" : undefined}
+                  className={cn(
+                    "flex items-center gap-2 pl-2.5 pr-3 py-1.5 rounded-full transition-colors",
+                    meta.className
+                  )}
+                  aria-label={`${meta.label} ${full}`}
+                >
+                  <span className="flex items-center justify-center h-5 w-5 rounded-full bg-background/60">
+                    <Icon className="h-3 w-3" />
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                      {meta.label}
+                    </span>
+                    <span className="text-xs font-medium">{full}</span>
+                  </span>
+                </a>
+              );
+            })}
           </div>
 
           {/* Stats Bar */}
