@@ -34,6 +34,11 @@ import MesAchats from "./pages/MesAchats";
 import WalletPage from "./pages/WalletPage";
 import MesDepenses from "./pages/MesDepenses";
 import Favoris from "./pages/Favoris";
+import Profil from "./pages/Profil";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Conditions from "./pages/Conditions";
+import { TermsReminderDialog } from "@/components/legal/TermsReminderDialog";
 
 import NotFound from "./pages/NotFound";
 
@@ -51,6 +56,7 @@ const App = () => (
               <Sonner position="top-center" richColors closeButton />
               <CelebrationOverlay />
               <BrowserRouter>
+              <TermsReminderDialog />
               <FavoritesProvider>
                 <Routes>
                   <Route path="/" element={<Landing />} />
@@ -77,6 +83,10 @@ const App = () => (
                   <Route path="/wallet" element={<WalletPage />} />
                   <Route path="/mes-depenses" element={<MesDepenses />} />
                   <Route path="/favoris" element={<Favoris />} />
+                  <Route path="/profil" element={<Profil />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/conditions" element={<Conditions />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
