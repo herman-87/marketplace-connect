@@ -55,8 +55,8 @@ const App = () => (
               <Toaster />
               <Sonner position="top-center" richColors closeButton />
               <CelebrationOverlay />
-              <TermsReminderDialog />
               <BrowserRouter>
+              <TermsReminderDialog />
               <FavoritesProvider>
                 <Routes>
                   <Route path="/" element={<Landing />} />
