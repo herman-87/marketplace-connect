@@ -32,7 +32,9 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
 
   // Payment flow
   const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<string | null>("mobile_money");
+  const [paymentProvider, setPaymentProvider] = useState<string | null>(null);
+  const [payerPhone, setPayerPhone] = useState("");
   const [confirmPayment, setConfirmPayment] = useState(false);
 
   // Generic confirmation dialogs
@@ -274,31 +276,93 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
 
   if (status === "PENDING_PAYMENT") {
     if (showPaymentForm) {
+      const providers = [
+        { id: "pawapay", label: "PawaPay", desc: "Orange, MTN, Moov" },
+        { id: "sebpay", label: "SebPay", desc: "Wave, Orange Money" },
+        { id: "moneyfusion", label: "MoneyFusion", desc: "Multi-opérateurs" },
+      ];
+      const phoneValid = payerPhone.replace(/\D/g, "").length >= 8;
+      const canPay = paymentMethod === "mobile_money" && !!paymentProvider && phoneValid;
+
       return (
         <>
           <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
-            <p className="text-sm font-medium">Choisissez votre méthode de paiement</p>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: "mobile_money", label: "Mobile Money", icon: Smartphone },
-                { id: "card", label: "Carte", icon: CreditCard },
-                { id: "cash", label: "Cash", icon: Banknote },
-              ].map(method => (
-                <button
-                  key={method.id}
-                  onClick={() => setPaymentMethod(method.id)}
-                  className={cn(
-                    "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all text-xs",
-                    paymentMethod === method.id
-                      ? "border-foreground bg-muted text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:border-foreground/30"
-                  )}
-                >
-                  <method.icon className="h-5 w-5" />
-                  {method.label}
-                </button>
-              ))}
+            {/* Step 1: method */}
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Méthode</p>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: "mobile_money", label: "Mobile Money", icon: Smartphone, enabled: true },
+                  { id: "card", label: "Carte", icon: CreditCard, enabled: false },
+                  { id: "cash", label: "Cash", icon: Banknote, enabled: false },
+                ].map(method => (
+                  <button
+                    key={method.id}
+                    disabled={!method.enabled}
+                    onClick={() => method.enabled && setPaymentMethod(method.id)}
+                    className={cn(
+                      "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all text-xs",
+                      paymentMethod === method.id
+                        ? "border-foreground bg-muted text-foreground"
+                        : "border-border bg-card text-muted-foreground hover:border-foreground/30",
+                      !method.enabled && "opacity-40 cursor-not-allowed hover:border-border"
+                    )}
+                  >
+                    <method.icon className="h-5 w-5" />
+                    {method.label}
+                    {!method.enabled && <span className="text-[9px] uppercase">Bientôt</span>}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {/* Step 2: provider */}
+            {paymentMethod === "mobile_money" && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Opérateur</p>
+                <div className="grid gap-2">
+                  {providers.map(p => (
+                    <button
+                      key={p.id}
+                      onClick={() => setPaymentProvider(p.id)}
+                      className={cn(
+                        "flex items-center justify-between px-3 py-2.5 rounded-lg border-2 transition-all text-left",
+                        paymentProvider === p.id
+                          ? "border-foreground bg-muted"
+                          : "border-border bg-card hover:border-foreground/30"
+                      )}
+                    >
+                      <div>
+                        <p className="text-sm font-semibold">{p.label}</p>
+                        <p className="text-[11px] text-muted-foreground">{p.desc}</p>
+                      </div>
+                      {paymentProvider === p.id && <Check className="h-4 w-4" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: phone */}
+            {paymentProvider && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Numéro à débiter</p>
+                <div className="relative">
+                  <Smartphone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="tel"
+                    inputMode="tel"
+                    autoFocus
+                    placeholder="+225 07 12 34 56 78"
+                    value={payerPhone}
+                    onChange={(e) => setPayerPhone(e.target.value)}
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Summary */}
             <div className="p-3 rounded-lg bg-muted/50 space-y-1.5">
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Sous-total produits</span>
@@ -315,9 +379,10 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
                 <span className="text-lg">{totalWithDelivery.toFixed(2)} €</span>
               </div>
             </div>
+
             <Button
               className="w-full h-12 text-sm font-semibold gap-2"
-              disabled={!paymentMethod}
+              disabled={!canPay}
               onClick={() => setConfirmPayment(true)}
             >
               <CreditCard className="h-4 w-4" />
@@ -326,7 +391,7 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
             <Button
               variant="ghost"
               className="w-full h-9 text-xs"
-              onClick={() => { setShowPaymentForm(false); setPaymentMethod(null); }}
+              onClick={() => { setShowPaymentForm(false); setPaymentProvider(null); setPayerPhone(""); }}
             >
               Annuler
             </Button>
@@ -336,18 +401,20 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
             open={confirmPayment}
             onOpenChange={setConfirmPayment}
             title="Confirmer le paiement"
-            description={`Vous allez payer ${totalWithDelivery.toFixed(2)} € via ${paymentMethod === "mobile_money" ? "Mobile Money" : paymentMethod === "card" ? "Carte bancaire" : "Cash"}. Confirmez-vous ?`}
+            description={`Une demande de ${totalWithDelivery.toFixed(2)} € va être envoyée au ${payerPhone} via ${providers.find(p => p.id === paymentProvider)?.label}. Validez la notification sur votre téléphone pour finaliser.`}
             confirmLabel={`Payer ${totalWithDelivery.toFixed(2)} €`}
             onConfirm={() => {
-              onStatusChange("PAID", { method: paymentMethod! });
+              onStatusChange("PAID", { method: paymentMethod!, provider: paymentProvider!, phone: payerPhone });
               toast.success("Paiement effectué !");
               setShowPaymentForm(false);
-              setPaymentMethod(null);
+              setPaymentProvider(null);
+              setPayerPhone("");
             }}
           />
         </>
       );
     }
+
 
     return (
       <div className="space-y-3">
