@@ -28,7 +28,310 @@ var whoami_default = defineTool({
 // src/lib/mcp/tools/list-products.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.24.0";
 import { z } from "npm:zod@^3.25.76";
-import { mockProducts } from "npm:@/data/businessMockData";
+
+// src/data/businessMockData.ts
+var mockProducts = [
+  {
+    id: "1",
+    name: "Sac \xE0 dos Urban Pro",
+    description: "Sac \xE0 dos imperm\xE9able avec compartiment laptop 15 pouces",
+    price: 59.99,
+    status: "published",
+    category: "articles",
+    likes: 45,
+    views: 234,
+    sales: 67,
+    createdAt: "Il y a 2 jours",
+    createdBy: "Vous"
+  },
+  {
+    id: "2",
+    name: "Montre Connect\xE9e Sport",
+    description: "Suivi sant\xE9, GPS int\xE9gr\xE9, 7 jours d'autonomie",
+    price: 149.99,
+    status: "published",
+    category: "articles",
+    likes: 38,
+    views: 189,
+    sales: 52,
+    createdAt: "Il y a 1 semaine",
+    createdBy: "Marie Dupont"
+  },
+  {
+    id: "3",
+    name: "Casque Audio Premium",
+    description: "R\xE9duction de bruit active, son Hi-Fi",
+    price: 199.99,
+    status: "draft",
+    category: "articles",
+    likes: 0,
+    views: 12,
+    sales: 0,
+    createdAt: "Aujourd'hui",
+    createdBy: "Vous"
+  },
+  {
+    id: "4",
+    name: "Sneakers Urban Limited",
+    description: "\xC9dition limit\xE9e, design exclusif",
+    price: 89.99,
+    status: "removed",
+    category: "articles",
+    likes: 22,
+    views: 156,
+    sales: 28,
+    createdAt: "Il y a 2 semaines",
+    createdBy: "Marie Dupont"
+  },
+  {
+    id: "5",
+    name: "Enceinte Bluetooth Mini",
+    description: "Son puissant, \xE9tanche IPX7, 12h d'autonomie",
+    price: 49.99,
+    status: "published",
+    category: "articles",
+    likes: 31,
+    views: 178,
+    sales: 41,
+    createdAt: "Il y a 3 jours",
+    createdBy: "Vous"
+  },
+  {
+    id: "6",
+    name: "Lunettes de soleil Aviator",
+    description: "Verres polaris\xE9s, monture acier inoxydable",
+    price: 79.99,
+    status: "published",
+    category: "articles",
+    likes: 27,
+    views: 145,
+    sales: 33,
+    createdAt: "Il y a 5 jours",
+    createdBy: "Marie Dupont"
+  },
+  {
+    id: "7",
+    name: "Ceinture Cuir Artisanale",
+    description: "Cuir v\xE9ritable, boucle en laiton vieilli",
+    price: 44.99,
+    status: "draft",
+    category: "articles",
+    likes: 5,
+    views: 34,
+    sales: 0,
+    createdAt: "Hier",
+    createdBy: "Vous"
+  },
+  {
+    id: "8",
+    name: "Portefeuille Compact",
+    description: "Design minimaliste, RFID bloqu\xE9, 6 emplacements cartes",
+    price: 34.99,
+    status: "published",
+    category: "articles",
+    likes: 19,
+    views: 98,
+    sales: 22,
+    createdAt: "Il y a 1 semaine",
+    createdBy: "Jean Martin"
+  },
+  {
+    id: "9",
+    name: "Bracelet Connect\xE9 Fitness",
+    description: "Suivi sommeil, fr\xE9quence cardiaque, notifications",
+    price: 69.99,
+    status: "published",
+    category: "articles",
+    likes: 42,
+    views: 210,
+    sales: 58,
+    createdAt: "Il y a 4 jours",
+    createdBy: "Vous"
+  },
+  {
+    id: "10",
+    name: "\xC9charpe Cachemire",
+    description: "100% cachemire, tissage \xE9cossais",
+    price: 119.99,
+    status: "removed",
+    category: "articles",
+    likes: 15,
+    views: 87,
+    sales: 12,
+    createdAt: "Il y a 3 semaines",
+    createdBy: "Marie Dupont"
+  }
+];
+var mockOrders = [
+  {
+    id: "ord-001",
+    customer: { name: "Sophie Laurent", phone: "+33 6 12 34 56 78" },
+    products: [
+      { name: "Sac \xE0 dos Urban Pro", quantity: 2, price: 119.98, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" },
+      { name: "Montre Connect\xE9e Sport", quantity: 1, price: 149.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&h=80&fit=crop" }
+    ],
+    total: 269.97,
+    status: "CREATED",
+    createdAt: "2025-02-15T10:30:00Z",
+    deliveryAddress: "45 Rue de Rivoli, 75001 Paris",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-15T10:30:00Z", note: "Commande pass\xE9e" }
+    ]
+  },
+  {
+    id: "ord-002",
+    customer: { name: "Pierre Moreau", phone: "+33 6 98 76 54 32" },
+    products: [
+      { name: "Casque Audio Premium", quantity: 1, price: 199.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" }
+    ],
+    total: 199.99,
+    deliveryFee: 5,
+    status: "PENDING_PAYMENT",
+    createdAt: "2025-02-15T09:45:00Z",
+    deliveryAddress: "12 Avenue des Champs-\xC9lys\xE9es, 75008 Paris",
+    deliveryMethod: "express",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-15T09:45:00Z", note: "Commande pass\xE9e" },
+      { status: "ACCEPTED", timestamp: "2025-02-15T10:00:00Z", note: "Accept\xE9e par le vendeur" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-15T10:00:00Z", note: "En attente du paiement" }
+    ]
+  },
+  {
+    id: "ord-003",
+    customer: { name: "Claire Bernard" },
+    products: [
+      { name: "Sneakers Urban Limited", quantity: 1, price: 89.99, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&h=80&fit=crop" }
+    ],
+    total: 89.99,
+    status: "IN_DELIVERY",
+    createdAt: "2025-02-14T16:00:00Z",
+    deliveryAddress: "8 Place Bellecour, 69002 Lyon",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-14T16:00:00Z", note: "Commande pass\xE9e" },
+      { status: "ACCEPTED", timestamp: "2025-02-14T16:30:00Z", note: "Accept\xE9e" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-14T16:30:00Z" },
+      { status: "PAID", timestamp: "2025-02-14T17:00:00Z", note: "Paiement re\xE7u via Mobile Money" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-14T18:00:00Z", note: "Pr\xE9paration termin\xE9e" },
+      { status: "IN_DELIVERY", timestamp: "2025-02-15T08:00:00Z", note: "Livreur: Moussa K." }
+    ]
+  },
+  {
+    id: "ord-004",
+    customer: { name: "Marc Petit" },
+    products: [
+      { name: "Sac \xE0 dos Urban Pro", quantity: 1, price: 59.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" }
+    ],
+    total: 59.99,
+    status: "DELIVERED",
+    createdAt: "2025-02-13T11:00:00Z",
+    deliveryAddress: "3 Rue de la Paix, 75002 Paris",
+    deliveryMethod: "express",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-13T11:00:00Z", note: "Commande pass\xE9e" },
+      { status: "ACCEPTED", timestamp: "2025-02-13T11:15:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-13T11:15:00Z" },
+      { status: "PAID", timestamp: "2025-02-13T11:30:00Z", note: "Paiement par carte" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-13T13:00:00Z" },
+      { status: "IN_DELIVERY", timestamp: "2025-02-13T14:00:00Z" },
+      { status: "DELIVERED", timestamp: "2025-02-13T15:30:00Z", note: "Livr\xE9 \xE0 l'adresse" }
+    ]
+  },
+  {
+    id: "ord-005",
+    customer: { name: "Aminata Sy" },
+    products: [
+      { name: "Montre Connect\xE9e Sport", quantity: 1, price: 149.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&h=80&fit=crop" }
+    ],
+    total: 149.99,
+    status: "COMPLETED",
+    createdAt: "2025-02-10T09:00:00Z",
+    deliveryAddress: "20 Boulevard Haussmann, 75009 Paris",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-10T09:00:00Z" },
+      { status: "ACCEPTED", timestamp: "2025-02-10T09:30:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-10T09:30:00Z" },
+      { status: "PAID", timestamp: "2025-02-10T10:00:00Z" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-10T12:00:00Z" },
+      { status: "IN_DELIVERY", timestamp: "2025-02-10T14:00:00Z" },
+      { status: "DELIVERED", timestamp: "2025-02-10T16:00:00Z" },
+      { status: "COMPLETED", timestamp: "2025-02-10T18:00:00Z", note: "R\xE9ception confirm\xE9e par le client" }
+    ]
+  },
+  {
+    id: "ord-006",
+    customer: { name: "Fatou Ndiaye" },
+    products: [
+      { name: "Sneakers Urban Limited", quantity: 2, price: 179.98, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&h=80&fit=crop" }
+    ],
+    total: 179.98,
+    status: "CREATED",
+    createdAt: "2025-02-15T11:00:00Z",
+    deliveryAddress: "15 Rue Faidherbe, Dakar",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-15T11:00:00Z", note: "Commande pass\xE9e" }
+    ]
+  },
+  {
+    id: "ord-007",
+    customer: { name: "Thomas Leroy" },
+    products: [
+      { name: "Casque Audio Premium", quantity: 1, price: 199.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" },
+      { name: "Enceinte Bluetooth Mini", quantity: 1, price: 49.99 }
+    ],
+    total: 249.98,
+    status: "PAID",
+    createdAt: "2025-02-14T14:30:00Z",
+    deliveryAddress: "7 Quai de la Tournelle, 75005 Paris",
+    deliveryMethod: "express",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-14T14:30:00Z" },
+      { status: "ACCEPTED", timestamp: "2025-02-14T14:45:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-14T14:45:00Z" },
+      { status: "PAID", timestamp: "2025-02-14T15:00:00Z", note: "Paiement par carte" }
+    ]
+  },
+  {
+    id: "ord-008",
+    customer: { name: "Ibrahima Fall" },
+    products: [
+      { name: "Lunettes de soleil Aviator", quantity: 1, price: 79.99, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=80&h=80&fit=crop" }
+    ],
+    total: 79.99,
+    status: "REJECTED",
+    createdAt: "2025-02-12T08:00:00Z",
+    deliveryAddress: "22 Avenue Bourguiba, Dakar",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-12T08:00:00Z" },
+      { status: "REJECTED", timestamp: "2025-02-12T09:00:00Z", note: "Produit en rupture de stock" }
+    ]
+  },
+  {
+    id: "ord-009",
+    customer: { name: "Julie Dupont" },
+    products: [
+      { name: "Sac \xE0 dos Urban Pro", quantity: 1, price: 59.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" }
+    ],
+    total: 59.99,
+    status: "PENDING_DELIVERY",
+    createdAt: "2025-02-14T10:00:00Z",
+    deliveryAddress: "5 Rue du Commerce, 75015 Paris",
+    deliveryMethod: "standard",
+    statusHistory: [
+      { status: "CREATED", timestamp: "2025-02-14T10:00:00Z" },
+      { status: "ACCEPTED", timestamp: "2025-02-14T10:15:00Z" },
+      { status: "PENDING_PAYMENT", timestamp: "2025-02-14T10:15:00Z" },
+      { status: "PAID", timestamp: "2025-02-14T10:30:00Z" },
+      { status: "PENDING_DELIVERY", timestamp: "2025-02-14T12:00:00Z", note: "Colis pr\xEAt" }
+    ]
+  }
+];
+
+// src/lib/mcp/tools/list-products.ts
 var list_products_default = defineTool2({
   name: "list_products",
   title: "Lister les produits",
@@ -56,7 +359,6 @@ var list_products_default = defineTool2({
 // src/lib/mcp/tools/list-orders.ts
 import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.24.0";
 import { z as z2 } from "npm:zod@^3.25.76";
-import { mockOrders } from "npm:@/data/businessMockData";
 var list_orders_default = defineTool3({
   name: "list_orders",
   title: "Lister les commandes",

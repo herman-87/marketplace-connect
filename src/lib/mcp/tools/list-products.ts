@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { mockProducts } from "@/data/businessMockData";
+import { mockProducts } from "../../../data/businessMockData";
 
 export default defineTool({
   name: "list_products",
