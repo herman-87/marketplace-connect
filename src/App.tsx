@@ -38,6 +38,8 @@ import Profil from "./pages/Profil";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Conditions from "./pages/Conditions";
+import OAuthConsent from "./pages/OAuthConsent";
+
 import { TermsReminderDialog } from "@/components/legal/TermsReminderDialog";
 
 import NotFound from "./pages/NotFound";
@@ -87,6 +89,8 @@ const App = () => (
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/conditions" element={<Conditions />} />
+                  <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
