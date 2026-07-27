@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://sdawocslqhhtjalsgbde.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "fastrelays-mcp",
+      "version": "0.1.0",
+      "title": "FastRelays MCP"
+    },
+    "tools": [
+      {
+        "name": "whoami",
+        "title": "Utilisateur connecté",
+        "description": "Retourne l'identité de l'utilisateur FastRelays connecté (id et email) pour vérifier la connexion.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_products",
+        "title": "Lister les produits",
+        "description": "Liste les produits de la boutique avec leur prix, stock et statut. Un filtre texte optionnel permet de chercher par nom ou catégorie.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "description": "Filtre texte sur le nom ou la catégorie."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Nombre maximum de produits retournés (défaut 20)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_orders",
+        "title": "Lister les commandes",
+        "description": "Liste les commandes de la boutique avec le client, le montant et le statut. Un filtre de statut optionnel est disponible.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "Filtre exact sur le statut de la commande."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Nombre maximum de commandes retournées (défaut 20)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_order_messages",
+        "title": "Lire la messagerie d'une commande",
+        "description": "Retourne les messages échangés sur une commande, triés du plus ancien au plus récent.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Identifiant de la commande."
+            }
+          },
+          "required": [
+            "order_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "send_order_message",
+        "title": "Envoyer un message sur une commande",
+        "description": "Envoie un message dans la messagerie d'une commande au nom de l'utilisateur connecté.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Identifiant de la commande."
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Contenu du message à envoyer."
+            },
+            "sender_role": {
+              "type": "string",
+              "enum": [
+                "seller",
+                "buyer"
+              ],
+              "description": "Rôle de l'expéditeur (défaut: seller)."
+            }
+          },
+          "required": [
+            "order_id",
+            "content"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

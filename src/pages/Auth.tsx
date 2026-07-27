@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mail, Lock, Store } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import authBg from "@/assets/auth-bg.jpg";
 
 export default function Auth() {
@@ -13,15 +14,37 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { signIn, signUp } = useAuth();
 
-  const handleSignIn = (e: React.FormEvent) => {
-    e.preventDefault();
+  // Only same-origin relative paths are accepted as a return target.
+  const rawNext = params.get("next") ?? "";
+  const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : null;
+
+  const goNext = () => {
+    if (next) {
+      window.location.href = next;
+      return;
+    }
     navigate("/dashboard");
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    if (next && email && password) {
+      const { error } = await signIn(email, password);
+      if (error) return;
+    }
+    goNext();
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (next && email && password) {
+      const { error } = await signUp(email, password);
+      if (error) return;
+    }
+    goNext();
   };
 
   const clearForm = () => {
@@ -29,6 +52,7 @@ export default function Auth() {
     setPassword("");
     setConfirmPassword("");
   };
+
 
   return (
     <div className="min-h-screen flex">
