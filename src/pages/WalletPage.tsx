@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ArrowDownToLine, Wallet as WalletIcon, Inbox } from "lucide-react";
 import { formatPrice } from "@/lib/tax";
-import { wallets as allWallets, type WalletAccount } from "@/data/walletData";
+import { wallets as allWallets, type WalletAccount, type WalletTransaction } from "@/data/walletData";
 import { WalletSelector } from "@/components/wallet/WalletSelector";
 import { TransactionRow } from "@/components/wallet/TransactionRow";
 import { TransactionDetailSheet } from "@/components/wallet/TransactionDetailSheet";
