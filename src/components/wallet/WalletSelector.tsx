@@ -49,38 +49,6 @@ export function WalletSelector({ wallets, selectedId, onSelect }: Props) {
               <p className="text-xl font-bold text-foreground mt-0.5">
                 {formatPrice(w.balance, w.currency)}
               </p>
-
-              <div
-                className={cn(
-                  "absolute inset-x-0 bottom-0 p-3 flex gap-2 opacity-0 transition-opacity duration-200",
-                  "group-hover:opacity-100 group-focus-within:opacity-100",
-                  "bg-card/95 backdrop-blur-sm rounded-b-xl"
-                )}
-              >
-                <Button
-                  size="sm"
-                  className="h-8 flex-1 gap-1 text-xs"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeposit?.(w);
-                  }}
-                >
-                  <ArrowDownToLine className="w-3.5 h-3.5" />
-                  Dépôt
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-8 flex-1 gap-1 text-xs"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onWithdraw?.(w);
-                  }}
-                >
-                  <ArrowUpFromLine className="w-3.5 h-3.5" />
-                  Retrait
-                </Button>
-              </div>
             </div>
           );
         })}
