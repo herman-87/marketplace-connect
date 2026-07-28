@@ -309,7 +309,7 @@ export default function AccountTransactions() {
                 {data.page + 1} / {data.totalPages}
               </span>
               <Select value={String(size)} onValueChange={(v) => setSize(Number(v))}>
-                <SelectTrigger className="h-8 w-[92px] text-xs">
+                <SelectTrigger className="h-8 w-[108px] text-xs">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-popover z-50">
