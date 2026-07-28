@@ -32,6 +32,7 @@ import MarketplaceDeals from "./pages/MarketplaceDeals";
 import MarketplaceShopDetail from "./pages/MarketplaceShopDetail";
 import MesAchats from "./pages/MesAchats";
 import WalletPage from "./pages/WalletPage";
+import AccountTransactions from "./pages/AccountTransactions";
 import MesDepenses from "./pages/MesDepenses";
 import Favoris from "./pages/Favoris";
 import Profil from "./pages/Profil";
@@ -83,6 +84,7 @@ const App = () => (
                   <Route path="/product/:productId" element={<ProductDetail />} />
                   <Route path="/mes-achats" element={<MesAchats />} />
                   <Route path="/wallet" element={<WalletPage />} />
+                  <Route path="/wallet/:accountId/transactions" element={<AccountTransactions />} />
                   <Route path="/mes-depenses" element={<MesDepenses />} />
                   <Route path="/favoris" element={<Favoris />} />
                   <Route path="/profil" element={<Profil />} />
