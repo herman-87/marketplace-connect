@@ -51,25 +51,26 @@ export default function WalletPage() {
         </Card>
 
         {/* Wallet selector */}
-        <WalletSelector
-          wallets={wallets}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          onDeposit={handleDeposit}
-          onWithdraw={handleWithdraw}
-        />
+        <WalletSelector wallets={wallets} selectedId={selectedId} onSelect={setSelectedId} />
+
+        {/* Actions on the selected wallet */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button className="h-9 gap-1.5 text-xs" onClick={() => handleDeposit(wallet)}>
+            <ArrowDownToLine className="w-3.5 h-3.5" /> Dépôt
+          </Button>
+          <Button variant="outline" className="h-9 gap-1.5 text-xs" onClick={() => handleWithdraw(wallet)}>
+            <ArrowUpFromLine className="w-3.5 h-3.5" /> Retrait
+          </Button>
+          <span className="text-xs text-muted-foreground">sur {wallet.name}</span>
+        </div>
 
         {/* Recent transactions */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-medium text-foreground">Transactions récentes</h2>
             {wallet.transactions.length > 0 && (
-              <Button
-                variant="ghost"
-                className="h-8 text-xs"
-                onClick={() => toast.success(`Historique complet — ${wallet.name}`)}
-              >
-                Voir tout
+              <Button asChild variant="ghost" className="h-8 text-xs">
+                <Link to={`/wallet/${wallet.id}/transactions`}>Voir tout</Link>
               </Button>
             )}
           </div>
