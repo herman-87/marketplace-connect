@@ -1,18 +1,15 @@
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/tax";
-import { Building2, User, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Building2, User } from "lucide-react";
 import type { WalletAccount } from "@/data/walletData";
 
 interface Props {
   wallets: WalletAccount[];
   selectedId: string;
   onSelect: (id: string) => void;
-  onDeposit?: (wallet: WalletAccount) => void;
-  onWithdraw?: (wallet: WalletAccount) => void;
 }
 
-export function WalletSelector({ wallets, selectedId, onSelect, onDeposit, onWithdraw }: Props) {
+export function WalletSelector({ wallets, selectedId, onSelect }: Props) {
   return (
     <div className="-mx-4 px-4 md:mx-0 md:px-0 overflow-x-auto scrollbar-none">
       <div className="flex gap-3 min-w-max pb-1">
