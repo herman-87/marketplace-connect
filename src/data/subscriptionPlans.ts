@@ -50,7 +50,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     id: "growth",
     name: "Growth",
     tagline: "Gagnez en visibilité avec la publicité",
-    price: 9500,
+    price: 500,
     currency: "XAF",
     period: "mois",
     icon: Megaphone,
