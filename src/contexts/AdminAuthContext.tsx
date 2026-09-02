@@ -4,9 +4,11 @@ import {
   AdminBusiness,
   AdminContentItem,
   PlatformUser,
+  PromoCode,
   seedAdmins,
   seedBusinesses,
   seedContent,
+  seedPromoCodes,
   seedUsers,
 } from "@/data/adminData";
 
@@ -16,7 +18,9 @@ const KEYS = {
   users: "fr_admin_platform_users",
   businesses: "fr_admin_businesses",
   content: "fr_admin_content",
+  promos: "fr_admin_promo_codes",
 };
+
 
 function load<T>(key: string, fallback: T): T {
   try {
