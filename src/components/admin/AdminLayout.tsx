@@ -6,6 +6,7 @@ import {
   FileStack,
   LogOut,
   ShieldCheck,
+  Ticket,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ const navItems = [
   { title: "Utilisateurs", href: "/admin/users", icon: Users },
   { title: "Boutiques", href: "/admin/businesses", icon: Building2 },
   { title: "Contenus", href: "/admin/content", icon: FileStack },
+  { title: "Codes promos", href: "/admin/promo-codes", icon: Ticket },
   { title: "Administrateurs", href: "/admin/admins", icon: ShieldCheck },
 ];
 
