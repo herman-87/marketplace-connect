@@ -100,6 +100,15 @@ const App = () => (
                   <Route path="/conditions" element={<Conditions />} />
                   <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 
+                  {/* Backoffice administrateur (session séparée) */}
+                  <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
+                  <Route path="/admin" element={<AdminAuthProvider><AdminDashboard /></AdminAuthProvider>} />
+                  <Route path="/admin/users" element={<AdminAuthProvider><AdminUsers /></AdminAuthProvider>} />
+                  <Route path="/admin/businesses" element={<AdminAuthProvider><AdminBusinesses /></AdminAuthProvider>} />
+                  <Route path="/admin/content" element={<AdminAuthProvider><AdminContent /></AdminAuthProvider>} />
+                  <Route path="/admin/admins" element={<AdminAuthProvider><AdminAdmins /></AdminAuthProvider>} />
+
+
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
