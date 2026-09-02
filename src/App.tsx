@@ -40,6 +40,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Conditions from "./pages/Conditions";
 import OAuthConsent from "./pages/OAuthConsent";
+import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminBusinesses from "./pages/admin/AdminBusinesses";
+import AdminContent from "./pages/admin/AdminContent";
+import AdminAdmins from "./pages/admin/AdminAdmins";
 
 import { TermsReminderDialog } from "@/components/legal/TermsReminderDialog";
 
@@ -92,6 +99,15 @@ const App = () => (
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/conditions" element={<Conditions />} />
                   <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
+                  {/* Backoffice administrateur (session séparée) */}
+                  <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
+                  <Route path="/admin" element={<AdminAuthProvider><AdminDashboard /></AdminAuthProvider>} />
+                  <Route path="/admin/users" element={<AdminAuthProvider><AdminUsers /></AdminAuthProvider>} />
+                  <Route path="/admin/businesses" element={<AdminAuthProvider><AdminBusinesses /></AdminAuthProvider>} />
+                  <Route path="/admin/content" element={<AdminAuthProvider><AdminContent /></AdminAuthProvider>} />
+                  <Route path="/admin/admins" element={<AdminAuthProvider><AdminAdmins /></AdminAuthProvider>} />
+
 
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
