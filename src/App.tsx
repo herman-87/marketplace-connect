@@ -40,6 +40,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Conditions from "./pages/Conditions";
 import OAuthConsent from "./pages/OAuthConsent";
+import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminBusinesses from "./pages/admin/AdminBusinesses";
+import AdminContent from "./pages/admin/AdminContent";
+import AdminAdmins from "./pages/admin/AdminAdmins";
 
 import { TermsReminderDialog } from "@/components/legal/TermsReminderDialog";
 
