@@ -102,3 +102,100 @@ export const contentKindLabels: Record<ContentKind, string> = {
   promotion: "Promotion",
   review: "Avis",
 };
+
+// ---------- Codes promos ----------
+
+export type PromoCodeType = "percentage" | "amount" | "shipping";
+export type PromoCodeStatus = "active" | "scheduled" | "expired" | "disabled";
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  description: string;
+  type: PromoCodeType;
+  value: number;
+  minOrder: number;
+  usageLimit: number;
+  usageCount: number;
+  scope: string;
+  startAt: string;
+  endAt: string;
+  status: PromoCodeStatus;
+  createdAt: string;
+}
+
+export const promoTypeLabels: Record<PromoCodeType, string> = {
+  percentage: "Pourcentage",
+  amount: "Montant fixe",
+  shipping: "Livraison offerte",
+};
+
+export const promoStatusLabels: Record<PromoCodeStatus, string> = {
+  active: "Actif",
+  scheduled: "Programmé",
+  expired: "Expiré",
+  disabled: "Désactivé",
+};
+
+export const seedPromoCodes: PromoCode[] = [
+  {
+    id: "prm-1",
+    code: "BIENVENUE10",
+    description: "10% sur la première commande",
+    type: "percentage",
+    value: 10,
+    minOrder: 5000,
+    usageLimit: 500,
+    usageCount: 128,
+    scope: "Toute la plateforme",
+    startAt: "2026-01-01",
+    endAt: "2026-12-31",
+    status: "active",
+    createdAt: "2026-01-01",
+  },
+  {
+    id: "prm-2",
+    code: "URBAN2000",
+    description: "2 000 XAF de remise chez Urban Style Shop",
+    type: "amount",
+    value: 2000,
+    minOrder: 15000,
+    usageLimit: 100,
+    usageCount: 41,
+    scope: "Urban Style Shop",
+    startAt: "2026-06-01",
+    endAt: "2026-09-30",
+    status: "active",
+    createdAt: "2026-05-28",
+  },
+  {
+    id: "prm-3",
+    code: "LIVRAISONFREE",
+    description: "Livraison offerte dès 20 000 XAF",
+    type: "shipping",
+    value: 0,
+    minOrder: 20000,
+    usageLimit: 300,
+    usageCount: 300,
+    scope: "Toute la plateforme",
+    startAt: "2026-03-01",
+    endAt: "2026-06-30",
+    status: "expired",
+    createdAt: "2026-02-25",
+  },
+  {
+    id: "prm-4",
+    code: "RENTREE15",
+    description: "15% pour la rentrée",
+    type: "percentage",
+    value: 15,
+    minOrder: 10000,
+    usageLimit: 200,
+    usageCount: 0,
+    scope: "Toute la plateforme",
+    startAt: "2026-09-15",
+    endAt: "2026-10-15",
+    status: "scheduled",
+    createdAt: "2026-08-20",
+  },
+];
