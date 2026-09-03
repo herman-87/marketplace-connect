@@ -82,6 +82,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [businesses, setBusinesses] = useState<AdminBusiness[]>(() => load(KEYS.businesses, seedBusinesses));
   const [content, setContent] = useState<AdminContentItem[]>(() => load(KEYS.content, seedContent));
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>(() => load(KEYS.promos, seedPromoCodes));
+  const [moderationLog, setModerationLog] = useState<ModerationLogEntry[]>(() => load(KEYS.log, seedModerationLog));
 
   useEffect(() => save(KEYS.admins, admins), [admins]);
   useEffect(() => save(KEYS.session, admin), [admin]);
@@ -89,6 +90,8 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => save(KEYS.businesses, businesses), [businesses]);
   useEffect(() => save(KEYS.content, content), [content]);
   useEffect(() => save(KEYS.promos, promoCodes), [promoCodes]);
+  useEffect(() => save(KEYS.log, moderationLog), [moderationLog]);
+
 
   const signIn = useCallback(
     (email: string, password: string) => {
