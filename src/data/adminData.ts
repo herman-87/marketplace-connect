@@ -38,7 +38,15 @@ export interface AdminBusiness {
 }
 
 export type ContentKind = "product" | "promotion" | "review";
-export type ContentStatus = "published" | "pending" | "rejected";
+export type ContentStatus = "published" | "pending" | "rejected" | "hidden";
+export type ContentSeverity = "low" | "medium" | "high";
+
+export interface ContentReport {
+  id: string;
+  reason: string;
+  reporter: string;
+  createdAt: string;
+}
 
 export interface AdminContentItem {
   id: string;
@@ -48,7 +56,42 @@ export interface AdminContentItem {
   status: ContentStatus;
   reports: number;
   createdAt: string;
+  description?: string;
+  author?: string;
+  severity?: ContentSeverity;
+  reportDetails?: ContentReport[];
+  moderationNote?: string;
+  rejectionReason?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
 }
+
+export interface ModerationLogEntry {
+  id: string;
+  contentId: string;
+  contentTitle: string;
+  action: string;
+  reason?: string;
+  admin: string;
+  at: string;
+}
+
+export const rejectionReasons = [
+  "Contenu inapproprié ou offensant",
+  "Produit interdit ou réglementé",
+  "Informations trompeuses / fausses promotions",
+  "Photos de mauvaise qualité ou volées",
+  "Prix ou description incohérents",
+  "Avis frauduleux / spam",
+  "Autre (préciser)",
+] as const;
+
+export const severityLabels: Record<ContentSeverity, string> = {
+  low: "Faible",
+  medium: "Moyenne",
+  high: "Élevée",
+};
+
 
 export const adminRoleLabels: Record<AdminRole, string> = {
   SUPER_ADMIN: "Super admin",
@@ -91,11 +134,84 @@ export const seedBusinesses: AdminBusiness[] = [
 ];
 
 export const seedContent: AdminContentItem[] = [
-  { id: "cnt-1", title: "Sac à dos Urban Pro", kind: "product", business: "Urban Style Shop", status: "published", reports: 0, createdAt: "2026-06-01" },
-  { id: "cnt-2", title: "-30% sur les sneakers", kind: "promotion", business: "Urban Style Shop", status: "pending", reports: 1, createdAt: "2026-07-15" },
-  { id: "cnt-3", title: "Avis: livraison très lente", kind: "review", business: "Chez Mama Nadia", status: "pending", reports: 3, createdAt: "2026-08-02" },
-  { id: "cnt-4", title: "Casque Bluetooth X2", kind: "product", business: "TechRelay", status: "rejected", reports: 2, createdAt: "2026-08-10" },
+  {
+    id: "cnt-1",
+    title: "Sac à dos Urban Pro",
+    kind: "product",
+    business: "Urban Style Shop",
+    status: "published",
+    reports: 0,
+    createdAt: "2026-06-01",
+    author: "Sophie Laurent",
+    severity: "low",
+    description: "Sac à dos 30L en toile renforcée, compartiment ordinateur 15\".",
+    reportDetails: [],
+  },
+  {
+    id: "cnt-2",
+    title: "-30% sur les sneakers",
+    kind: "promotion",
+    business: "Urban Style Shop",
+    status: "pending",
+    reports: 1,
+    createdAt: "2026-07-15",
+    author: "Sophie Laurent",
+    severity: "medium",
+    description: "Promotion -30% valable 7 jours sur toute la gamme sneakers.",
+    reportDetails: [
+      { id: "rep-1", reason: "Informations trompeuses / fausses promotions", reporter: "Jean Martin", createdAt: "2026-07-18" },
+    ],
+  },
+  {
+    id: "cnt-3",
+    title: "Avis: livraison très lente",
+    kind: "review",
+    business: "Chez Mama Nadia",
+    status: "pending",
+    reports: 3,
+    createdAt: "2026-08-02",
+    author: "Pierre Moreau",
+    severity: "high",
+    description: "Commande reçue après 9 jours, aucun suivi et service client injoignable.",
+    reportDetails: [
+      { id: "rep-2", reason: "Avis frauduleux / spam", reporter: "Marie Dupont", createdAt: "2026-08-03" },
+      { id: "rep-3", reason: "Contenu inapproprié ou offensant", reporter: "Sophie Laurent", createdAt: "2026-08-04" },
+      { id: "rep-4", reason: "Avis frauduleux / spam", reporter: "Jean Martin", createdAt: "2026-08-05" },
+    ],
+  },
+  {
+    id: "cnt-4",
+    title: "Casque Bluetooth X2",
+    kind: "product",
+    business: "TechRelay",
+    status: "rejected",
+    reports: 2,
+    createdAt: "2026-08-10",
+    author: "Pierre Moreau",
+    severity: "medium",
+    description: "Casque sans fil, autonomie annoncée 40h.",
+    rejectionReason: "Photos de mauvaise qualité ou volées",
+    reviewedBy: "Claire Moderation",
+    reviewedAt: "2026-08-12",
+    reportDetails: [
+      { id: "rep-5", reason: "Photos de mauvaise qualité ou volées", reporter: "Sophie Laurent", createdAt: "2026-08-11" },
+      { id: "rep-6", reason: "Prix ou description incohérents", reporter: "Marie Dupont", createdAt: "2026-08-11" },
+    ],
+  },
 ];
+
+export const seedModerationLog: ModerationLogEntry[] = [
+  {
+    id: "mlog-1",
+    contentId: "cnt-4",
+    contentTitle: "Casque Bluetooth X2",
+    action: "Rejeté",
+    reason: "Photos de mauvaise qualité ou volées",
+    admin: "Claire Moderation",
+    at: "2026-08-12 10:24",
+  },
+];
+
 
 export const contentKindLabels: Record<ContentKind, string> = {
   product: "Produit",

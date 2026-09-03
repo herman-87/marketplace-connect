@@ -3,11 +3,14 @@ import {
   AdminAccount,
   AdminBusiness,
   AdminContentItem,
+  ContentStatus,
+  ModerationLogEntry,
   PlatformUser,
   PromoCode,
   seedAdmins,
   seedBusinesses,
   seedContent,
+  seedModerationLog,
   seedPromoCodes,
   seedUsers,
 } from "@/data/adminData";
@@ -19,7 +22,9 @@ const KEYS = {
   businesses: "fr_admin_businesses",
   content: "fr_admin_content",
   promos: "fr_admin_promo_codes",
+  log: "fr_admin_moderation_log",
 };
+
 
 
 function load<T>(key: string, fallback: T): T {
@@ -56,14 +61,28 @@ interface AdminAuthContextValue {
   updateBusiness: (id: string, patch: Partial<AdminBusiness>) => void;
   updateContent: (id: string, patch: Partial<AdminContentItem>) => void;
   deleteContent: (id: string) => void;
+  moderationLog: ModerationLogEntry[];
+  moderateContent: (ids: string[], status: ContentStatus, reason?: string) => void;
+  dismissReports: (ids: string[]) => void;
+  addModerationNote: (id: string, note: string) => void;
   createPromoCode: (data: Omit<PromoCode, "id" | "createdAt" | "usageCount">) => void;
   updatePromoCode: (id: string, patch: Partial<PromoCode>) => void;
   deletePromoCode: (id: string) => void;
 }
 
+
 const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefined);
 
 const today = () => new Date().toISOString().slice(0, 10);
+const now = () => new Date().toISOString().slice(0, 16).replace("T", " ");
+
+const statusActionLabels: Record<ContentStatus, string> = {
+  published: "Approuvé",
+  pending: "Remis en attente",
+  rejected: "Rejeté",
+  hidden: "Masqué",
+};
+
 
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [admins, setAdmins] = useState<AdminAccount[]>(() => load(KEYS.admins, seedAdmins));
@@ -72,6 +91,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [businesses, setBusinesses] = useState<AdminBusiness[]>(() => load(KEYS.businesses, seedBusinesses));
   const [content, setContent] = useState<AdminContentItem[]>(() => load(KEYS.content, seedContent));
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>(() => load(KEYS.promos, seedPromoCodes));
+  const [moderationLog, setModerationLog] = useState<ModerationLogEntry[]>(() => load(KEYS.log, seedModerationLog));
 
   useEffect(() => save(KEYS.admins, admins), [admins]);
   useEffect(() => save(KEYS.session, admin), [admin]);
@@ -79,6 +99,8 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => save(KEYS.businesses, businesses), [businesses]);
   useEffect(() => save(KEYS.content, content), [content]);
   useEffect(() => save(KEYS.promos, promoCodes), [promoCodes]);
+  useEffect(() => save(KEYS.log, moderationLog), [moderationLog]);
+
 
   const signIn = useCallback(
     (email: string, password: string) => {
@@ -120,6 +142,56 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       updateContent: (id, patch) =>
         setContent((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c))),
       deleteContent: (id) => setContent((prev) => prev.filter((c) => c.id !== id)),
+      moderationLog,
+      moderateContent: (ids, status, reason) => {
+        const stamp = now();
+        setContent((prev) =>
+          prev.map((c) =>
+            ids.includes(c.id)
+              ? {
+                  ...c,
+                  status,
+                  reports: status === "published" ? 0 : c.reports,
+                  reportDetails: status === "published" ? [] : c.reportDetails,
+                  rejectionReason: status === "rejected" || status === "hidden" ? reason : undefined,
+                  reviewedBy: admin?.name,
+                  reviewedAt: stamp,
+                }
+              : c,
+          ),
+        );
+        setModerationLog((prev) => [
+          ...ids.map((id) => ({
+            id: `mlog-${id}-${Date.now()}`,
+            contentId: id,
+            contentTitle: content.find((c) => c.id === id)?.title ?? id,
+            action: statusActionLabels[status],
+            reason,
+            admin: admin?.name ?? "Système",
+            at: stamp,
+          })),
+          ...prev,
+        ]);
+      },
+      dismissReports: (ids) => {
+        const stamp = now();
+        setContent((prev) =>
+          prev.map((c) => (ids.includes(c.id) ? { ...c, reports: 0, reportDetails: [] } : c)),
+        );
+        setModerationLog((prev) => [
+          ...ids.map((id) => ({
+            id: `mlog-dis-${id}-${Date.now()}`,
+            contentId: id,
+            contentTitle: content.find((c) => c.id === id)?.title ?? id,
+            action: "Signalements ignorés",
+            admin: admin?.name ?? "Système",
+            at: stamp,
+          })),
+          ...prev,
+        ]);
+      },
+      addModerationNote: (id, note) =>
+        setContent((prev) => prev.map((c) => (c.id === id ? { ...c, moderationNote: note } : c))),
       createPromoCode: (data) =>
         setPromoCodes((prev) => [
           { ...data, id: `prm-${Date.now()}`, usageCount: 0, createdAt: today() },
@@ -129,7 +201,8 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setPromoCodes((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p))),
       deletePromoCode: (id) => setPromoCodes((prev) => prev.filter((p) => p.id !== id)),
     }),
-    [admin, admins, users, businesses, content, promoCodes, signIn],
+    [admin, admins, users, businesses, content, promoCodes, moderationLog, signIn],
+
   );
 
   return <AdminAuthContext.Provider value={value}>{children}</AdminAuthContext.Provider>;
