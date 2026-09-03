@@ -74,6 +74,15 @@ interface AdminAuthContextValue {
 const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefined);
 
 const today = () => new Date().toISOString().slice(0, 10);
+const now = () => new Date().toISOString().slice(0, 16).replace("T", " ");
+
+const statusActionLabels: Record<ContentStatus, string> = {
+  published: "Approuvé",
+  pending: "Remis en attente",
+  rejected: "Rejeté",
+  hidden: "Masqué",
+};
+
 
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [admins, setAdmins] = useState<AdminAccount[]>(() => load(KEYS.admins, seedAdmins));
