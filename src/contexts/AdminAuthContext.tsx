@@ -61,10 +61,15 @@ interface AdminAuthContextValue {
   updateBusiness: (id: string, patch: Partial<AdminBusiness>) => void;
   updateContent: (id: string, patch: Partial<AdminContentItem>) => void;
   deleteContent: (id: string) => void;
+  moderationLog: ModerationLogEntry[];
+  moderateContent: (ids: string[], status: ContentStatus, reason?: string) => void;
+  dismissReports: (ids: string[]) => void;
+  addModerationNote: (id: string, note: string) => void;
   createPromoCode: (data: Omit<PromoCode, "id" | "createdAt" | "usageCount">) => void;
   updatePromoCode: (id: string, patch: Partial<PromoCode>) => void;
   deletePromoCode: (id: string) => void;
 }
+
 
 const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefined);
 
