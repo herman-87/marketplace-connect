@@ -3,11 +3,14 @@ import {
   AdminAccount,
   AdminBusiness,
   AdminContentItem,
+  ContentStatus,
+  ModerationLogEntry,
   PlatformUser,
   PromoCode,
   seedAdmins,
   seedBusinesses,
   seedContent,
+  seedModerationLog,
   seedPromoCodes,
   seedUsers,
 } from "@/data/adminData";
@@ -19,7 +22,9 @@ const KEYS = {
   businesses: "fr_admin_businesses",
   content: "fr_admin_content",
   promos: "fr_admin_promo_codes",
+  log: "fr_admin_moderation_log",
 };
+
 
 
 function load<T>(key: string, fallback: T): T {
