@@ -38,7 +38,15 @@ export interface AdminBusiness {
 }
 
 export type ContentKind = "product" | "promotion" | "review";
-export type ContentStatus = "published" | "pending" | "rejected";
+export type ContentStatus = "published" | "pending" | "rejected" | "hidden";
+export type ContentSeverity = "low" | "medium" | "high";
+
+export interface ContentReport {
+  id: string;
+  reason: string;
+  reporter: string;
+  createdAt: string;
+}
 
 export interface AdminContentItem {
   id: string;
@@ -48,7 +56,42 @@ export interface AdminContentItem {
   status: ContentStatus;
   reports: number;
   createdAt: string;
+  description?: string;
+  author?: string;
+  severity?: ContentSeverity;
+  reportDetails?: ContentReport[];
+  moderationNote?: string;
+  rejectionReason?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
 }
+
+export interface ModerationLogEntry {
+  id: string;
+  contentId: string;
+  contentTitle: string;
+  action: string;
+  reason?: string;
+  admin: string;
+  at: string;
+}
+
+export const rejectionReasons = [
+  "Contenu inapproprié ou offensant",
+  "Produit interdit ou réglementé",
+  "Informations trompeuses / fausses promotions",
+  "Photos de mauvaise qualité ou volées",
+  "Prix ou description incohérents",
+  "Avis frauduleux / spam",
+  "Autre (préciser)",
+] as const;
+
+export const severityLabels: Record<ContentSeverity, string> = {
+  low: "Faible",
+  medium: "Moyenne",
+  high: "Élevée",
+};
+
 
 export const adminRoleLabels: Record<AdminRole, string> = {
   SUPER_ADMIN: "Super admin",
