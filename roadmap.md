@@ -1,9 +1,9 @@
 # Roadmap
 
-## En cours
-- [x] Backoffice : modération de contenu avancée (motifs de rejet, signalements détaillés, actions groupées, masquage)
-- [ ] Backoffice : journal de modération (page dédiée)
-- [ ] Wallet : terminer le flow de retrait d'argent (montant, moyen de réception, confirmation, suivi de la demande)
+## Terminé
+- [x] Backoffice : modération de contenu avancée (motifs de rejet, signalements détaillés, actions groupées, masquage, note interne)
+- [x] Backoffice : journal de modération (page dédiée + traçabilité)
+- [x] Wallet : flow de retrait complet (montant, moyen de réception, récapitulatif, confirmation, référence)
 
 ## À venir
 - [ ] Notifications : système complet
