@@ -64,8 +64,9 @@ export default function WalletPage() {
           <Button className="h-9 gap-1.5 text-xs" onClick={() => handleDeposit(wallet)}>
             <ArrowDownToLine className="w-3.5 h-3.5" /> Dépôt
           </Button>
-          <Button variant="outline" className="h-9 gap-1.5 text-xs" onClick={() => handleWithdraw(wallet)}>
+          <Button variant="outline" className="h-9 gap-1.5 text-xs" onClick={handleWithdraw}>
             <ArrowUpFromLine className="w-3.5 h-3.5" /> Retrait
+
           </Button>
           <span className="text-xs text-muted-foreground">sur {wallet.name}</span>
         </div>
