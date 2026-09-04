@@ -4,11 +4,13 @@ import {
   BarChart3,
   Building2,
   FileStack,
+  History,
   LogOut,
   ShieldCheck,
   Ticket,
   Users,
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +22,9 @@ const navItems = [
   { title: "Utilisateurs", href: "/admin/users", icon: Users },
   { title: "Boutiques", href: "/admin/businesses", icon: Building2 },
   { title: "Contenus", href: "/admin/content", icon: FileStack },
+  { title: "Journal", href: "/admin/moderation-log", icon: History },
   { title: "Codes promos", href: "/admin/promo-codes", icon: Ticket },
+
   { title: "Administrateurs", href: "/admin/admins", icon: ShieldCheck },
 ];
 

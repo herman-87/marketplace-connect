@@ -10,11 +10,14 @@ import { wallets as allWallets, type WalletAccount, type WalletTransaction } fro
 import { WalletSelector } from "@/components/wallet/WalletSelector";
 import { TransactionRow } from "@/components/wallet/TransactionRow";
 import { TransactionDetailSheet } from "@/components/wallet/TransactionDetailSheet";
+import { WithdrawSheet } from "@/components/wallet/WithdrawSheet";
+
 
 export default function WalletPage() {
   const wallets = allWallets;
   const [selectedId, setSelectedId] = useState(wallets[0].id);
   const [selectedTx, setSelectedTx] = useState<WalletTransaction | null>(null);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const wallet = useMemo(
     () => wallets.find((w) => w.id === selectedId) ?? wallets[0],
@@ -25,7 +28,9 @@ export default function WalletPage() {
   const currency = wallet.currency;
 
   const handleDeposit = (w: WalletAccount) => toast.success(`Dépôt — ${w.name}`);
-  const handleWithdraw = (w: WalletAccount) => toast.success(`Retrait — ${w.name}`);
+  const handleWithdraw = () => setWithdrawOpen(true);
+
+
 
   return (
     <AppLayout title="Wallet" subtitle="Vos portefeuilles personnels et business en un seul endroit.">
@@ -59,8 +64,9 @@ export default function WalletPage() {
           <Button className="h-9 gap-1.5 text-xs" onClick={() => handleDeposit(wallet)}>
             <ArrowDownToLine className="w-3.5 h-3.5" /> Dépôt
           </Button>
-          <Button variant="outline" className="h-9 gap-1.5 text-xs" onClick={() => handleWithdraw(wallet)}>
+          <Button variant="outline" className="h-9 gap-1.5 text-xs" onClick={handleWithdraw}>
             <ArrowUpFromLine className="w-3.5 h-3.5" /> Retrait
+
           </Button>
           <span className="text-xs text-muted-foreground">sur {wallet.name}</span>
         </div>
@@ -105,6 +111,9 @@ export default function WalletPage() {
         currency={currency}
         onOpenChange={(open) => !open && setSelectedTx(null)}
       />
+
+      <WithdrawSheet wallet={wallet} open={withdrawOpen} onOpenChange={setWithdrawOpen} />
+
     </AppLayout>
   );
 }

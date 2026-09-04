@@ -47,6 +47,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminBusinesses from "./pages/admin/AdminBusinesses";
 import AdminContent from "./pages/admin/AdminContent";
 import AdminAdmins from "./pages/admin/AdminAdmins";
+import AdminModerationLog from "./pages/admin/AdminModerationLog";
 import AdminPromoCodes from "./pages/admin/AdminPromoCodes";
 
 import { TermsReminderDialog } from "@/components/legal/TermsReminderDialog";
@@ -107,6 +108,7 @@ const App = () => (
                   <Route path="/admin/users" element={<AdminAuthProvider><AdminUsers /></AdminAuthProvider>} />
                   <Route path="/admin/businesses" element={<AdminAuthProvider><AdminBusinesses /></AdminAuthProvider>} />
                   <Route path="/admin/content" element={<AdminAuthProvider><AdminContent /></AdminAuthProvider>} />
+                  <Route path="/admin/moderation-log" element={<AdminAuthProvider><AdminModerationLog /></AdminAuthProvider>} />
                   <Route path="/admin/promo-codes" element={<AdminAuthProvider><AdminPromoCodes /></AdminAuthProvider>} />
                   <Route path="/admin/admins" element={<AdminAuthProvider><AdminAdmins /></AdminAuthProvider>} />
 
