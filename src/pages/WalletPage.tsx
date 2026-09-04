@@ -111,6 +111,9 @@ export default function WalletPage() {
         currency={currency}
         onOpenChange={(open) => !open && setSelectedTx(null)}
       />
+
+      <WithdrawSheet wallet={wallet} open={withdrawOpen} onOpenChange={setWithdrawOpen} />
+
     </AppLayout>
   );
 }
