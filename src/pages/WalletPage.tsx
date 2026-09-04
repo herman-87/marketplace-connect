@@ -10,6 +10,8 @@ import { wallets as allWallets, type WalletAccount, type WalletTransaction } fro
 import { WalletSelector } from "@/components/wallet/WalletSelector";
 import { TransactionRow } from "@/components/wallet/TransactionRow";
 import { TransactionDetailSheet } from "@/components/wallet/TransactionDetailSheet";
+import { WithdrawSheet } from "@/components/wallet/WithdrawSheet";
+
 
 export default function WalletPage() {
   const wallets = allWallets;
