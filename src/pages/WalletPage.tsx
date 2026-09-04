@@ -17,6 +17,7 @@ export default function WalletPage() {
   const wallets = allWallets;
   const [selectedId, setSelectedId] = useState(wallets[0].id);
   const [selectedTx, setSelectedTx] = useState<WalletTransaction | null>(null);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const wallet = useMemo(
     () => wallets.find((w) => w.id === selectedId) ?? wallets[0],
@@ -27,7 +28,9 @@ export default function WalletPage() {
   const currency = wallet.currency;
 
   const handleDeposit = (w: WalletAccount) => toast.success(`Dépôt — ${w.name}`);
-  const handleWithdraw = (w: WalletAccount) => toast.success(`Retrait — ${w.name}`);
+  const handleWithdraw = () => setWithdrawOpen(true);
+
+
 
   return (
     <AppLayout title="Wallet" subtitle="Vos portefeuilles personnels et business en un seul endroit.">
