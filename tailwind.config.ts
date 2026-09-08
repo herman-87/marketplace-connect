@@ -115,6 +115,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "slide-up": "slide-up 0.5s ease-out forwards",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
+        "route-dash": "route-dash 1.2s linear infinite",
       },
       boxShadow: {
         'glow': '0 0 20px hsl(var(--primary) / 0.15)',
