@@ -77,7 +77,7 @@ export function DeliveryMap({
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeDasharray="4 3"
-          className="animate-[dash_1.6s_linear_infinite]"
+          className="animate-route-dash"
         />
       </svg>
 
