@@ -104,6 +104,10 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.7" },
         },
+        "route-dash": {
+          from: { strokeDashoffset: "14" },
+          to: { strokeDashoffset: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -111,6 +115,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "slide-up": "slide-up 0.5s ease-out forwards",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
+        "route-dash": "route-dash 1.2s linear infinite",
       },
       boxShadow: {
         'glow': '0 0 20px hsl(var(--primary) / 0.15)',
