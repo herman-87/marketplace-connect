@@ -4,6 +4,7 @@ import type { PlanId, PaymentProviderId } from "@/data/subscriptionPlans";
 export interface PaymentInfo {
   provider: PaymentProviderId;
   phone: string;
+  email: string;
   amount: number;
   currency: string;
 }
