@@ -81,7 +81,7 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isPro } = useSubscription();
+  const { isPro, pendingPlan } = useSubscription();
 
   // Detect if we're in a business context
   const businessMatch = location.pathname.match(/^\/business\/([^/]+)/);
@@ -163,7 +163,7 @@ export function AppSidebar() {
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
             <button
-              onClick={() => setSubscriptionOpen(true)}
+              onClick={() => (pendingPlan ? navigate("/souscription/validation") : setSubscriptionOpen(true))}
               className="flex items-center justify-center w-full px-3 py-2.5 rounded-lg text-sidebar-foreground/40 hover:text-sidebar-foreground/60 transition-colors"
             >
               <Lock className="h-5 w-5" />
@@ -173,7 +173,7 @@ export function AppSidebar() {
         </Tooltip>
       ) : (
         <button
-          onClick={() => setSubscriptionOpen(true)}
+          onClick={() => (pendingPlan ? navigate("/souscription/validation") : setSubscriptionOpen(true))}
           className="flex items-center justify-between w-full px-3 py-2 text-[10px] uppercase tracking-wider font-semibold text-sidebar-foreground/30 hover:text-sidebar-foreground/50 transition-colors"
         >
           <span>{label}</span>

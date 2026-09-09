@@ -101,7 +101,7 @@ export function DeliveryMap({
 
       {/* Overlay ETA */}
       {(etaMinutes !== undefined || distanceKm !== undefined) && (
-        <div className="absolute bottom-2 left-2 right-2 flex items-center gap-3 rounded-lg border border-border/60 bg-background/90 px-3 py-2 backdrop-blur-sm">
+        <div className="absolute left-2 top-2 flex items-center gap-3 rounded-lg border border-border/60 bg-background/90 px-3 py-2 backdrop-blur-sm">
           <Navigation className="h-4 w-4 shrink-0 text-primary" />
           <div className="min-w-0 flex-1 text-xs">
             {etaMinutes !== undefined && (

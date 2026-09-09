@@ -7,3 +7,4 @@
 
 ## À venir
 - [ ] Notifications : système complet
+- [ ] Souscription : pop-up USSD après paiement (FR/EN, fermeture au clic extérieur) + page "souscription en cours de validation" dans l'espace pro

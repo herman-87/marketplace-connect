@@ -32,7 +32,7 @@ export function MobileNav() {
   const [subscriptionOpen, setSubscriptionOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { isPro } = useSubscription();
+  const { isPro, pendingPlan } = useSubscription();
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return location.pathname === "/dashboard";
@@ -42,6 +42,10 @@ export function MobileNav() {
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (!isPro && proHrefs.includes(href)) {
       e.preventDefault();
+      if (pendingPlan) {
+        navigate("/souscription/validation");
+        return;
+      }
       setSubscriptionOpen(true);
     }
   };

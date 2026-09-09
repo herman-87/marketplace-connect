@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { celebrate } from "@/components/ui/celebration";
 import { subscriptionPlans, type PlanId, type SubscriptionPlan } from "@/data/subscriptionPlans";
 import { PlanPaymentStep } from "./PlanPaymentStep";
+import { UssdInstructionsDialog } from "./UssdInstructionsDialog";
 
 interface SubscriptionSheetProps {
   trigger?: React.ReactNode;
@@ -28,7 +29,8 @@ interface SubscriptionSheetProps {
 export function SubscriptionSheet({ trigger, open: controlledOpen, onOpenChange }: SubscriptionSheetProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [paymentPlan, setPaymentPlan] = useState<SubscriptionPlan | null>(null);
-  const { activatePlan, plan: currentPlan, autoRenew, setAutoRenew } = useSubscription();
+  const [ussdPlan, setUssdPlan] = useState<SubscriptionPlan | null>(null);
+  const { activatePlan, requestValidation, plan: currentPlan, autoRenew, setAutoRenew } = useSubscription();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -95,7 +97,13 @@ export function SubscriptionSheet({ trigger, open: controlledOpen, onOpenChange 
               <PlanPaymentStep
                 plan={paymentPlan}
                 onBack={() => setPaymentPlan(null)}
-                onPaid={(payment) => finish(paymentPlan.id, paymentPlan.name, payment)}
+                onPaid={(payment) => {
+                  // Souscription payante : validation manuelle après le code USSD
+                  requestValidation(paymentPlan.id, payment);
+                  setUssdPlan(paymentPlan);
+                  setPaymentPlan(null);
+                  setOpen(false);
+                }}
               />
             </div>
           ) : (
@@ -191,6 +199,20 @@ export function SubscriptionSheet({ trigger, open: controlledOpen, onOpenChange 
           )}
         </div>
       </SheetContent>
+
+      {ussdPlan && (
+        <UssdInstructionsDialog
+          open
+          onOpenChange={(next) => {
+            if (!next) {
+              setUssdPlan(null);
+              navigate("/souscription/validation");
+            }
+          }}
+          planName={ussdPlan.name}
+          amountLabel={`${ussdPlan.price.toLocaleString("fr-FR")} ${ussdPlan.currency}`}
+        />
+      )}
     </Sheet>
   );
 }
