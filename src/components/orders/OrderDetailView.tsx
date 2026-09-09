@@ -9,7 +9,7 @@ import { OrderActionPanel } from "./OrderActionPanel";
 import { OrderChat } from "./OrderChat";
 import { DeliveryTrackingPanel } from "@/components/delivery/DeliveryTrackingPanel";
 import { createDelivery } from "@/data/deliveryData";
-import { mockCouriers } from "@/data/deliveryData";
+import { mockCouriers, positionAtProgress } from "@/data/deliveryData";
 import { cn } from "@/lib/utils";
 
 interface OrderDetailViewProps {
@@ -27,13 +27,27 @@ const deliveryLabels: Record<string, string> = {
 export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDetailViewProps) {
   const [order, setOrder] = useState(initialOrder);
   const [activePanel, setActivePanel] = useState<"timeline" | "chat" | "delivery">("timeline");
-  const [delivery] = useState(() =>
-    createDelivery(initialOrder.id, {
+  const [delivery] = useState(() => {
+    const base = createDelivery(initialOrder.id, {
       address: initialOrder.deliveryAddress,
       fee: initialOrder.deliveryFee,
       courier: mockCouriers[0],
-    }),
-  );
+    });
+    // Le suivi livreur reflète l'état de la commande
+    switch (initialOrder.status) {
+      case "PENDING_DELIVERY":
+        return { ...base, status: "PENDING_ASSIGNMENT" as const, courier: undefined, courierPosition: undefined };
+      case "IN_DELIVERY":
+        return { ...base, status: "EN_ROUTE" as const, progress: 0.45, courierPosition: positionAtProgress(base.route, 0.45) };
+      case "DELIVERED":
+      case "COMPLETED":
+        return { ...base, status: "DELIVERED" as const, progress: 1, courierPosition: base.route[base.route.length - 1] };
+      case "DELIVERY_FAILED":
+        return { ...base, status: "FAILED" as const, failureReason: "Client injoignable" };
+      default:
+        return base;
+    }
+  });
   const deliveryStatuses = ["PENDING_DELIVERY", "IN_DELIVERY", "DELIVERED", "COMPLETED", "DELIVERY_FAILED"];
   const showDelivery = deliveryStatuses.includes(initialOrder.status);
   const config = ORDER_STATUS_CONFIG[order.status];
