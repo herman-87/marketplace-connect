@@ -69,10 +69,16 @@ export default function SubscriptionPending() {
               </span>
             </div>
             {pendingPayment && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">{t.payment}</span>
-                <span className="font-medium">{pendingPayment.provider} · {pendingPayment.phone}</span>
-              </div>
+              <>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{t.payment}</span>
+                  <span className="font-medium">{pendingPayment.provider} · {pendingPayment.phone}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Email</span>
+                  <span className="font-medium truncate max-w-[60%]">{pendingPayment.email}</span>
+                </div>
+              </>
             )}
 
             <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
