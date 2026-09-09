@@ -38,6 +38,7 @@ import Favoris from "./pages/Favoris";
 import Profil from "./pages/Profil";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import CourierDeliveries from "./pages/CourierDeliveries";
 import Conditions from "./pages/Conditions";
 import OAuthConsent from "./pages/OAuthConsent";
 import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
@@ -100,6 +101,7 @@ const App = () => (
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/conditions" element={<Conditions />} />
+                  <Route path="/livreur" element={<CourierDeliveries />} />
                   <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 
                   {/* Backoffice administrateur (session séparée) */}
