@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeft, MapPin, Clock, Package, MessageCircle, History } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Package, MessageCircle, History, Truck } from "lucide-react";
 import { Order, OrderStatus, UserRole, ORDER_STATUS_CONFIG } from "@/types/order";
 import { OrderTimeline } from "./OrderTimeline";
 import { OrderActionPanel } from "./OrderActionPanel";
 import { OrderChat } from "./OrderChat";
+import { DeliveryTrackingPanel } from "@/components/delivery/DeliveryTrackingPanel";
+import { createDelivery } from "@/data/deliveryData";
+import { mockCouriers } from "@/data/deliveryData";
 import { cn } from "@/lib/utils";
 
 interface OrderDetailViewProps {
@@ -23,7 +26,16 @@ const deliveryLabels: Record<string, string> = {
 
 export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDetailViewProps) {
   const [order, setOrder] = useState(initialOrder);
-  const [activePanel, setActivePanel] = useState<"timeline" | "chat">("timeline");
+  const [activePanel, setActivePanel] = useState<"timeline" | "chat" | "delivery">("timeline");
+  const [delivery] = useState(() =>
+    createDelivery(initialOrder.id, {
+      address: initialOrder.deliveryAddress,
+      fee: initialOrder.deliveryFee,
+      courier: mockCouriers[0],
+    }),
+  );
+  const deliveryStatuses = ["PENDING_DELIVERY", "IN_DELIVERY", "DELIVERED", "COMPLETED", "DELIVERY_FAILED"];
+  const showDelivery = deliveryStatuses.includes(initialOrder.status);
   const config = ORDER_STATUS_CONFIG[order.status];
 
   const handleStatusChange = (newStatus: OrderStatus, data?: Record<string, string>) => {
@@ -158,8 +170,13 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
                 {/* Animated pill background */}
                 <div
                   className={cn(
-                    "absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-lg bg-background shadow-sm border border-border/60 transition-all duration-300 ease-out",
-                    activePanel === "timeline" ? "left-1" : "left-[calc(50%+2px)]"
+                    "absolute top-1 bottom-1 rounded-lg bg-background shadow-sm border border-border/60 transition-all duration-300 ease-out",
+                    showDelivery ? "w-[calc(33.333%-4px)]" : "w-[calc(50%-4px)]",
+                    activePanel === "timeline"
+                      ? "left-1"
+                      : activePanel === "chat"
+                        ? (showDelivery ? "left-[calc(33.333%+2px)]" : "left-[calc(50%+2px)]")
+                        : "left-[calc(66.666%+2px)]"
                   )}
                 />
                 <button
@@ -191,6 +208,20 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                   </span>
                 </button>
+                {showDelivery && (
+                  <button
+                    onClick={() => setActivePanel("delivery")}
+                    className={cn(
+                      "relative z-10 flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-medium transition-colors duration-200",
+                      activePanel === "delivery"
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground/70"
+                    )}
+                  >
+                    <Truck className="h-3.5 w-3.5" />
+                    Livraison
+                  </button>
+                )}
               </div>
             </div>
 
@@ -227,6 +258,22 @@ export function OrderDetailView({ order: initialOrder, role, onBack }: OrderDeta
                   />
                 </div>
               </div>
+
+              {/* Livraison */}
+              {showDelivery && (
+                <div
+                  className={cn(
+                    "transition-all duration-300 ease-out",
+                    activePanel === "delivery"
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 translate-x-4 absolute inset-0 pointer-events-none"
+                  )}
+                >
+                  <div className="p-4">
+                    <DeliveryTrackingPanel delivery={delivery} role={role} />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
