@@ -20,20 +20,24 @@ interface PlanPaymentStepProps {
   onPaid: (payment: PaymentInfo) => void;
 }
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function PlanPaymentStep({ plan, onBack, onPaid }: PlanPaymentStepProps) {
   const [provider, setProvider] = useState<PaymentProviderId | null>(null);
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [processing, setProcessing] = useState(false);
 
   const phoneValid = phone.replace(/\D/g, "").length >= 8;
-  const canPay = provider !== null && phoneValid && !processing;
+  const emailValid = EMAIL_REGEX.test(email.trim());
+  const canPay = provider !== null && phoneValid && emailValid && !processing;
 
   const handlePay = () => {
-    if (!provider) return;
+    if (!provider || !emailValid) return;
     setProcessing(true);
     setTimeout(() => {
       setProcessing(false);
-      onPaid({ provider, phone, amount: plan.price, currency: plan.currency });
+      onPaid({ provider, phone, email: email.trim(), amount: plan.price, currency: plan.currency });
     }, 1400);
   };
 
@@ -84,6 +88,29 @@ export function PlanPaymentStep({ plan, onBack, onPaid }: PlanPaymentStepProps) 
           </div>
 
           <Separator />
+
+          <div className="space-y-2">
+            <Label htmlFor="sub-email">
+              Adresse email <span className="text-primary">*</span>
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="sub-email"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="votre@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-9"
+                required
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Requise pour l'envoi de la confirmation de paiement.
+            </p>
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="sub-phone">Numéro de téléphone</Label>
