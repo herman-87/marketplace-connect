@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Smartphone, Hash } from "lucide-react";
+import { Smartphone } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 interface UssdInstructionsDialogProps {
@@ -49,13 +49,13 @@ export function UssdInstructionsDialog({ open, onOpenChange, planName, amountLab
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
             <p className="text-xs font-medium text-muted-foreground">{t.orange}</p>
             <p className="mt-1 flex items-center justify-center gap-1.5 font-mono text-2xl font-bold">
-              <Hash className="h-4 w-4 text-primary" />#150*50#
+              #150*50#
             </p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
             <p className="text-xs font-medium text-muted-foreground">{t.mtn}</p>
             <p className="mt-1 flex items-center justify-center gap-1.5 font-mono text-2xl font-bold">
-              <Hash className="h-4 w-4 text-primary" />*126#
+              *126#
             </p>
           </div>
         </div>

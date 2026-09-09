@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Smartphone, ArrowLeft, Hash } from "lucide-react";
+import { Clock, Smartphone, ArrowLeft } from "lucide-react";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import { getPlan, formatPlanPrice } from "@/data/subscriptionPlans";
 import { useLanguage } from "@/hooks/use-language";
@@ -81,7 +81,7 @@ export default function SubscriptionPending() {
               </p>
               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                 <p className="rounded-md bg-background px-3 py-2 text-center font-mono text-sm font-bold">
-                  <Hash className="mr-1 inline h-3 w-3 text-primary" />150*50# · {t.orange}
+                  #150*50# · {t.orange}
                 </p>
                 <p className="rounded-md bg-background px-3 py-2 text-center font-mono text-sm font-bold">
                   *126# · {t.mtn}
