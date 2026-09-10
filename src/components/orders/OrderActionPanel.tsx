@@ -35,6 +35,7 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
   const [paymentMethod, setPaymentMethod] = useState<string | null>("mobile_money");
   const [paymentProvider, setPaymentProvider] = useState<string | null>(null);
   const [payerPhone, setPayerPhone] = useState("");
+  const [payerEmail, setPayerEmail] = useState("");
   const [confirmPayment, setConfirmPayment] = useState(false);
 
   // Generic confirmation dialogs
