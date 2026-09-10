@@ -40,6 +40,8 @@ const paymentMethods = [
 export function PaymentStep({ selectedBusinessId, onBack, onConfirm }: PaymentStepProps) {
   const { subCarts } = useCart();
   const [selectedPayment, setSelectedPayment] = useState('card');
+  const [email, setEmail] = useState('');
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
   const [cardDetails, setCardDetails] = useState({
     number: '',
     expiry: '',
@@ -69,6 +71,28 @@ export function PaymentStep({ selectedBusinessId, onBack, onConfirm }: PaymentSt
                 <h3 className="font-semibold">Mode de paiement</h3>
                 <p className="text-sm text-muted-foreground">Choisissez comment payer</p>
               </div>
+            </div>
+
+            {/* Email (obligatoire) */}
+            <div className="mb-6 space-y-2">
+              <Label htmlFor="payerEmail">
+                Email <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="payerEmail"
+                type="email"
+                inputMode="email"
+                required
+                placeholder="vous@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Le reçu et le suivi de commande seront envoyés à cette adresse.
+              </p>
+              {email.length > 0 && !emailValid && (
+                <p className="text-xs text-destructive">Veuillez saisir une adresse email valide.</p>
+              )}
             </div>
 
             <RadioGroup value={selectedPayment} onValueChange={setSelectedPayment}>
