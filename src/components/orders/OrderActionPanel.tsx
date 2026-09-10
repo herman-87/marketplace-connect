@@ -412,7 +412,7 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
             <Button
               variant="ghost"
               className="w-full h-9 text-xs"
-              onClick={() => { setShowPaymentForm(false); setPaymentProvider(null); setPayerPhone(""); }}
+              onClick={() => { setShowPaymentForm(false); setPaymentProvider(null); setPayerPhone(""); setPayerEmail(""); }}
             >
               Annuler
             </Button>
@@ -422,14 +422,15 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
             open={confirmPayment}
             onOpenChange={setConfirmPayment}
             title="Confirmer le paiement"
-            description={`Une demande de ${totalWithDelivery.toFixed(2)} € va être envoyée au ${payerPhone} via ${providers.find(p => p.id === paymentProvider)?.label}. Validez la notification sur votre téléphone pour finaliser.`}
+            description={`Une demande de ${totalWithDelivery.toFixed(2)} € va être envoyée au ${payerPhone} via ${providers.find(p => p.id === paymentProvider)?.label}. Le reçu sera envoyé à ${payerEmail}. Validez la notification sur votre téléphone pour finaliser.`}
             confirmLabel={`Payer ${totalWithDelivery.toFixed(2)} €`}
             onConfirm={() => {
-              onStatusChange("PAID", { method: paymentMethod!, provider: paymentProvider!, phone: payerPhone });
+              onStatusChange("PAID", { method: paymentMethod!, provider: paymentProvider!, phone: payerPhone, email: payerEmail.trim() });
               toast.success("Paiement effectué !");
               setShowPaymentForm(false);
               setPaymentProvider(null);
               setPayerPhone("");
+              setPayerEmail("");
             }}
           />
         </>
