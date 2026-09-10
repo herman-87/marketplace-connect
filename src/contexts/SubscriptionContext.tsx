@@ -9,6 +9,18 @@ export interface PaymentInfo {
   currency: string;
 }
 
+/** État de la dernière souscription du user */
+export type SubscriptionStatus = "pending" | "active" | "expired";
+
+export interface SubscriptionRecord {
+  plan: PlanId;
+  status: SubscriptionStatus;
+  payment: PaymentInfo | null;
+  createdAt: string;
+  /** Fin de validité (plans actifs / expirés) */
+  expiresAt?: string;
+}
+
 interface SubscriptionContextType {
   isPro: boolean;
   /** Souscription payée en attente de validation */
@@ -27,9 +39,22 @@ interface SubscriptionContextType {
   upgradeToPro: () => void;
   cancelSubscription: () => void;
   setAutoRenew: (value: boolean) => void;
+
+  /** Dernière souscription connue du user (quel que soit son état) */
+  lastSubscription: SubscriptionRecord | null;
+  /** L'espace pro est ouvert uniquement si la business zone est active */
+  businessZoneActive: boolean;
+  /** Change l'état de la dernière souscription (simulation front) */
+  setSubscriptionStatus: (status: SubscriptionStatus) => void;
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
+
+const monthsFromNow = (months: number) => {
+  const d = new Date();
+  d.setMonth(d.getMonth() + months);
+  return d.toISOString();
+};
 
 export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [plan, setPlan] = useState<PlanId | null>(null);
@@ -37,10 +62,17 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [pendingPayment, setPendingPayment] = useState<PaymentInfo | null>(null);
   const [lastPayment, setLastPayment] = useState<PaymentInfo | null>(null);
   const [autoRenew, setAutoRenew] = useState(false);
+  const [lastSubscription, setLastSubscription] = useState<SubscriptionRecord | null>(null);
 
   const requestValidation = (nextPlan: PlanId, payment?: PaymentInfo) => {
     setPendingPlan(nextPlan);
     setPendingPayment(payment ?? null);
+    setLastSubscription({
+      plan: nextPlan,
+      status: "pending",
+      payment: payment ?? null,
+      createdAt: new Date().toISOString(),
+    });
   };
 
   const activatePlan = (nextPlan: PlanId, payment?: PaymentInfo) => {
@@ -48,6 +80,13 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     setPendingPlan(null);
     setPendingPayment(null);
     if (payment) setLastPayment(payment);
+    setLastSubscription({
+      plan: nextPlan,
+      status: "active",
+      payment: payment ?? null,
+      createdAt: new Date().toISOString(),
+      expiresAt: monthsFromNow(1),
+    });
   };
 
   const cancelSubscription = () => {
@@ -55,7 +94,29 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     setLastPayment(null);
     setPendingPlan(null);
     setPendingPayment(null);
+    setLastSubscription((prev) => (prev ? { ...prev, status: "expired" } : null));
   };
+
+  const setSubscriptionStatus = (status: SubscriptionStatus) => {
+    setLastSubscription((prev) => {
+      const base: SubscriptionRecord =
+        prev ?? { plan: "growth", status, payment: null, createdAt: new Date().toISOString() };
+      return {
+        ...base,
+        status,
+        expiresAt: status === "expired" ? monthsFromNow(-1) : status === "active" ? monthsFromNow(1) : base.expiresAt,
+      };
+    });
+    if (status === "active") {
+      setPlan((prev) => prev ?? lastSubscription?.plan ?? "growth");
+      setPendingPlan(null);
+    } else {
+      setPlan(null);
+      if (status === "pending") setPendingPlan(lastSubscription?.plan ?? "growth");
+    }
+  };
+
+  const businessZoneActive = lastSubscription?.status === "active";
 
   return (
     <SubscriptionContext.Provider
@@ -72,6 +133,9 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
         upgradeToPro: () => activatePlan("starter"),
         cancelSubscription,
         setAutoRenew,
+        lastSubscription,
+        businessZoneActive,
+        setSubscriptionStatus,
       }}
     >
       {children}
