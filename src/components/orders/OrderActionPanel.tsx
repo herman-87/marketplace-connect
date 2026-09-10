@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
   Check, X, CreditCard, Truck, PackageCheck, AlertCircle,
-  Ban, RefreshCw, Smartphone, Banknote, MessageSquare
+  Ban, RefreshCw, Smartphone, Banknote, MessageSquare, Mail
 } from "lucide-react";
 import { OrderStatus, UserRole, ORDER_STATUS_CONFIG } from "@/types/order";
 import { toast } from "sonner";
@@ -283,7 +283,8 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
         { id: "moneyfusion", label: "MoneyFusion", desc: "Multi-opérateurs" },
       ];
       const phoneValid = payerPhone.replace(/\D/g, "").length >= 8;
-      const canPay = paymentMethod === "mobile_money" && !!paymentProvider && phoneValid;
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(payerEmail.trim());
+      const canPay = paymentMethod === "mobile_money" && !!paymentProvider && phoneValid && emailValid;
 
       return (
         <>
@@ -360,6 +361,25 @@ export function OrderActionPanel({ orderId, status, role, total, deliveryFee, on
                     className="pl-9"
                   />
                 </div>
+
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide pt-1">
+                  Email <span className="text-destructive">*</span>
+                </p>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    inputMode="email"
+                    required
+                    placeholder="vous@email.com"
+                    value={payerEmail}
+                    onChange={(e) => setPayerEmail(e.target.value)}
+                    className="pl-9"
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Le reçu de paiement sera envoyé à cette adresse.
+                </p>
               </div>
             )}
 
