@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_tags: {
+        Row: {
+          business_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       order_messages: {
         Row: {
           content: string
@@ -40,6 +67,38 @@ export type Database = {
           sender_role?: string
         }
         Relationships: []
+      }
+      product_tags: {
+        Row: {
+          business_id: string
+          created_at: string
+          id: string
+          product_id: string
+          tag_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          id?: string
+          product_id: string
+          tag_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "business_tags"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
