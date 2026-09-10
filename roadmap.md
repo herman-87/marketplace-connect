@@ -8,3 +8,5 @@
 ## À venir
 - [ ] Notifications : système complet
 - [ ] Souscription : pop-up USSD après paiement (FR/EN, fermeture au clic extérieur) + page "souscription en cours de validation" dans l'espace pro
+- [ ] Paiement commande : champ email obligatoire (panier + panneau commande)
+- [x] Espace pro : affichage de la dernière souscription si business zone inactive (pending → paiement + codes USSD, expired → renouveler/nouveau plan)

@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { ProSpaceGate } from "@/components/subscription/ProSpaceGate";
 
 const mockBusinesses = [
   { id: "1", name: "Urban Style Shop", description: "Boutique de vêtements et accessoires tendance", productsCount: 24, collaboratorsCount: 3, status: "active" as const, isOwner: true },
@@ -37,6 +38,7 @@ export default function Index() {
       title="Tableau de bord"
       subtitle="Bienvenue, Jean ! Voici un aperçu de votre activité."
     >
+      <ProSpaceGate>
       <div className="space-y-4 md:space-y-6">
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
@@ -110,6 +112,7 @@ export default function Index() {
           <RecentOrders />
         </section>
       </div>
+      </ProSpaceGate>
     </AppLayout>
   );
 }
