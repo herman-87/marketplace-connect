@@ -275,6 +275,7 @@ export function PaymentStep({ selectedBusinessId, onBack, onConfirm }: PaymentSt
           <Button 
             className="flex-1 h-12 text-base gap-2" 
             size="lg"
+            disabled={!emailValid}
             onClick={() => {
               celebrate({
                 title: "Paiement réussi !",
